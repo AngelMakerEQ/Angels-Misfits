@@ -16,11 +16,29 @@ Classic, Kunark, Velious). Later-expansion content will not be exposed
 to players by default.
 
 ## Mechanism
-- Zones: gated via `zone.expansion <= 2`.
-- Items/spells: no reliable single-column gate exists in PEQ; these will
-  be scoped incrementally as zones are built out, cross-referenced
-  against allowed zones and loot tables rather than filtered globally
-  up front.
+
+**Under review as of 2026-07-23.** The originally documented mechanism
+(`zone.expansion <= 2`) is incomplete.
+
+A full `rule_values` comparison identified EQEmu's bitmask-based
+expansion gating rules, which operate server-wide rather than
+zone-by-zone and are likely the correct primary gate:
+
+- `World:ExpansionSettings` (PEQ: 524287, TAKP: 0)
+- `World:CharacterSelectExpansionSettings` (PEQ: 522239, TAKP: 0)
+- `Expansion:CurrentExpansion` (PEQ: 9, TAKP: 0)
+- `World:UseClientBasedExpansionSettings` (PEQ: false)
+
+Exact bitmask semantics have **not** been verified against EQEmu
+source. No value is specified here deliberately — implementing from a
+guessed bitmask would be worse than leaving this open.
+
+`zone.expansion` filtering may still serve as a secondary/complementary
+gate. Items and spells remain deferred per the original decision.
+
+## Revision History
+- 2026-07-23: Mechanism marked under review following rule_values
+  comparison; bitmask gating identified as likely primary mechanism.
 
 ## Consequences
 - World design and exploration scope is now bounded and matches the
