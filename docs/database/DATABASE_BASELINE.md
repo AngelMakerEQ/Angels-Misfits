@@ -48,7 +48,7 @@ Velious-restricted subset that will be exposed on the live server.
 | `npc_types` | 67,530 | Full NPC roster across all eras |
 | `spells_new` | 40,722 | Full spell list; expansion scoping deferred per ADR-001 |
 | `spawn2` | 165,711 | Spawn points, all zones |
-| `zone` | 2,449 | All zone instances, all eras — primary gate point for ADR-001 (`expansion <= 2`) |
+| `zone` | 618 | All zone instances, all eras — primary gate point for ADR-001. Earlier figure of 2,449 was an extraction error that included zone_points (1,831 rows); corrected 2026-07-23.|
 | `loottable` | 26,514 | Full loot table set |
 | `lootdrop` | 51,943 | Full lootdrop entries |
 | `grid` / `grid_entries` | 31,556 / 859,842 | NPC pathing data |
