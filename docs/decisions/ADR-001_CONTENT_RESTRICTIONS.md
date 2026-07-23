@@ -1,48 +1,145 @@
-# ADR 0001: Restrict Content Scope to Velious-and-Earlier
+# ADR-001: Content Scope Restriction (Velious and Earlier)
 
-**Status:** Accepted
+**Status:** Accepted (implementation pending MCP connection)
 **Date:** 2026-07-22
+**Last Revised:** 2026-07-23
+
+---
 
 ## Context
-The imported PEQ database is a full, current-era dump containing items,
-zones, and NPCs from all EverQuest expansions through recent years, not
-just launch-through-Velious. The original Phase 1 plan was "Velious as
-starting point, everything unlocked," which did not anticipate the
-database including post-Velious content by default.
+
+The imported PEQ database is a full, current-era dump. Zone data spans
+nearly the entire expansion history — zones such as `sarithcity` and
+`argath` (Broken Mirror / Ring of Scale era) and `thevoida` (Torment of
+Velious, 2019) are present.
+
+The original Phase 1 plan was "Velious as starting point, everything
+unlocked." That plan did not anticipate that the stock database ships
+with post-Velious content enabled by default.
 
 ## Decision
-Content will be restricted to Velious-and-earlier (expansion values 0-2:
-Classic, Kunark, Velious). Later-expansion content will not be exposed
-to players by default.
 
-## Mechanism
+Content is restricted to **Velious-and-earlier**: Classic (0),
+Kunark (1), Velious (2). Later-expansion content is not exposed to
+players.
 
-**Under review as of 2026-07-23.** The originally documented mechanism
-(`zone.expansion <= 2`) is incomplete.
+---
 
-A full `rule_values` comparison identified EQEmu's bitmask-based
-expansion gating rules, which operate server-wide rather than
-zone-by-zone and are likely the correct primary gate:
+## Mechanism — Verified 2026-07-23
 
-- `World:ExpansionSettings` (PEQ: 524287, TAKP: 0)
-- `World:CharacterSelectExpansionSettings` (PEQ: 522239, TAKP: 0)
-- `Expansion:CurrentExpansion` (PEQ: 9, TAKP: 0)
-- `World:UseClientBasedExpansionSettings` (PEQ: false)
+### Expansion Internal IDs
 
-Exact bitmask semantics have **not** been verified against EQEmu
-source. No value is specified here deliberately — implementing from a
-guessed bitmask would be worse than leaving this open.
+Per official EQEmu documentation:
 
-`zone.expansion` filtering may still serve as a secondary/complementary
-gate. Items and spells remain deferred per the original decision.
+| Expansion | ID |
+|---|---|
+| Classic | 0 |
+| The Ruins of Kunark | 1 |
+| The Scars of Velious | 2 |
+| The Shadows of Luclin | 3 |
+| The Planes of Power | 4 |
+| ... through Torment of Velious | 26 |
 
-## Revision History
-- 2026-07-23: Mechanism marked under review following rule_values
-  comparison; bitmask gating identified as likely primary mechanism.
+### Primary Gate — Server Rules
+
+| Rule | Value | Notes |
+|---|---|---|
+| `World:ExpansionSettings` | **3** | `maskSoV` — Classic + Kunark + Velious |
+| `Expansion:CurrentExpansion` | **2** | Velious |
+| `World:CharacterSelectExpansionSettings` | **3** | Or `-1` to disable the override entirely |
+| `World:UseClientBasedExpansionSettings` | **false** | Must remain false — see Critical Dependency |
+
+### Bitmask Reference
+
+| Token | Value |
+|---|---|
+| `bitEverQuest` (Classic) | 0 |
+| `bitRoK` (Kunark) | 1 |
+| `bitSoV` (Velious) | 2 |
+| **`maskSoV`** | **3** |
+
+Classic has no bit of its own — it is the base game and always active.
+The cumulative mask for Velious-and-earlier is therefore 3.
+
+### Critical Dependency
+
+`World:UseClientBasedExpansionSettings` **must remain false**. EQEmu's
+compiled default is `true`; PEQ overrides it to `false`. If it were
+true, the RoF2 client's own expansion level would override
+`World:ExpansionSettings` and silently defeat this entire restriction.
+
+### PEQ Default Note
+
+PEQ ships `World:ExpansionSettings = 524287`, which is `maskRoF` —
+everything through Rain of Fear. The rule's own embedded note text
+claims "up to TSS" and is stale; it does not match the seeded value.
+
+### Secondary Gate — Zone Column
+
+`zone.expansion` uses the same ordinal scheme. Verified empirically
+against 16 known-era zones:
+
+| Zones | `expansion` |
+|---|---|
+| blackburrow, qeynos, freportw, airplane | 0 |
+| burningwood, fieldofbone, sebilis, skyfire | 1 |
+| greatdivide, thurgadina, templeveeshan, sirens | 2 |
+| ssratemple, nexus | 3 |
+| bothunder, poknowledge | 4 |
+
+`zone.expansion <= 2` may be applied as a complementary filter.
+
+### Unrelated Mechanism — Do Not Conflate
+
+`zone.min_expansion` / `zone.max_expansion` use a different scale and
+are almost always -1 (unset); `sirens` carries 6/99. These are not part
+of this decision.
+
+---
+
+## Items and Spells — Deferred
+
+PEQ's `items` and `spells_new` tables have no reliable single-column
+expansion flag. Scoping these is deferred and will be handled
+incrementally as zones are built out, cross-referenced against allowed
+zones and loot tables rather than filtered globally up front.
 
 ## Consequences
-- World design and exploration scope is now bounded and matches the
-  original Velious-anchor intent more precisely.
-- Item/spell cleanup is deferred work, not a one-time migration.
-- Future expansion (per project philosophy) means deliberately raising
-  this boundary later, not an accident of an unfiltered database.
+
+- World design and exploration scope is bounded to the Velious anchor.
+- The full dump is **retained, not purged** — later-expansion content
+  remains available for research or deliberate future expansion.
+- Item/spell scoping is ongoing deferred work, not a one-time migration.
+- Future expansion means deliberately raising this boundary (e.g.
+  `maskSoL = 7` for Luclin) through a new ADR, rather than inheriting
+  it by accident from an unfiltered database.
+
+## Spire Compatibility
+
+No schema changes. All four rules live in `rule_values`, a standard PEQ
+table Spire edits directly. `zone.expansion` is an existing stock
+column. Nothing in this decision affects Spire functionality.
+
+## Verification Notes
+
+- Expansion IDs and bitmask values: **verified** against official EQEmu
+  documentation.
+- `zone.expansion` ordinal: **verified empirically**, 16/16 known-era
+  zones.
+- `UseClientBasedExpansionSettings` default behavior: **verified**
+  against EQEmu `ruletypes.h` and PEQ's seeded value.
+
+## Revision History
+
+- **2026-07-22** — Created. Mechanism stated as `zone.expansion <= 2`.
+- **2026-07-23** — Mechanism marked under review after a full
+  `rule_values` comparison identified server-level expansion rules.
+- **2026-07-23** — Mechanism verified and finalized.
+  `World:ExpansionSettings = 3` confirmed as the primary gate;
+  `zone.expansion` retained as a secondary gate.
+
+## Implementation Status
+
+**Not implemented.** No database changes have been made. Implementation
+will occur against the live Angels Misfits database once EQEmu MCP is
+connected, following the project's backup and rollback process.
