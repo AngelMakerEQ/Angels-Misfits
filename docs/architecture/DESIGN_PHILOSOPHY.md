@@ -144,4 +144,165 @@ Luclin-era NPC replacements should not be used unless intentionally chosen for a
 
 Custom systems should exist only when they improve the overall player experience or solve a meaningful limitation.
 
-Before creating custom implementations
+Before creating custom implementations:
+- Evaluate whether existing EQEmu functionality can accomplish the goal.
+- Prefer database, rules, quests, and configuration changes before engine modifications.
+- Consider long-term maintenance requirements.
+- Document major design decisions.
+
+Custom systems should avoid unnecessary complexity and should not replace existing EQEmu functionality without a clear benefit.
+
+# Technical Philosophy
+
+EQEmu is the technical foundation of Angels Misfits.
+
+The project should leverage existing EQEmu architecture whenever practical while evaluating default behavior against the goals of the server.
+
+EQEmu default behavior should not automatically be considered the desired gameplay baseline.
+
+Existing systems should be evaluated based on:
+- Intended player experience
+- Compatibility
+- Maintainability
+- Stability
+- Future development requirements
+
+Implementation preference:
+
+1. Existing EQEmu systems
+2. Database configuration
+3. Server rules
+4. Quest scripting
+5. Custom systems
+6. Engine modifications
+
+Engine modifications should only be considered when existing solutions cannot reasonably achieve the desired result.
+
+# Compatibility Philosophy
+
+Angels Misfits should maintain compatibility with the broader EQEmu ecosystem whenever practical.
+
+Important compatibility goals include:
+
+- EQEmu development
+- PEQ database structures
+- Spire
+- RoF2 client compatibility
+- Very Vanilla MQ Emulator compatibility
+- DuxasUI compatibility
+
+Compatibility should be preserved unless it directly prevents achieving a major project goal.
+
+When compatibility conflicts with project goals:
+
+1. Identify the limitation.
+2. Explain available alternatives.
+3. Explain the impact.
+4. Recommend the approach that best supports the project.
+
+# Historical Research Philosophy
+
+Historical EverQuest information should be researched to understand the original design intent.
+
+Sources should be evaluated approximately in this order:
+
+1. Original EverQuest client assets and available historical data
+2. EQEmu source code
+3. PEQ database
+4. TAKP database
+5. Archived Allakhazam information
+6. Archived Lucy information
+7. Established emulator documentation
+8. Community discussion
+
+Historical information should be categorized as:
+
+- Verified historical behavior
+- Verified EQEmu implementation
+- Community consensus
+- Reasoned inference
+
+When sources disagree, prioritize the implementation that best preserves the intended gameplay experience while maintaining long-term project sustainability.
+
+# Decision Making Philosophy
+
+When multiple approaches are possible:
+
+Recommend the approach that:
+
+1. Best preserves the intended EverQuest experience.
+2. Maintains long-term sustainability.
+3. Minimizes unnecessary complexity.
+4. Maintains compatibility.
+5. Uses existing systems whenever possible.
+
+Recommendations should include:
+
+- Preferred approach
+- Reasoning
+- Alternatives
+- Tradeoffs
+
+Significant changes affecting:
+- Progression
+- Balance
+- Historical authenticity
+- Client experience
+- Architecture
+
+should be documented before implementation.
+
+# Documentation Philosophy
+
+The AngelsMisfitsEQ GitHub repository serves as the authoritative source of truth for project decisions.
+
+Documentation should record:
+
+- Architecture decisions
+- Database changes
+- Gameplay decisions
+- Historical research
+- Compatibility considerations
+- Custom systems
+- Known limitations
+- Development history
+
+Documentation should prevent reliance on conversation history alone.
+
+When a decision is finalized:
+- Update the appropriate documentation.
+- Avoid duplicating information across multiple documents.
+- Reference existing documentation when information applies to multiple areas.
+
+If documentation conflicts with a proposed change:
+- Identify the conflict.
+- Explain the impact.
+- Request clarification before proceeding.
+
+# Development Philosophy
+
+Angels Misfits should be developed as a long-term maintained project rather than a collection of isolated changes.
+
+Prioritize:
+
+- Small, testable changes
+- Reversible changes
+- Documented decisions
+- Clear ownership of systems
+- Avoidance of unnecessary technical debt
+
+Before significant implementation:
+
+Evaluate:
+- Current architecture
+- Existing systems
+- Compatibility impact
+- Maintenance requirements
+
+# Final Project Goal
+
+Angels Misfits is intended to create a sustainable personal EverQuest experience that captures the atmosphere, exploration, progression, and identity of classic EverQuest.
+
+The project is not intended to recreate every historical limitation.
+
+It is intended to preserve what made EverQuest memorable while allowing thoughtful improvements that support a private, maintainable, and enjoyable long-term server experience.
