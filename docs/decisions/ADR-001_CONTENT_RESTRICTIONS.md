@@ -140,6 +140,13 @@ column. Nothing in this decision affects Spire functionality.
 
 ## Implementation Status
 
-**Not implemented.** No database changes have been made. Implementation
-will occur against the live Angels Misfits database once EQEmu MCP is
-connected, following the project's backup and rollback process.
+**Implemented 2026-07-23.** Applied via migration script against the
+live Angels Misfits database (MCP connection). Verified post-run:
+
+- `World:ExpansionSettings` = 3
+- `Expansion:CurrentExpansion` = 2
+- `World:CharacterSelectExpansionSettings` = 3
+- `World:UseClientBasedExpansionSettings` = false
+
+All four confirmed via direct query against the live database,
+matching the specification exactly.
