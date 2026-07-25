@@ -154,10 +154,14 @@ editing of the new values exactly as it does the current ones.
 
 ## Implementation Status
 
-**Not implemented.** No database changes have been made. Implementation
-requires a generated SQL script (row-level, scoped to the ~16,950 NPCs
-identified above) and will be applied directly against the live Angels
-Misfits database once EQEmu MCP is connected, following the project's
-backup and rollback process. Given the scale, a spot-check validation
-pass against a sample of updated NPCs is recommended before the full
-script is committed to the live database.
+**Implemented 2026-07-23.** Applied via migration script against the
+live Angels Misfits database (MCP connection). 12,574 NPCs updated
+(12,591 total affected rows across this ADR and ADR-001/ADR-002
+combined, applied in one migration run).
+
+Verified post-run: 12 NPCs checked directly against the live
+database (4 initially, 8 via random, non-cherry-picked sampling of
+the full update set) — all matched the computed values exactly. One
+apparent anomaly (a blank-rendering `hp_regen_rate` on `a_fire_beetle`,
+id 45025) was confirmed to be a query-tool display quirk for the
+value 0, not a data issue.
