@@ -225,7 +225,7 @@ or via SQL with identical results.
 
 ## Implementation Status
 
-**Not implemented.** No database changes have been made. Implementation
-will occur directly against the live Angels Misfits database once EQEmu
-MCP is connected, following the backup and rollback process defined in
-the project's database safety policy.
+**Implemented 2026-07-23.** Applied via migration script against the
+live Angels Misfits database (MCP connection). All 17 changed rules
+verified via direct query post-run, matching this document's values
+exactly. No discrepancies found.
