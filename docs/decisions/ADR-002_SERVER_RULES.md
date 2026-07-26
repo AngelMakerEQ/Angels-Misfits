@@ -229,3 +229,39 @@ or via SQL with identical results.
 live Angels Misfits database (MCP connection). All 17 changed rules
 verified via direct query post-run, matching this document's values
 exactly. No discrepancies found.
+## Correction: Level Cap (2026-07-26)
+
+**Original decision (2026-07-23) was factually incorrect.** ADR-002
+stated `Character:MaxLevel` / `Character:MaxExpLevel` = 50 as the
+"Velious-accurate" cap. This was wrong.
+
+Verified via multiple independent sources during a later spell/
+discipline legacy review: **The Ruins of Kunark raised the level cap
+from 50 to 60 in March 2000. The Scars of Velious introduced no
+further level increase** — it inherited and kept the cap Kunark had
+already established. The correct historically-accurate cap for a
+Velious-scoped server is **60**, not 50.
+
+### Correction Applied
+
+| Rule | Was | Now |
+|---|---|---|
+| `Character:MaxLevel` | 50 | 60 |
+| `Character:MaxExpLevel` | 50 | 60 |
+
+Both corrected via direct SQL against the live Angels Misfits database
+(MCP connection), verified post-run — both rules confirmed at 60.
+
+### Consequences
+
+- No existing character is affected; all current characters (level 10
+  or below) are well under either cap.
+- This changes the scope of future spell/ability/discipline legacy
+  review: content requiring levels 51-60 is genuine Velious-era
+  content, not out-of-era material to exclude. Any earlier assumption
+  that "above level 50 means non-classic" was itself based on this
+  same error and should not be relied on.
+- No other ADR's decisions are otherwise affected by this correction.
+
+**Implementation Status:** Implemented 2026-07-26. Verified via direct
+query against the live database.
