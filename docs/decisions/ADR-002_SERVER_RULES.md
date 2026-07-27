@@ -1,6 +1,6 @@
 # ADR-002: Server Rules Baseline (PEQ vs TAKP)
 
-**Status:** Accepted (implementation pending MCP connection)
+**Status:** **Status:** Accepted — Implemented
 **Date:** 2026-07-23
 **Supersedes:** Earlier draft titled "ADR-002: Experience & Level Cap Rules"
 
