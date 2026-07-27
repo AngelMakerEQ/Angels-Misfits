@@ -1,6 +1,6 @@
 # ADR-008: Client-Side Classic Visual Restoration (Phase 1)
 
-## Status - Partially Implemented — core changes complete, known issues open, additional workstreams pending.
+**Status** - Partially Implemented — core changes complete, known issues open, additional workstreams pending.
 
 ## Context
 
