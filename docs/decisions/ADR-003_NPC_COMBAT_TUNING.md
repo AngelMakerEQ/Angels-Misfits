@@ -1,6 +1,6 @@
 # ADR-003: NPC Combat Stat Tuning (PEQ vs TAKP)
 
-**Status:** Accepted (implementation pending MCP connection)
+**Status:** Accepted — Implemented
 **Date:** 2026-07-23
 
 ---
