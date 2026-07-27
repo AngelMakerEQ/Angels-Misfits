@@ -1,6 +1,7 @@
 # ADR-005: Pet NPC Stat Tuning
 
 **Status:** Accepted — Implemented
+
 **Date:** 2026-07-23
 
 ---
