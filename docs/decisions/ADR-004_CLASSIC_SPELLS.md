@@ -2,6 +2,7 @@
 
 **Status:** Accepted (implementation pending — migration script generated,
 not yet run)
+
 **Date:** 2026-07-23
 
 ---
