@@ -27,8 +27,13 @@ future deliberate expansion per project philosophy.
 
 **TAKP Rebalanced**
 
-Purpose: Reference material for Velious-era progression values not yet
-imported or merged.
+Purpose: Reference material for Velious-era progression values.
+
+TAKP has been compared against PEQ and adopted, in whole or in part,
+across multiple areas — see ADR-002 (server rules), ADR-003 (NPC
+combat stats), ADR-004 (spell mechanics), and ADR-005 (pet stats) for
+full detail on what was adopted, rejected, or deferred from this
+source.
 
 ## Database Philosophy
 
@@ -39,19 +44,23 @@ documented. Content scope restrictions are enforced through gating
 ## Verified Table Contents (PEQ Import, Content Category)
 
 Row counts below are from the imported PEQ dump prior to any
-expansion-scope filtering. These reflect the full dataset, not the
-Velious-restricted subset that will be exposed on the live server.
+expansion-scope filtering or content corrections. These reflect the
+**original full dataset as first imported**, not the current live
+state of the Angels Misfits database, which has since been modified
+per the ADR series below.
 
-| Table | Rows | Notes |
+| Table | Original Rows | Notes |
 |---|---|---|
 | `items` | 117,944 | Full modern item catalog; no reliable single-column expansion flag — scoping is deferred per ADR-001 |
-| `npc_types` | 67,530 | Full NPC roster across all eras |
-| `spells_new` | 40,722 | Full spell list; expansion scoping deferred per ADR-001 |
+| `npc_types` | 67,530 | Full NPC roster across all eras; subsequently modified by ADR-003 (combat stats), ADR-005 (pet stats), ADR-007 (race/model corrections) |
+| `spells_new` | 40,722 | Full spell list; subsequently replaced in substantial part per ADR-004 (37,729 spells, 144,666 field changes) |
 | `spawn2` | 165,711 | Spawn points, all zones |
 | `zone` | 618 | All zone instances, all eras — primary gate point for ADR-001. Earlier figure of 2,449 was an extraction error that included zone_points (1,831 rows); corrected 2026-07-23.|
 | `loottable` | 26,514 | Full loot table set |
 | `lootdrop` | 51,943 | Full lootdrop entries |
 | `grid` / `grid_entries` | 31,556 / 859,842 | NPC pathing data |
+| `starting_items` | 148 | Reduced by 2 rows per ADR-006 (Gloomingdeep Lantern, Backpack removed) |
+| `rule_values` | 1,001 (PEQ) / 714 (TAKP) | 17 rules changed per ADR-002; see that ADR for full diff |
 
 ## Privacy / Data Safety
 
@@ -66,23 +75,29 @@ decision record. Summary:
 
 - Zones gated via `zone.expansion <= 2` (Classic, Kunark, Velious).
 - Items and spells have no reliable single-column expansion gate in
-  PEQ; scoping these is deferred and will be handled incrementally as
+  PEQ; scoping these is deferred and is being handled incrementally as
   zones are built out, cross-referenced against allowed zones and loot
   tables rather than filtered globally up front.
 
+## Implementation Status
+
+**ADR-001 implemented 2026-07-23.** All four gating rules
+(`World:ExpansionSettings`, `Expansion:CurrentExpansion`,
+`World:CharacterSelectExpansionSettings`,
+`World:UseClientBasedExpansionSettings`) are live on the Angels
+Misfits database, verified via direct query. This baseline document
+previously described this work as "decided but not yet implemented" —
+that was inaccurate as of 2026-07-23 and has been corrected here.
+
+EQEmu MCP has been connected since ADR-001's implementation and has
+been used for all subsequent database migrations (ADR-002 through
+ADR-007). Live-database state should still be spot-checked against
+this baseline periodically, but the "PEQ reference dump only, no live
+connection" caveat that previously appeared here no longer applies.
+
 ## Open Items
 
-- ADR-001 content restrictions (zone `expansion <= 2` gating) are
-  **decided but not yet implemented**. No database changes have been
-  made. Implementation will occur directly against the live Angels
-  Misfits database once EQEmu MCP is connected, rather than as a
-  standalone SQL migration applied to this reference dump.
-- Item/spell/NPC-level expansion scoping not yet implemented — deferred
-  per ADR-001, to be handled as Phase 3/5 work proceeds, once zone
-  gating is in place.
-- TAKP Rebalanced data not yet compared against PEQ baseline values.
-- This document is based on the uploaded reference PEQ dump, not a
-  live connection to the running Angels Misfits database. Once MCP is
-  connected, the live database should be verified against this
-  baseline before any restriction work begins, in case Angels Misfits
-  has already diverged from a clean PEQ import.
+- Item/spell/NPC-level expansion scoping not yet fully implemented —
+  deferred per ADR-001, being handled incrementally as content review
+  proceeds (Phase 3/5 work).
+- Broader itemization
