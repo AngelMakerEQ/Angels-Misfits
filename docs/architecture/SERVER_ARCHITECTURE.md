@@ -33,6 +33,8 @@ RoF2 was selected primarily because of Very Vanilla MQ Emulator compatibility an
 
 Titanium-era clients more closely represent the desired historical era but may not provide the same compatibility.
 
+Client-side customization decisions (models, zone files, spell visuals, UI) are tracked separately in **ADR-008: Client-Side Classic Visual Restoration**.
+
 ---
 
 # Server Layer
@@ -46,8 +48,6 @@ EQEmu provides the server framework responsible for:
 - Zone operation
 - Gameplay processing
 - Client communication
-
-Specific server component relationships will be documented after environment verification.
 
 ---
 
@@ -69,6 +69,8 @@ The Angels Misfits database is the active working database.
 
 PEQ and TAKP-derived databases serve as historical and developmental references.
 
+Detailed database structure, baseline data, and change tracking are maintained in `docs/database/` (see `DATABASE_BASELINE.md`), which is the authoritative source for database-level documentation.
+
 ---
 
 # Development and Administration Tools
@@ -89,11 +91,11 @@ Maintaining Spire compatibility is a major project requirement.
 
 ## EQEmu MCP
 
-EQEmu MCP is an external development interface used to inspect and interact with the EQEmu environment when available.
+EQEmu MCP is an external development interface used to inspect and interact with the EQEmu environment.
 
 It is not part of the EQEmu Windows Installer stack.
 
-When connected, MCP should be used to verify actual server state before making assumptions about implementation, configuration, or database contents..
+MCP has been connected and is in active use for direct database inspection and modification — see the ADR series (`docs/decisions/`) for a record of changes applied via MCP. MCP should continue to be used to verify actual server state before making assumptions about implementation, configuration, or database contents.
 
 ---
 
@@ -107,4 +109,4 @@ The architecture should prioritize:
 - Reversible changes
 - Clear separation between client, server, and database responsibilities
 
-Future architecture decisions should be documented before becoming permanent systems.
+Architecture, gameplay, and client decisions are documented as ADRs in `docs/decisions/` before becoming permanent systems.
