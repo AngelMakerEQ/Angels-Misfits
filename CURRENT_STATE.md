@@ -2,11 +2,7 @@
 
 ## Overview
 
-Angels Misfits is currently an operational local EverQuest Emulator server running on a Windows environment.
-
-The server is functional and playable, but it currently represents a baseline EQEmu installation using the PEQ database rather than the intended final Angels Misfits experience.
-
-The current state provides a working foundation for future development, historical research, gameplay adjustments, client restoration, and architectural improvements.
+Angels Misfits is an operational local EverQuest Emulator server running on a Windows environment. The server has moved beyond a stock PEQ baseline — substantial database corrections and client-side visual restoration have been implemented and documented via the project's ADR series.
 
 ---
 
@@ -21,33 +17,38 @@ Current server environment:
 - MariaDB database
 - HeidiSQL database management
 - Spire server management and configuration workflows
-- Rain of Fire 2 (RoF2) client
+- Rain of Fear 2 (RoF2) client, base client sourced from AddictedDads' "RoF2_Full.zip" (used as a pristine base only; see ADR-008)
+- EQEmu MCP — connected and in active use for direct database inspection and modification
 
 ## Database State
 
 Current database:
 
-- Pure PEQ database
+- Originally imported as a pure PEQ database (Sept 2025 dump); has since undergone substantial, documented correction toward classic/Velious-era accuracy.
 
-The database has not yet undergone significant Angels Misfits customization.
+Applied corrections to date (see `docs/decisions/` for full detail):
 
-Current database characteristics:
+- Content scope restricted to Velious-and-earlier (ADR-001).
+- Server rules baseline corrected against PEQ/TAKP comparison, including level cap correction to 60 (ADR-002).
+- NPC combat stats retuned — HP, damage, AC, resists, regen, aggro radius (ADR-003).
+- Spell mechanics fully replaced with verified classic-era data (ADR-004).
+- Pet NPC stats retuned (ADR-005).
+- Starting item kit corrected (ADR-006).
+- NPC model race data corrected — skeleton family (ADR-007).
 
-- Standard PEQ database structure
-- Standard PEQ content
-- Standard PEQ NPC data
-- Standard PEQ itemization
-- Standard PEQ progression systems
-- Standard PEQ balance assumptions
+Remaining known-stock areas:
 
-The PEQ database currently serves as the baseline from which future changes will be evaluated and documented.
+- Item and spell-level expansion scoping is deferred and ongoing (per ADR-001), handled incrementally rather than as a single migration.
+- Broader itemization and quest content not yet reviewed.
 
 ---
 
 # Current Server Architecture
 
-Angels Misfits currently operates as a local EQEmu environment consisting of several connected components:
+See `docs/architecture/SERVER_ARCHITECTURE.md` for the current architecture overview.
 
 ## Client Layer
 
-### Rain of Fire 2
+### Rain of Fear 2 (RoF2)
+
+Client-side classic visual restoration is underway per ADR-008: Luclin player models disabled (individual per-race settings), classic zone files applied (FV Project source), spell icons/gems/effects and skeleton models updated, and TaipoUI selected as the current UI. Known open items include a spell icon mismatch, loading screen restoration, and a deferred verification pass — see ADR-008 for full detail.
