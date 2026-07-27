@@ -8,38 +8,7 @@ RoF2 was selected primarily because it provides strong compatibility with the cu
 
 While Titanium-era clients more closely represent the historical era being targeted, RoF2 provides practical advantages for a modern EQEmu development environment.
 
----
-
-# Client Selection Reasoning
-
-## Why RoF2 Was Chosen
-
-RoF2 provides:
-
-- Compatibility with current EQEmu development
-- Compatibility with Very Vanilla MQ Emulator
-- Access to modern EQEmu-supported features
-- Improved compatibility with current tools and workflows
-
-The decision to use RoF2 is primarily a technical compatibility decision rather than a statement that RoF2 represents the desired historical experience.
-
----
-
-# Historical Presentation Goals
-
-The target gameplay experience is closer to the classic EverQuest eras, particularly the Velious era.
-
-The RoF2 client should be evaluated as a technical foundation that can potentially be modified or supplemented to better represent the desired classic experience.
-
-Areas for investigation include:
-
-- Classic zone geometry and textures
-- Classic visual assets
-- Historical loading screens
-- Classic UI presentation
-- Classic-era atmosphere
-
-Any client modifications should preserve server compatibility and avoid creating unnecessary maintenance challenges.
+Base client currently in use: sourced from AddictedDads ("RoF2_Full.zip"), used strictly as a pristine base client. All era-specific customization is sourced separately — see below.
 
 ---
 
@@ -47,69 +16,41 @@ Any client modifications should preserve server compatibility and avoid creating
 
 ## Player Characters
 
-Luclin player models should remain available as an optional player choice.
-
-Players should not be forced into classic models if they prefer the Luclin-era appearance.
+Luclin player models are currently **disabled**, set via individual per-race client settings (not the global override). This is a player preference and may be revisited per-race in the future (e.g., Troll/Ogre).
 
 ## NPCs
 
-NPC visual presentation should prioritize classic-era appearances.
+NPC visual presentation uses classic-era models by default for non-playable NPC races. For NPCs sharing a playable race ID (e.g., humanoid guards), model appearance is tied to the same client-side setting as player characters of that race — this is a confirmed engine-level limitation, not a configuration gap. See `docs/decisions/ADR-007_NPC_MODELS.md` and `ADR-008` for detail.
 
-Luclin-era NPC replacements should not be used unless intentionally selected for a specific design reason.
+---
 
-id="r8c2pz"
-The goal is to preserve the visual identity of the classic EverQuest world while allowing player customization where it does not negatively impact the overall presentation.
+# Zone Files
 
-# User Interface Goals
+Classic-continent zone files have been applied, sourced from FV Project. This covers zone graphics and layout only — not NPC placement, spawn timers, or loot, which remain governed by the database. Velious-era zone visuals have not yet been addressed; this is a separate, not-yet-started research pass.
 
-The RoF2 client includes many modern interface elements that may conflict with the intended classic experience.
+---
 
-The project should evaluate reducing or replacing modern UI elements where practical.
+# Spell Visuals
 
-Priorities include:
+Spell icons, spell gems, spell effects, and skeleton models have been updated to classic-style assets, sourced from FV Project. `spells_us.txt` was deliberately left at its RoF2-current state to preserve spell name/AA display accuracy.
 
-- Classic UI presentation
-- Reduced modern visual elements
-- Improved immersion
-- Compatibility with DuxasUI where practical
-- Maintaining RoF2 functionality
+**Known issue:** a spell icon mismatch has been observed (a magic-resist buff displaying a cold/snowflake icon). Root cause not yet isolated between the FV icon set and TaipoUI's icon mapping.
 
-Titanium-era UI elements may be evaluated as a possible visual reference or replacement where technically feasible.
+**Known limitation:** classic spell effect particles do not emit correctly from the caster's hands. This is an engine-level limitation, not expected to be resolved.
 
-UI changes should prioritize maintaining compatibility over achieving perfect historical recreation.
+---
+
+# User Interface
+
+See `docs/client/UI.md` for current UI status and evaluated alternatives.
+
+---
 
 # Loading Screens
 
-Historical loading screens should be restored where technically feasible.
+Currently displaying RoF2-era expansion art rather than Classic/Kunark/Velious art. Restoration method not yet researched. A fallback (disabling loading screens entirely via the in-game menu) is available but not preferred.
 
-The goal is to improve immersion and reinforce the classic EverQuest experience while maintaining RoF2 compatibility.
-
-Loading screen changes should be evaluated based on:
-
-- Client compatibility
-- Visual authenticity
-- Maintenance requirements
-
-# Client Asset Restoration
-
-Available historical client resources may be used as references or potential sources for restoration work.
-
-Available resources include:
-
-- EverQuest Titanium installation
-- Project 1999 Titanium files
-- EverQuest Trilogy ISOs
-- EverQuest Titanium ISOs
-
-These resources should be used to evaluate:
-
-- Zone visuals
-- UI assets
-- Loading screens
-- Classic presentation elements
-- Historical references
-
-Client assets should be incorporated only when they provide meaningful improvement without creating excessive maintenance or compatibility concerns.
+---
 
 # Client Modification Philosophy
 
