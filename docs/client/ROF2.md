@@ -1,36 +1,30 @@
 # Rain of Fear 2 Client (RoF2)
 
-## Purpose
+## What It Is
 
-The Rain of Fear 2 (RoF2) client is the current target client for Angels Misfits.
+RoF2 ("Rain of Fear 2") is an EverQuest client build from 2013, one of only five client versions EQEmu servers support at all: Titanium, Secrets of Faydwer (SoF), Seeds of Destruction (SoD), Underfoot (UF), and RoF2. No other client version — including Trilogy, Platinum, or Anniversary editions — is compatible with an EQEmu server, regardless of how it's configured.
 
-## Why RoF2
+## Why RoF2 Specifically
 
-RoF2 was selected primarily for Very Vanilla MQ Emulator (VV MQ) compatibility and broader EQEmu ecosystem compatibility — **see `docs/compatibility/VV_MQ.md`**, since this is the deciding factor over clients that would otherwise better suit the project's classic-era visual goals with less restoration effort.
+**Very Vanilla MQ (VV MQ) exclusively supports the RoF2 client.** This is the deciding factor for Angels Misfits, not RoF2's visual presentation — VV MQ is a supported, player-facing project requirement (see `docs/compatibility/VV_MQ.md`), and no other EQEmu-compatible client version has VV MQ support at all.
 
-## Base Client
+## Comparison to Other EQEmu-Compatible Clients
 
-Sourced from AddictedDads ("RoF2_Full.zip"), used strictly as a pristine base install. Full detail: `docs/architecture/CLIENT_ARCHITECTURE.md`.
+| Client | Era Represented | Pros | Cons |
+|---|---|---|---|
+| **Titanium** | Closest to true Classic/Kunark/Velious visuals | Best raw visual match to the target era | Has real unresolved bugs (e.g., missing NO DROP trade opcode, a swapped female/neuter Qeynos Citizen model); no VV MQ support |
+| **SoF / SoD / UF** | Progressively later, closer to RoF2 | Each somewhat closer to Velious than RoF2 visually | Still no VV MQ support; each still requires the same category of zone/model restoration work as RoF2, for less compatibility benefit |
+| **RoF2 (current choice)** | Luclin+ by default | VV MQ support; strongest EQEmu ecosystem/tooling compatibility | Requires the most restoration work to approximate classic visuals (see `docs/architecture/CLIENT_ARCHITECTURE.md`) |
 
-## What's Been Modified
+## Other Classic-Focused Projects (Not Directly Comparable)
 
-See `docs/architecture/CLIENT_ARCHITECTURE.md` for the full manifest of zone files, spell visuals, and model changes. See `docs/client/UI.md` for current UI status.
+TAKP, Project 1999, and Project Quarm are separate emulator projects, each running their own specific client build tied to their own server codebase — not a generic client choice interchangeable with the five EQEmu-supported versions above. Any of these would very plausibly reach a more classic-accurate state with less restoration effort than RoF2 requires, **but this has not been researched in detail** — specifically, whether their client builds could function against a different (non-their-own) EQEmu server is unconfirmed. If VV MQ support is ever dropped as a project requirement, or extended to another client, this is the comparison worth revisiting first.
 
-## Known Issues
+## Known Issues (Current)
 
-- **Spell icon mismatch:** a magic-resist buff has been observed displaying a cold/snowflake icon. Root cause not yet isolated between the FV icon set and TaipoUI's icon mapping.
-- **Loading screens:** currently display RoF2-era expansion art rather than Classic/Kunark/Velious art. Restoration method not yet researched; disabling loading screens entirely is an available fallback.
-
-## Client Modification Philosophy
-
-1. Preserve RoF2 compatibility.
-2. Improve classic visual presentation where practical.
-3. Avoid unnecessary maintenance burden.
-4. Prefer reversible changes.
-5. Document significant client changes.
-
-The goal is not to convert RoF2 into a different client — it's to use RoF2 as a compatible technical foundation while moving the player experience closer to classic EverQuest presentation.
+- Spell icon mismatch (magic-resist buff showing a cold/snowflake icon) — root cause not yet isolated.
+- Loading screens display RoF2-era art rather than Classic/Kunark/Velious art — restoration method not yet researched.
 
 ## History
 
-Full reasoning and testing timeline: **ADR-008**.
+Full reasoning and testing timeline for client selection and all modifications: **ADR-008**.
