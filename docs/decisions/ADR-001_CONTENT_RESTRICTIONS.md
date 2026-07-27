@@ -1,6 +1,6 @@
 # ADR-001: Content Scope Restriction (Velious and Earlier)
 
-**Status:** Accepted (implementation pending MCP connection)
+**Status:** Accepted — Implemented
 **Date:** 2026-07-22
 **Last Revised:** 2026-07-23
 
