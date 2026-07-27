@@ -1,6 +1,7 @@
 # ADR-006: Starting Kit Review (Classic Verification)
 
 **Status:** Accepted — Implemented
+
 **Date:** 2026-07-25
 
 ---
