@@ -1,6 +1,7 @@
 # ADR-007: NPC Model Correction (Classic vs. Luclin/Later Models)
 
 **Status:** Accepted — Implemented
+
 **Date:** 2026-07-26
 
 ---
