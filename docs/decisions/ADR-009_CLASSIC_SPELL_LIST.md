@@ -142,16 +142,28 @@ shared content with Necromancer) and one Enchanter spell (Boon of the
 Garou, confirmed shared with Beastlord, though Beastlord's own content
 is out of scope).
 
-### Items deliberately left unresolved
+### Items deliberately left unresolved (updated 2026-07-29)
 
-Three items remain flagged but untouched, pending individual
-verification: Throw Stone (Warrior/Monk/Rogue, level 1 — no source
-found either way), "Harmful Touch" (Shadow Knight, id 2774, level 1 — a
-differently-named duplicate of the confirmed innate "Harm Touch"
-ability, not confidently one or the other), and "Death Peace"
-(Necromancer, level 60 — confirmed classic for Shadow Knight at the
-same level, but not confirmed on Necromancer's own P99 page
-specifically).
+Two of the three items originally flagged here are now resolved via
+direct project-lead confirmation:
+
+- **Throw Stone** (Warrior/Monk/Rogue, level 1) — confirmed a genuine
+  classic skill. No action needed; remains active for all three
+  classes as-is.
+- **Death Peace** (Necromancer, level 60) — confirmed a genuine
+  classic spell for Necromancer, not just Shadow Knight. No action
+  needed; remains active as-is.
+
+One item remains open and now has a specific lead to investigate:
+
+- **"Harmful Touch"** (id 2774, currently active for Shadow Knight at
+  level 1) — the project lead's own knowledge of the class is that
+  the only such ability is **Harm Touch**, available from level 1
+  with a long cooldown. This needs a deeper investigation into
+  whether id 2774 is a genuine duplicate/mislabeled copy of Harm
+  Touch, an unrelated broken entry, or something else entirely —
+  comparing its recast time, effect, and mana cost against the
+  confirmed Harm Touch mechanics. Pending MCP database access.
 
 ---
 
