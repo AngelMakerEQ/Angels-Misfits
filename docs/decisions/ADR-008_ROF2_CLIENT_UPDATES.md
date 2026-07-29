@@ -75,3 +75,30 @@ Two distinct categories of zone files were added, sourced from FV Project's Zone
 ## Related Decisions
 
 - FV Project's client-side patcher (`eqemupatcher`) was evaluated and **rejected as a source** for these changes, as it syncs a client to FV's own hosted server file list rather than serving as a neutral classic-restoration tool. All files in this ADR were manually sourced from FV's static download pages, not applied via their patcher.
+
+## Addendum: Open Items Closed (2026-07-29)
+
+Two items from the original "Future / Open Items" list are closed out
+per project-lead direction:
+
+### 3. Troll/Ogre Luclin Models — Dropped, Not Pursued
+
+Originally logged as an open decision (enabling Luclin models
+specifically for Troll and/or Ogre via individual per-race settings,
+for aesthetic reasons). Project lead has determined this is a fluid,
+low-stakes cosmetic preference that doesn't warrant tracking as a
+project decision — dropped from open items entirely. Either state
+(classic or Luclin models for these two races) remains trivially
+changeable later via the same per-race client settings mechanism
+already used elsewhere in this ADR, with no dependency on this
+decision being made now.
+
+### 5. Marketplace/Krono UI Cleanup — Substantially Resolved
+
+Project lead confirms the Marketplace window is mostly already absent
+under TaipoUI, resolving the primary concern of this item without
+further action. The separate, unrelated Krono-database-verification
+note (confirming the Krono item does not exist in Angels Misfits'
+item database) remains a distinct, small, low-priority check — not a
+UI concern — and can be folded into a future database audit pass
+rather than tracked under this ADR.
