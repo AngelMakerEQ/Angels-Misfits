@@ -57,7 +57,13 @@ and resolving a small number of individually-flagged ambiguous items.
 - Full spell/discipline legacy audit completed across all 14
   classes playable through Velious — roughly 150 non-legacy
   spells/disciplines disabled, duplicates and wrong-level placements
-  corrected, confirmed omissions restored (ADR-009).
+  corrected, confirmed omissions restored (ADR-009). Of the three
+  items originally left ambiguous, two are now confirmed genuine
+  classic content requiring no action: Throw Stone
+  (Warrior/Monk/Rogue) and Death Peace (Necromancer). The third,
+  "Harmful Touch" (Shadow Knight, id 2774), needs a deeper
+  investigation against the confirmed Harm Touch mechanics (recast
+  time, effect, mana cost) — not yet resolved.
 - Sense Heading and Swimming skill mechanics corrected to require
   guildmaster training and skill-up through use, rather than
   auto-maxing at character creation.
@@ -98,9 +104,13 @@ and resolving a small number of individually-flagged ambiguous items.
 - **Client visual restoration (ADR-008) remaining sub-items:**
   loading screens still showing RoF2-era art rather than
   Classic/Kunark/Velious; Velious-era zone visual research not
-  started; Marketplace/Krono UI cleanup under TaipoUI not addressed;
-  a general in-client verification pass (models, effects, icons)
-  deferred; Troll/Ogre Luclin-model exception deliberately undecided.
+  started; a general in-client verification pass (models, effects,
+  icons) deferred. Two prior open items are now closed: Marketplace
+  window is confirmed mostly absent under TaipoUI already (Krono
+  database-verification spun off separately as a small future audit
+  item, not a UI concern), and the Troll/Ogre Luclin-model question
+  has been dropped from tracking entirely as a low-stakes, fluid
+  preference not worth carrying as an open decision.
 - **Faction system:** tier boundaries corrected; broader per-faction
   verification (2,105 factions total) treated as an ongoing
   background item given the scale and the incompleteness of
@@ -127,9 +137,9 @@ and resolving a small number of individually-flagged ambiguous items.
 
 # Current Priorities
 
-1. Resolve the small set of individually-flagged ambiguous items from
-   the spell/discipline audit (Throw Stone, "Harmful Touch," "Death
-   Peace").
+1. Complete the Harmful Touch deep dive (the one remaining ambiguous
+   item from the spell/discipline audit — comparing id 2774 against
+   confirmed Harm Touch mechanics).
 2. Continue the client visual restoration pass (loading screens,
    Velious zone visuals) as time allows.
 3. Scope and begin Phase 2 of vendor pricing calibration when ready.
@@ -151,7 +161,8 @@ content.
 
 # Next Milestones
 
-- Close out the three ambiguous ADR-009 items individually.
+- Complete the Harmful Touch investigation (the last remaining
+  ambiguous item from ADR-009).
 - Complete a Velious-era zone visual research pass.
 - Scope Phase 2 of vendor pricing calibration (target `greed` value
   and a fuller non-greedy exception list beyond the four currently
