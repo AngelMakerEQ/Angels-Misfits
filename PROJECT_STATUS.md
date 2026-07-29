@@ -4,21 +4,34 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-07-26
+**Last Updated:** 2026-07-28
 
 ---
 
 # Current Objective
 
-Continue database baseline correction and gameplay foundation work while advancing client-side classic visual restoration.
+Verify and correct the live database and client against classic-era
+(Velious-and-earlier) behavior across all major game systems — spells,
+skills, NPCs, factions, merchants, and client presentation — while
+supporting active solo/multibox gameplay on the six characters already
+created and playable.
 
 ---
 
 # Current Phase
 
-**Phase 2/3 Overlap: Classic Experience Restoration + Database Baseline & Gameplay Foundation**
+**Active Correction & Verification, with Early Gameplay Underway**
 
-Foundational documentation and architecture planning (originally Phase 1) are complete. The project has moved into active database correction (Phase 3) and client-side visual restoration (Phase 2) concurrently.
+The project has moved well past initial foundation work. The database
+has undergone extensive, documented correction across combat stats,
+spell mechanics, pet balance, starting kit, NPC models, skill
+mechanics, faction tiers, and merchant pricing. Six multibox characters
+exist, are leveled and equipped, and are bound at a shared location.
+Client-side visual restoration toward a classic presentation is
+substantially implemented. Remaining work is concentrated in three
+areas: finishing the client presentation pass, completing several
+large but well-scoped research gaps (faction, merchants, tradeskills),
+and resolving a small number of individually-flagged ambiguous items.
 
 ---
 
@@ -26,67 +39,155 @@ Foundational documentation and architecture planning (originally Phase 1) are co
 
 ## Completed
 
+**Documentation & Architecture**
 - GitHub repository and documentation structure established.
-- EQEmu MCP connected; in active use for direct live-database inspection and modification.
-- Content scope restricted to Velious-and-earlier (ADR-001).
-- Server rules baseline established, reconciled against PEQ/TAKP (ADR-002), including a corrected level cap (60, per 2026-07-26 revision).
-- NPC combat stat tuning applied — HP, damage, AC, resists, regen, aggro radius (ADR-003).
-- Spell mechanics fully replaced with verified classic data — 37,729 spells, 144,666 field changes (ADR-004).
-- Pet NPC stat tuning applied (ADR-005).
-- Starting item kit corrected to classic (ADR-006).
-- NPC model race corrections applied — skeleton family (ADR-007).
-- Client-side classic visual restoration underway: zone files, spell icons/gems/effects, skeleton models, Luclin-off configuration, and UI selection (ADR-008).
+- Ten Architectural Decision Records accepted and implemented
+  (ADR-001 through ADR-010 — see Recent Major Decisions).
+
+**Database Correction**
+- Content scope restricted to Classic/Kunark/Velious (ADR-001).
+- Server rules baseline corrected against TAKP/PEQ comparison,
+  including the level cap correction to 60 (ADR-002 + addendum).
+- NPC combat stats corrected for ~16,950 Velious-scoped NPCs (ADR-003).
+- Spell mechanics corrected for 37,729 spells to match verified
+  classic client data (ADR-004).
+- Pet NPC stats corrected for 140 templates (ADR-005).
+- Starting character kit corrected (ADR-006).
+- NPC model/race corrected for 1,630 NPCs (ADR-007).
+- Full spell/discipline legacy audit completed across all 14
+  classes playable through Velious — roughly 150 non-legacy
+  spells/disciplines disabled, duplicates and wrong-level placements
+  corrected, confirmed omissions restored (ADR-009).
+- Sense Heading and Swimming skill mechanics corrected to require
+  guildmaster training and skill-up through use, rather than
+  auto-maxing at character creation.
+- Bard instrument-modifier mechanic fully verified against P99 —
+  confirmed correctly implemented; one broken duplicate spell
+  disabled and one non-classic post-Velious AE DoT restriction
+  reverted (`Spells:PreNerfBardAEDoT`).
+- Faction tier boundaries corrected to match P99-documented values
+  across all 8 tiers (ADR-010).
+- Merchant pricing system switched from EQEmu's modern flat-markup
+  default to the classic percentage-based calculation
+  (`Merchant:UseClassicPriceMod` enabled).
+- `angels_misfits_migration.sql` (the combined ADR-001/002/003
+  migration package) confirmed fully applied via live spot-check.
+
+**Client**
+- Client-side classic visual restoration implemented: zone files,
+  spell icons/gems/effects, skeleton models, Luclin model toggles
+  (player-optional, NPC-classic), and TaipoUI (ADR-008, Phase 1).
+
+**Gameplay Setup**
+- Six multibox characters created, leveled to 10, equipped, and
+  spellbooks scribed: Zugzug (Ogre Warrior), Grub (Troll Shaman),
+  Gwenothyl (High Elf Enchanter), Ohme (Iksar Monk), Balthazaar
+  (Erudite Cleric), Dandelion (Half Elf Bard, James's main).
+- All six bound at their current location inside Kurn's Tower.
+- Kurn's Tower NPC roster and locations checked against FV
+  Project/Al'Kabor reference data — confirmed solid, no genuine
+  errors found.
+- Cabilis (East/West) and Field of Bone merchant inventories checked
+  against P99/community reference data — confirmed solid; several
+  specifically-named vendors and a known P99-reported inventory gap
+  (Klok Scaleroot's alchemy stock) confirmed correctly present in our
+  data where P99 itself has the gap.
 
 ## In Progress
 
-- Client-side verification pass (models, spells, Luclin-off behavior) — deferred by project lead, not yet run.
-- Diagnosing a known spell icon mismatch (ADR-008 Known Issue #1).
-- Velious-era zone visual research (not yet started, scoped in ADR-008).
-- Loading screen restoration research.
-- Item/spell/NPC-level expansion scoping (deferred per ADR-001, ongoing incremental work).
+- **Client visual restoration (ADR-008) remaining sub-items:**
+  loading screens still showing RoF2-era art rather than
+  Classic/Kunark/Velious; Velious-era zone visual research not
+  started; Marketplace/Krono UI cleanup under TaipoUI not addressed;
+  a general in-client verification pass (models, effects, icons)
+  deferred; Troll/Ogre Luclin-model exception deliberately undecided.
+- **Faction system:** tier boundaries corrected; broader per-faction
+  verification (2,105 factions total) treated as an ongoing
+  background item given the scale and the incompleteness of
+  community-documented starting standings.
+- **Merchant/vendor inventory verification:** Cabilis and Field of
+  Bone confirmed; the remaining ~1,300+ merchants server-wide remain
+  an ongoing background item, not a single pass.
+- **Vendor pricing calibration:** Phase 1 (classic pricing system
+  enabled) complete; Phase 2 (populating correct per-vendor `greed`
+  values to distinguish the documented non-greedy exceptions from
+  the "greedy" majority) not yet started.
 
 ## Not Started
 
-- Gameplay implementation (custom quests, encounters, content).
-- Quest review and standardization.
-- Broader historical content validation beyond what's covered in the ADR series so far.
-- Formal in-client testing/verification pass.
+- Guild mechanics research (believed disabled via the same
+  expansion-setting mechanism as AA; not yet confirmed).
+- Tradeskill recipe research (no resourcing yet).
+- Item stat-budget conventions for era-appropriate itemization.
+- VV MQ subscription-lapse behavior empirical test (plan: run
+  MacroQuest.exe directly, bypassing the RedGuides launcher — this
+  is a manual test for the project lead, not a research task).
 
 ---
 
 # Current Priorities
 
-1. Complete the deferred verification pass on models/spells/client config.
-2. Diagnose and resolve the spell icon mismatch.
-3. Continue client-side classic visual restoration (loading screens, Velious zone research).
-4. Continue incremental item/spell/NPC expansion scoping.
-5. Begin planning for Phase 4 (solo gameplay experience).
+1. Resolve the small set of individually-flagged ambiguous items from
+   the spell/discipline audit (Throw Stone, "Harmful Touch," "Death
+   Peace").
+2. Continue the client visual restoration pass (loading screens,
+   Velious zone visuals) as time allows.
+3. Scope and begin Phase 2 of vendor pricing calibration when ready.
+4. Treat faction, merchant, and tradeskill verification as ongoing
+   background workstreams rather than blocking priorities.
 
 ---
 
 # Known Issues / Blockers
 
-- Spell icon mismatch of unconfirmed origin (FV Project files vs. TaipoUI) — see ADR-008.
-- Loading screens still show RoF2-era art rather than Classic/Kunark/Velious art — unresolved.
-- Client/model verification pass has been explicitly deferred by project lead.
+None blocking. All outstanding items are individually scoped,
+non-urgent research/verification gaps rather than active problems
+affecting current gameplay. The six existing characters are all
+level 10 or below, so none of the ADR-009 spell corrections or
+faction/pricing changes have caused any loss of previously-learned
+content.
 
 ---
 
 # Next Milestones
 
-- Complete deferred verification pass.
-- Resolve spell icon mismatch.
-- Research and decide on loading screen restoration approach.
-- Begin Velious-era zone visual research.
-- Scope Phase 4 (solo gameplay experience) planning.
+- Close out the three ambiguous ADR-009 items individually.
+- Complete a Velious-era zone visual research pass.
+- Scope Phase 2 of vendor pricing calibration (target `greed` value
+  and a fuller non-greedy exception list beyond the four currently
+  documented Kunark examples).
+- Begin faction, merchant, and tradeskill verification incrementally
+  as background work between other priorities.
 
 ---
 
 # Recent Major Decisions
 
-- GitHub serves as the project's authoritative source of truth; documentation takes precedence over conversation history.
-- Architectural decisions are documented as ADRs (`docs/decisions/`) — eight ADRs implemented to date.
-- Long-term maintainability and historical authenticity are both prioritized, with tradeoffs documented explicitly per decision (see individual ADRs).
-- Client-side changes are consolidated into a single ADR (ADR-008) unless a future change is large enough to warrant its own record.
+- ADR-001: Content Scope Restriction (Velious and earlier) — Implemented.
+- ADR-002: Server Rules Baseline (PEQ vs TAKP), including the level
+  cap correction addendum (50 → 60) — Implemented.
+- ADR-003: NPC Combat Stat Tuning (PEQ vs TAKP) — Implemented.
+- ADR-004: Spell Mechanics (Classic Restoration) — Implemented.
+- ADR-005: Pet NPC Stat Tuning — Implemented.
+- ADR-006: Starting Kit Review (Classic Verification) — Implemented.
+- ADR-007: NPC Model Correction (Classic vs. Luclin/Later Models) — Implemented.
+- ADR-008: Client-Side Classic Visual Restoration (Phase 1) — Partially Implemented.
+- ADR-009: Spell & Discipline Legacy Correction — Implemented.
+- ADR-010: Faction Tier Boundary Correction — Implemented.
+- P99 wiki adopted as the primary era-accuracy reference throughout,
+  prioritized above TAKP for any question involving *when* content
+  was introduced, since TAKP itself progressed through Luclin and PoP
+  and cannot make that distinction.
+
+---
+
+# Notes
+
+This document is intended to provide a high-level snapshot of the
+project's current state.
+
+Implementation details, research, architecture, gameplay decisions,
+and historical analysis should be documented in their respective
+documents rather than here.
 
 ---
