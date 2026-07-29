@@ -14,7 +14,44 @@ Lightweight chronological index of major project milestones. Each entry states w
 - **2026-07-26** — ADR-002 correction: level cap corrected from 50 to 60 (Kunark, not Velious, raised the cap; earlier value was a factual error).
 - **2026-07-26** — ADR-007: Skeleton-family NPCs (1,630 total) corrected to classic-style models; genuine Iksar-identity NPCs deliberately excluded.
 - **2026-07-26 (ongoing)** — ADR-008: Client-side classic visual restoration — Luclin models disabled, classic zone files applied, spell icons/gems/effects and skeleton models updated, TaipoUI selected as current UI.
+# 2026-07-28
 
+## Sense Heading & Swimming Skill Correction
+
+Corrected two skills that were using EQEmu's modern default behavior
+instead of classic mechanics:
+
+- `Skills:SenseHeadingStartValue` changed from 200 (auto-maxed at
+  character creation) to 0 — characters must now train Sense Heading
+  at their guildmaster before it can be used at all.
+- `Skills:TrainSenseHeading` changed from false to true — Sense Heading
+  now increases through use like any other trained skill, instead of
+  remaining permanently frozen at its starting value.
+- `Skills:SwimmingStartValue` changed from 100 to 0 — corrects both a
+  historical-accuracy issue and a real inconsistency (100 exceeded a
+  level-1 character's own skill cap of 5).
+
+No other skills in the ruleset use this starting-value override
+mechanism; a full search confirmed these two were the only cases.
+
+## Bard Instrument Mechanics Verification
+
+Investigated the Bard instrument-modifier system (instrument type/skill
+matching, fizzle-rate dependence on instrument skill, item bardtype/
+bardvalue data) end to end. Confirmed correctly implemented and
+data-complete — no broader fix needed. Two small corrections made:
+
+- Disabled a broken duplicate spell entry ("Angstlich's Appalling
+  Screech," id 1329) that carried an invalid skill value (5, not a
+  real Bard instrument/singing skill). The correct copy (id 706,
+  skill=12/Brass) is unaffected.
+- `Spells:PreNerfBardAEDoT` changed from false to true — restores
+  pre-2004 behavior where Bard PBAoE songs damage moving targets. The
+  restrictive version of this mechanic postdates Velious.
+
+`Character:EnableBardMelody` reviewed and deliberately left enabled
+(true) for player convenience, despite being a non-classic
+QoL feature — a conscious deviation, not an oversight.
 ---
 
 For full project history and reasoning, see `docs/decisions/`.
