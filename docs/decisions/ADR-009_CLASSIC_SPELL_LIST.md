@@ -153,9 +153,6 @@ direct project-lead confirmation:
 - **Death Peace** (Necromancer, level 60) — confirmed a genuine
   classic spell for Necromancer, not just Shadow Knight. No action
   needed; remains active as-is.
-
-One item remains open and now has a specific lead to investigate:
-
 - **"Harmful Touch"** (id 2774) two duplicate spells (ids 88, 2821) with a wrong 30-second recast were disabled; the correctly-configured entry (id 2774, "Harmful Touch," 72-min recast) is confirmed active.
 
 ---
