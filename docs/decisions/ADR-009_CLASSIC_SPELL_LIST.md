@@ -156,14 +156,7 @@ direct project-lead confirmation:
 
 One item remains open and now has a specific lead to investigate:
 
-- **"Harmful Touch"** (id 2774, currently active for Shadow Knight at
-  level 1) — the project lead's own knowledge of the class is that
-  the only such ability is **Harm Touch**, available from level 1
-  with a long cooldown. This needs a deeper investigation into
-  whether id 2774 is a genuine duplicate/mislabeled copy of Harm
-  Touch, an unrelated broken entry, or something else entirely —
-  comparing its recast time, effect, and mana cost against the
-  confirmed Harm Touch mechanics. Pending MCP database access.
+- **"Harmful Touch"** (id 2774) two duplicate spells (ids 88, 2821) with a wrong 30-second recast were disabled; the correctly-configured entry (id 2774, "Harmful Touch," 72-min recast) is confirmed active.
 
 ---
 
