@@ -548,17 +548,6 @@ confirmed non-classic (and intentionally not changed), or logged as
 genuinely low-confidence/contested with no better answer available.
 
 **Recommended next steps, in order:**
-1. ~~Decide on the NPC leash/training mechanic~~ — resolved: disabling
-   it, SQL provided, matching project lead's stated preference for
-   classic chase-forever behavior given the only real risk in a
-   solo-multibox context is personal error, not other players training
-   mobs onto them.
-2. ~~Non-Classic Compendium dedicated pass~~ — done, see above.
-3. **New, genuinely open item worth prioritizing next: Zone Experience
-   Modifiers (ZEM).** Likely inherited non-classic (2003 ShowEQ-sourced)
-   values from PEQ's original data. Given the scale, best approached
-   incrementally — starting with zones our actual characters level
-   through, not all zones at once.
-4. Batch together the small number of genuinely fixable items found
-   across this whole sweep (Harm Touch already done; NPC leash toggle
-   pending your SQL run) into any future correction pass.
+1. **New, genuinely open item worth prioritizing next: Classic Zone Geometry.** The Users RoF2 Client was patched with individual classic zone files provided by the FV Project. The server database will need to load the classic version of the zone as well.
+2. Complete Open Mechanics Review Items
+3. Complete Epic Quest verification for our 6 classes + necromancer.
