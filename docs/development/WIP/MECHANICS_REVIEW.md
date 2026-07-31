@@ -50,7 +50,7 @@ since research capacity resets daily. Update in place; don't recreate.
   best resolved by matching whatever formula our EQCode source already
   implements (probably EQEmu's own default) rather than expecting to
   land on a "correct" answer that P99 itself hasn't settled.
-- 🔲 Spell interruption (movement/melee-push interrupt chance)
+- 🔲 **Spell interruption** (movement/melee-push interrupt chance)
 - ⚠️ **Resist checks / resist rate scaling** — genuinely underdocumented,
   even by P99's own standards. The wiki's own dedicated Statistics page
   states outright that its resist-formula information "is based on
