@@ -197,32 +197,9 @@ since research capacity resets daily. Update in place; don't recreate.
   actual NPC data patterns if we want to verify our NPCs match this
   more precise version rather than the rougher estimate originally
   captured.
-- 🔴 **"Training"/leash mechanics — significant finding, needs your
-  decision, not a simple fix.** Whether NPCs should ever stop chasing a
-  fleeing target ("leash") at distance is a genuinely disputed, hotly-
-  argued topic on P99 itself. Strong community voices state plainly
-  "mobs did not leash at any point through Velious" and call any
-  leashing "not classic," while a P99 developer's own comment confirms
-  a "lazy aggro" distance-based drop was *added* to P99 at some point
-  (not originally present) — some argue any leashing that existed even
-  in true classic was zone-specific (large outdoor Kunark zones) and
-  possibly an unintended pathing bug rather than deliberate design.
-  **Checked against our server: `Aggro:NPCAggroMaxDistanceEnabled =
-  true`** (EQEmu's compiled default, never touched by any prior ADR) —
-  NPCs currently drop aggro beyond 600 units. If true classic behavior
-  was "mobs chase forever, no distance-based reset," this is a
-  meaningful non-classic safety net currently active on our server.
-  **However — this cuts both ways for us specifically.** Training/
-  kiting danger is explicitly one of the "dangerous encounters" pillars
-  our own VELIOUS_VISION.md wants preserved, arguing for disabling
-  this. But we're a solo multibox server — an NPC that chases forever
-  with no reset is a genuine, real safety risk when managing 6 clients
-  at once, not just an authenticity question. This is a judgment call
-  between classic accuracy and practical solo-multibox safety, not a
-  clear bug — flagging for your decision rather than recommending
-  either way.
+- 🟦 **"Training"/leash mechanics — Classic decision made. Set to false and updated in changelog.
 - 🔲 Line-of-sight requirements for aggro and spell casting — not
-  researched in this pass.
+  researched.
 - ✅ **Feign Death break chance/re-aggro: well-documented, high
   confidence.** Below level 35, mobs fully "forget" you after a
   successful FD regardless of standing up. Above level 35: if the mob
