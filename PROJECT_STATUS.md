@@ -10,7 +10,9 @@
 
 # Current Objective
 
-Complete a systematic mechanics-verification pass (tracked in
+- Complete a systematic zone-version-verification pass and identify solution to properly populate pre-updated zones.
+
+- Complete a systematic mechanics-verification pass (tracked in
 `docs/development/WIP/MECHANICS_REVIEW.md`) through to a final
 disposition on every item, while maintaining a small set of standing
 background items (item stat-budget conventions, faction increment
@@ -30,7 +32,7 @@ skill mechanics, faction tiers, merchant pricing, and NPC aggro/leash
 behavior. Six multibox characters exist, are leveled and equipped, and
 are bound at a shared location. Client-side visual restoration toward
 a classic presentation is substantially implemented. The current
-primary focus is finishing a systematic sweep of game mechanics
+primary focus is ensuring client and server zone versions match. Followed by finishing a systematic sweep of game mechanics
 (`MECHANICS_REVIEW.md`) to a definitive resolution on every tracked
 item, rather than starting new large research efforts.
 
@@ -112,7 +114,8 @@ item, rather than starting new large research efforts.
 
 ## In Progress
 
-- **`MECHANICS_REVIEW.md` — current primary focus.** Most major
+- **`Client-Server Zone Alignment' - Primary Focus.** Research not started.
+- **`MECHANICS_REVIEW.md` — second primary focus.** Most major
   categories have a documented disposition (confirmed correct,
   confirmed non-classic and fixed, or confirmed genuinely
   contested/unresolvable even by P99 itself). Remaining unresolved
