@@ -1,7 +1,6 @@
 # ADR-004: Spell Mechanics (Classic Restoration)
 
-**Status:** Accepted (implementation pending — migration script generated,
-not yet run)
+**Status:** Implemented
 
 **Date:** 2026-07-23
 
