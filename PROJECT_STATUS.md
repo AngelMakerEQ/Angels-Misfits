@@ -86,7 +86,7 @@ item, rather than starting new large research efforts.
   model question and Marketplace/Krono UI item both closed out.
 
 **Gameplay Setup**
-- Six multibox characters created, leveled to 10, equipped, and
+- Six multibox characters created, modified to level 12, equipped, and
   spellbooks scribed: Zugzug (Ogre Warrior), Grub (Troll Shaman),
   Gwenothyl (High Elf Enchanter), Ohme (Iksar Monk), Balthazaar
   (Erudite Cleric), Dandelion (Half Elf Bard).
@@ -94,6 +94,9 @@ item, rather than starting new large research efforts.
 - Kurn's Tower NPC roster and Cabilis/Field of Bone merchant
   inventories both checked against external reference data and
   confirmed solid.
+
+- One solo character created, modified to level 40, equipped and spell books scribed: Angel (Iksar Necromancer)
+- Bound at their current location inside Oasis of Marr.
 
 **Research**
 - P99's "Game Mechanics" wiki page and "Non-Classic Compendium" page
