@@ -4,37 +4,52 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-07-31
 
 ---
 
 # Current Objective
 
-- Complete a systematic zone-version-verification pass and identify solution to properly populate pre-updated zones.
-
-- Complete a systematic mechanics-verification pass (tracked in
-`docs/development/WIP/MECHANICS_REVIEW.md`) through to a final
-disposition on every item, while maintaining a small set of standing
-background items (item stat-budget conventions, faction increment
-verification, tradeskill data verification, out-of-era NPC
-identification, and Epic Quest database verification) for when
-capacity allows.
+Verify and correct server-side zone geometry data now that client-side
+zone visuals have been reverted to classic-era files (ADR-008), then
+resume the systematic mechanics sweep — prioritizing the open and
+undecided items around combat, casting, HP regen, and mana regen.
 
 ---
 
 # Current Phase
 
-**Active Correction & Verification, with Early Gameplay Underway**
+**Zone Architecture Correction, Mechanics Sweep Resuming Second**
 
-The database has undergone extensive, documented correction across
-combat stats, spell mechanics, pet balance, starting kit, NPC models,
-skill mechanics, faction tiers, merchant pricing, and NPC aggro/leash
-behavior. Six multibox characters exist, are leveled and equipped, and
-are bound at a shared location. Client-side visual restoration toward
-a classic presentation is substantially implemented. The current
-primary focus is ensuring client and server zone versions match. Followed by finishing a systematic sweep of game mechanics
-(`MECHANICS_REVIEW.md`) to a definitive resolution on every tracked
-item, rather than starting new large research efforts.
+The project has moved well past initial foundation work — ten ADRs are
+implemented, a full spell/discipline legacy audit is complete across
+all 14 classes playable through Velious, and a systematic mechanics
+sweep is well underway. The immediate focus now shifts to a gap created
+by that prior client-side work: restoring classic zone *visuals*
+(ADR-008) means the client geometry no longer necessarily matches
+whatever server-side zone data (zone points, safe coordinates, zone
+flags) was originally set up against RoF2's modern geometry. This needs
+to be reconciled before other work continues. Once that's in hand, the
+mechanics sweep resumes, focused on the categories most central to
+core gameplay feel: combat, spellcasting, and HP/mana regeneration.
+
+---
+
+# Current Priorities
+
+1. **Server-side zone architecture review.** Audit zone-level data
+   (zone points/teleporters, safe coordinates, zone flags, and any
+   other server-side configuration tied to zone geometry) against the
+   classic zone files restored client-side in ADR-008, to confirm the
+   two are actually consistent rather than assumed to be.
+2. **Resume the mechanics sweep** (`docs/development/WIP/
+   MECHANICS_REVIEW.md`), prioritizing the still-open and undecided
+   items specifically in combat, casting, HP regen, and mana regen —
+   see that document for the full breakdown.
+3. Continue the remaining standing research gaps as background work
+   between the above: item stat-budget conventions, faction kill/quest
+   increment verification, tradeskill recipe data, epic quest database
+   verification, out-of-era NPC audit.
 
 ---
 
@@ -42,180 +57,101 @@ item, rather than starting new large research efforts.
 
 ## Completed
 
-**Documentation & Architecture**
 - GitHub repository and documentation structure established.
-- Eleven Architectural Decision Records/addendums accepted and
-  implemented (ADR-001 through ADR-010, plus addendums to ADR-002,
-  ADR-008, and ADR-009 — see CHANGELOG.md for the full index).
-- Three research/working documents committed: `docs/research/
-  GAME_MECHANICS_REFERENCE.md`, `docs/research/
-  CLASS_EPIC_QUEST_REFERENCE.md`, and `docs/development/WIP/
-  MECHANICS_REVIEW.md`.
-
-**Database Correction**
-- Content scope, server rules baseline, level cap, NPC combat stats,
-  spell mechanics, pet stats, starting kit, and NPC models all
-  corrected per ADR-001 through ADR-007 (see CHANGELOG.md).
-- Full spell/discipline legacy audit completed across all 14 classes
-  playable through Velious (ADR-009) — non-classic spells disabled,
-  duplicates and wrong-level placements corrected, confirmed
-  omissions restored. All three originally-ambiguous items now
-  resolved: Throw Stone and Death Peace confirmed genuine classic
-  content; the Harm Touch duplicate-recast bug fixed (two broken
-  30-second-recast copies disabled, correct 72-minute version
-  confirmed active, matching P99 exactly).
-- Faction tier boundaries corrected across all 8 tiers to match
-  P99-documented values (ADR-010). Core faction hit mechanism
-  separately verified correct against a documented P99 example.
-- Sense Heading and Swimming skill training mechanics corrected to
-  require guildmaster training and skill-up through use.
-- Bard instrument-modifier system verified end-to-end and confirmed
-  correctly implemented; one broken duplicate spell disabled and a
-  non-classic post-Velious AE DoT restriction reverted.
-- Merchant pricing switched from EQEmu's modern flat-markup system to
-  the classic percentage-based formula with CHA-based haggling.
-- NPC "leash"/training-distance mechanic disabled — NPCs now chase
-  indefinitely rather than resetting at a fixed distance, a deliberate
-  classic-authenticity choice made with awareness of the added
-  solo-multibox risk.
-- `angels_misfits_migration.sql` (combined ADR-001/002/003 migration)
-  confirmed fully applied via live spot-check.
-
-**Client**
-- Client-side classic visual restoration implemented (ADR-008): zone
-  files, spell icons/gems/effects, skeleton models, Luclin model
-  toggles (player-optional, NPC-classic), TaipoUI. Troll/Ogre Luclin
-  model question and Marketplace/Krono UI item both closed out.
-
-**Gameplay Setup**
-- Six multibox characters created, modified to level 12, equipped, and
-  spellbooks scribed: Zugzug (Ogre Warrior), Grub (Troll Shaman),
-  Gwenothyl (High Elf Enchanter), Ohme (Iksar Monk), Balthazaar
-  (Erudite Cleric), Dandelion (Half Elf Bard).
-- All six bound at their current location inside Kurn's Tower.
-- Kurn's Tower NPC roster and Cabilis/Field of Bone merchant
-  inventories both checked against external reference data and
-  confirmed solid.
-
-- One solo character created, modified to level 40, equipped and spell books scribed: Angel (Iksar Necromancer)
-- Bound at their current location inside Oasis of Marr.
-
-**Research**
-- P99's "Game Mechanics" wiki page and "Non-Classic Compendium" page
-  both fully synthesized (`GAME_MECHANICS_REFERENCE.md`).
-- Epic quest research completed for 7 classes (Warrior, Shaman,
-  Enchanter, Monk, Cleric, Bard, Necromancer) — quest givers, NPCs,
-  items, zones, and final weapon stats documented
-  (`CLASS_EPIC_QUEST_REFERENCE.md`). Paladin, Ranger, Shadow Knight,
-  Druid, Magician, Wizard, and Rogue epics not yet researched.
-- A systematic, category-by-category mechanics sweep substantially
-  complete (`MECHANICS_REVIEW.md`) — see In Progress below for what
-  remains.
+- Ten Architectural Decision Records accepted and implemented
+  (ADR-001 through ADR-010), covering content scope, server rules and
+  level cap, NPC combat stats, spell mechanics, pet stats, starting
+  kit, NPC models, client visual restoration (Phase 1), the full
+  spell/discipline legacy audit, and faction tier boundaries.
+- Sense Heading and Swimming skill mechanics corrected to require
+  guildmaster training and skill-up through use.
+- Bard instrument-modifier mechanic verified correct; one broken
+  duplicate spell disabled; a non-classic post-Velious AE DoT
+  restriction reverted.
+- Merchant pricing switched to the classic percentage-based/CHA-
+  haggling calculation.
+- Harm Touch (Shadow Knight) corrected — duplicate entries with an
+  incorrect recast disabled, correct 72-minute version retained.
+- NPC "leash"/training distance mechanic disabled, restoring classic
+  chase-until-caught behavior.
+- A systematic mechanics sweep is substantially underway across
+  skills, combat, aggro, corpses, charm, tradeskills, and more — see
+  `docs/development/WIP/MECHANICS_REVIEW.md` for full detail.
+- Research reference material built for class epic quests
+  (`docs/research/CLASS_EPIC_QUEST_REFERENCE.md`) and core game
+  mechanics (`docs/research/GAME_MECHANICS_REFERENCE.md`).
+- Six multibox characters created, leveled, equipped, and bound.
 
 ## In Progress
 
-- **`Client-Server Zone Alignment' - Primary Focus.** Research not started.
-- **`MECHANICS_REVIEW.md` — second primary focus.** Most major
-  categories have a documented disposition (confirmed correct,
-  confirmed non-classic and fixed, or confirmed genuinely
-  contested/unresolvable even by P99 itself). Remaining unresolved
-  items to work through: line-of-sight for aggro/casting, snare
-  stacking rules, item stacking rules, skill cap enforcement edge
-  cases, critical hit chance formula, bash/kick special attack
-  mechanics, and pet leash/`/pet attack` range specifics. Goal is a
-  final, explicit disposition on every remaining item before moving to
-  new research areas.
-- **External GitHub repository review** — 11 candidate repos
-  identified and given an initial metadata-level pass, but each still
-  needs an actual deep-dive into its contents before a final verdict
-  can be trusted; treat all 11 as open/unresolved rather than settled.
-  One dead end confirmed: the external database link referenced by two
-  of the EQClassic-derived repos (newagesoldier.com) is dead.
-- **Client visual restoration remaining sub-items (ADR-008):** loading
-  screens still RoF2-era art; Velious-era zone visual research not
-  started; general in-client verification pass deferred.
-- **Faction system:** tier boundaries and core hit mechanism verified;
-  broader per-faction verification (2,105 factions) and full
-  kill/quest increment accuracy remain open, ongoing background items.
-- **Merchant/vendor inventory verification:** Cabilis and Field of Bone
-  confirmed; the rest of the world remains an ongoing background item.
-- **Vendor pricing calibration Phase 2** (per-vendor `greed` values)
-  not yet started.
+- Server-side zone architecture review (new, top priority — see above).
+- Mechanics sweep resumption, prioritized toward combat/casting/HP
+  regen/mana regen per current focus.
+- Client visual restoration (ADR-008) remaining sub-items: loading
+  screens still RoF2-era, Velious-era zone visual research, general
+  in-client verification pass.
+- Broader faction system verification beyond tier boundaries (2,105
+  factions total) — ongoing background item.
+- Merchant/vendor inventory verification beyond Cabilis/Field of Bone
+  — ongoing background item.
 
 ## Not Started
 
-- **Item stat-budget conventions** — whether item stats (AC, HP, mana,
-  resists) are appropriately scaled for their introduction era; the
-  item-side equivalent of the ADR-009 spell audit.
-- **Tradeskill recipe/threshold data verification** — the general
-  success-rate and skill-up-rate *formulas* have been researched
-  (`MECHANICS_REVIEW.md`), but the actual recipe and trivial-value
-  *data* in our database has not been checked against classic sources.
-- **Out-of-era NPC identification** — a pass to find NPCs that don't
-  belong in their zone/era (e.g., a reported Halfling NPC in Cabilis).
-- **Epic Quest database verification** — research is complete
-  (`CLASS_EPIC_QUEST_REFERENCE.md`), but our database has not been
-  checked against it: confirming quest-giver and drop NPCs exist, all
-  quest legs are active/scripted (not just that NPCs/items exist), and
-  loot tables have correct drop rates.
-- Guild mechanics research (believed disabled via the same
-  expansion-setting mechanism as AA, not yet confirmed).
-- VV MQ subscription-lapse behavior empirical test (a manual test for
-  the project lead to run, not a research task).
-
-## Deprioritized / Resolved Differently
-
-- **Zone Experience Modifiers (ZEM)** — flagged earlier as a
-  potentially high-value gap (commonly-circulated values trace to a
-  non-classic 2003 ShowEQ dump), but the project lead has since
-  addressed leveling pace directly via base-level experience
-  adjustments. No longer tracked as an open research item.
-
----
-
-# Current Priorities
-
-1. Work through every remaining item in `MECHANICS_REVIEW.md` to a
-   final, explicit disposition before starting new research areas.
-2. Maintain the standing background items (item stat-budget
-   conventions, faction verification, tradeskill data, out-of-era
-   NPCs, Epic Quest database verification) opportunistically.
-3. Continue the GitHub repository deep-dive as a lower-intensity,
-   ongoing background task.
+- Item stat-budget conventions for era-appropriate itemization.
+- Zone Experience Modifiers (ZEM) correction — deprioritized; base
+  experience rate has already been separately adjusted, so this is no
+  longer considered high priority.
+- Guild mechanics research.
+- Tradeskill recipe data verification (trivial values, components)
+  against classic sources — success-rate formula itself is already
+  researched and confirmed.
+- Epic quest database verification — research is complete, but
+  checking actual quest NPCs, items, active scripting, and loot table
+  drop rates against our live database has not started.
+- Out-of-era NPC audit.
+- Vendor greed/pricing calibration Phase 2 (per-vendor values).
 
 ---
 
 # Known Issues / Blockers
 
-None blocking. All outstanding items are individually scoped,
-non-urgent research/verification gaps rather than active problems
-affecting current gameplay.
+Lavastorm was mistakenly believed to have zoneid=6039 but this was due to the query pulling tableid from "id" command. Correct command to pull zoneid is "zoneidnumber". Lavastorm zoneidnumber=27 confirmed. 
+
+None blocking. All open items are individually scoped research or
+verification gaps rather than active problems affecting current
+gameplay. The six existing characters are level 10 or below, so none
+of the corrections made to date have caused any loss of previously-
+learned content.
 
 ---
 
 # Next Milestones
 
-- Close every remaining item in `MECHANICS_REVIEW.md`.
-- Complete at least one deep-dive pass on a GitHub repo from the
-  review list.
-- Begin Epic Quest database verification once mechanics review work
-  allows.
+- Complete the server-side zone architecture review.
+- Resume and continue the mechanics sweep, working through the
+  combat/casting/HP-regen/mana-regen items flagged as priority in
+  `MECHANICS_REVIEW.md`.
+- Begin epic quest database verification once zone/mechanics work
+  reaches a natural pause point.
+- Continue faction, merchant, and tradeskill verification incrementally
+  as background work.
 
 ---
 
 # Recent Major Decisions
 
-- ADR-001 through ADR-010 (plus addendums to ADR-002, ADR-008, and
-  ADR-009) — all implemented; see CHANGELOG.md for the full index.
+- ADR-001 through ADR-010 — see `docs/decisions/` for full detail on
+  each.
 - P99 wiki adopted as the primary era-accuracy reference throughout,
   prioritized above TAKP for any question involving *when* content was
   introduced, since TAKP itself progressed through Luclin and PoP and
   cannot make that distinction.
-- Classic "mobs chase indefinitely" behavior restored over a modern
-  distance-based leash mechanic, a deliberate authenticity choice made
-  with explicit awareness of added solo-multibox risk.
-- ZEM research deprioritized in favor of directly adjusting base-level
-  experience rates to manage leveling pace.
+- Client-side classic zone restoration (ADR-008) is treated as
+  requiring a corresponding server-side zone data review — visual
+  restoration alone does not guarantee the underlying zone
+  configuration matches.
+- Mechanics sweep work is treated as a living, cross-session document
+  rather than a one-time pass — see `MECHANICS_REVIEW.md`.
 
 ---
 
