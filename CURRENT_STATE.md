@@ -4,6 +4,8 @@
 
 Angels Misfits is an operational local EverQuest Emulator server running on a Windows environment. The server has moved well beyond a stock PEQ baseline — substantial database correction, mechanical verification, and client-side visual restoration have been implemented and documented via the project's ADR series, changelog, and a growing body of research reference material.
 
+**Current focus:** server-side zone geometry data (zone points, safe coordinates, zone flags) is being reviewed against the classic zone files restored client-side in ADR-008, since visual restoration alone doesn't guarantee the underlying server-side configuration is still consistent with the geometry it's meant to describe. Once that review is complete, work resumes on the mechanics sweep (see below), prioritizing combat, casting, HP regen, and mana regen specifically.
+
 ---
 
 # Current Environment
@@ -45,15 +47,16 @@ Applied corrections to date (see `docs/decisions/` for full ADR detail, `CHANGEL
 
 A systematic, category-by-category mechanics sweep (skills, combat, aggro, corpses, charm, tradeskills, and more) is ongoing and tracked as a living document — see `docs/development/WIP/MECHANICS_REVIEW.md`. Most categories have been researched and checked against source/database; a handful remain genuinely unresolved even by the wider classic-research community and are treated as lower priority rather than open bugs.
 
-Remaining known-stock/open areas:
+Remaining known-stock/open areas, in current priority order:
 
+- Server-side zone architecture — zone points, safe coordinates, and zone flags not yet reviewed against the classic geometry restored client-side in ADR-008. Current top priority.
+- Mechanics sweep resumption, prioritizing combat, casting, HP regen, and mana regen — see `docs/development/WIP/MECHANICS_REVIEW.md` for the specific open/undecided items.
 - Item stat-budget conventions (era-appropriate scaling of AC/HP/mana/resists) not yet reviewed.
-- Zone Experience Modifiers (ZEM) — likely inherited non-classic values from PEQ's original data; not yet corrected, though base experience rate has already been separately adjusted.
+- Zone Experience Modifiers (ZEM) — likely inherited non-classic values from PEQ's original data; deprioritized, since base experience rate has already been separately adjusted.
 - Broader faction system verification (2,105 factions total) beyond the tier-boundary fix — ongoing background item.
 - Merchant/vendor inventory verification largely done for Cabilis and Field of Bone; the rest of the world (1,300+ merchants) remains an ongoing background item.
 - Tradeskill recipe data (trivial values, component lists) not yet checked against classic sources, though the underlying success-rate formula has been researched and confirmed.
 - Class epic quest content researched (see `docs/research/CLASS_EPIC_QUEST_REFERENCE.md`, covering Warrior/Shaman/Enchanter/Monk/Cleric/Bard/Necromancer) but not yet verified against the live database — quest NPCs, items, active quest scripting, and loot table drop rates all still need checking.
-- Server-side zone architecture review not yet started — a natural next step now that client-side zone files have been reverted to classic versions (ADR-008), to confirm server-side zone data (zone points, safe coordinates, zone flags) is consistent with the restored classic geometry.
 - Active out-of-era NPCs (e.g., anachronistic race/NPC placements) not yet audited.
 
 ---
