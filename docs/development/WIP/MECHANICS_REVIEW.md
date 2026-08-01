@@ -547,7 +547,100 @@ training mechanic above — everything else is either confirmed correct,
 confirmed non-classic (and intentionally not changed), or logged as
 genuinely low-confidence/contested with no better answer available.
 
-**Recommended next steps, in order:**
-1. **New, genuinely open item worth prioritizing next: Classic Zone Geometry.** The Users RoF2 Client was patched with individual classic zone files provided by the FV Project. The server database will need to load the classic version of the zone as well.
-2. Complete Open Mechanics Review Items
-3. Complete Epic Quest verification for our 6 classes + necromancer.
+## Next Steps — Rewritten Priority Order (2026-07-30)
+
+Prioritizing the genuinely open and undecided items specifically within
+combat, casting, HP regen, and mana regen, since these sit closest to
+core moment-to-moment gameplay feel. Pulled from across the full sweep
+rather than tackled in the order originally researched.
+
+### 1. HP Regeneration — verify against our actual source (highest priority: foundational, never confirmed against our own database)
+
+- **STA-to-HP conversion by class.** Researched (class-specific, scales
+  with level — e.g. Warrior converts roughly 6 HP per STA at level 60
+  vs. caster classes converting at roughly half that rate), but **never
+  checked against our own source code.** This is foundational to how
+  every character's effective HP pool works — worth confirming first.
+- **Iksar/Troll faster regen bonus.** Researched (the gap widens
+  substantially at higher levels — roughly 7 HP/tick for other races
+  vs. 18 for Iksar/Troll at level 60 while sitting), but **not yet
+  checked against our source.** A specific, easy-to-silently-omit
+  race-flavor detail.
+- **Standard sit-regen rate/formula itself.** The "Rested" bonus
+  system was confirmed as something we should NOT have (Agnarr-
+  specific, not classic) — but the underlying baseline sit-regen
+  formula that legitimately *should* exist hasn't been independently
+  verified against our source, only the "we shouldn't have this other
+  thing" negative case.
+
+### 2. Mana Regeneration — verify against our actual source (same priority tier as HP regen)
+
+- **Mana calculation formula.** Researched: below/at 200 WIS or INT,
+  `Mana = ((80 × Level) / 425) × Stat`; above 200, the multiplier drops
+  to 40. **Never checked against our own mana calculation source** —
+  the 200-stat breakpoint specifically is a clean, testable target.
+- **Meditate mana-per-tick ratio.** Researched: +1 mana per tick per 12
+  Meditate skill points while sitting; only 2 mana/tick with zero
+  Meditate skill; only 1 mana/tick while standing regardless of
+  Meditate. **Not yet checked against our source.**
+
+### 3. Casting — genuinely open, mixed confidence
+
+- **Spell interruption (movement/melee-push interrupt chance).** Not
+  researched in this sweep at all — genuinely open.
+- **Spell recast/recovery time enforcement.** Not researched — worth
+  confirming these are actually enforced server-side and match
+  intended values, not just present in the data (same category of gap
+  as the scribing/memorization finding — data being correct doesn't
+  guarantee the timer logic around it is).
+- **Spell component consumption rules** (reagent loss on fizzle vs.
+  success). Not researched — genuinely open.
+- **Resist checks / resist rate scaling.** Researched, but genuinely
+  unresolved even by P99 itself — their own wiki has an explicit
+  placeholder "(Todo: Add the mechanics and formulas behind
+  resistances.)" where the formula should be. Rough community
+  folklore exists (~6 resistance points ≈ 1% more resist chance) but
+  nothing rises to real confidence. Treat as: confirm what our source
+  currently does, and accept that as the answer absent a better one —
+  don't spend further research time chasing a "true" formula that
+  doesn't appear to exist publicly.
+- **Fizzle rate.** Same treatment as resist checks — a decade-plus of
+  P99's own community dispute, including evidence the underlying
+  formula itself might be miscalibrated even on P99. Confirm our
+  source's current behavior; don't chase further.
+
+### 4. Combat — genuinely open, mixed confidence
+
+- **Critical hit chance formula** (distinct from critical hit
+  *damage*, which is already captured). Not researched — genuinely
+  open.
+- **Bash/kick/other combat skill-based special attack mechanics.** Not
+  researched — genuinely open.
+- **Riposte/dodge/parry/block formulas.** Researched, low confidence —
+  mostly qualitative (Agility affects skill-up rate and avoidance AC,
+  with a notable breakpoint around 75 AGI), no clean formula to verify
+  against. Same "confirm current behavior, don't chase further"
+  treatment.
+- **Stun duration and resist mechanics.** Researched, low confidence —
+  mostly documented in PvP-specific disputed threads (not relevant to
+  our cooperative server); even P99's own Game Mechanics page admits
+  "values still being tuned." Same treatment.
+- **Max damage formula, weighted D20 roll, weapon proc rate, backstab
+  formula.** All researched at a conceptual level (see Game Mechanics
+  Reference), several with wiki-acknowledged uncertain constants. Not
+  yet checked against our source specifically — lower priority than
+  the above given the wiki's own low confidence in some of these
+  numbers, but worth a pass if time allows after the higher-confidence
+  items above are closed out.
+
+---
+
+**Suggested order of attack:** HP regen and mana regen first (both
+foundational, both have solid researched targets, neither has been
+checked against our source at all yet) — then the genuinely-
+unresearched casting/combat items (spell interruption, recast/recovery
+enforcement, component consumption, crit chance, bash/kick) — treating
+the already-contested items (fizzle, resist, stun, riposte/dodge/parry)
+as lowest priority, since further research time on those has a proven
+low return given how unsettled they are even within P99's own
+community.
