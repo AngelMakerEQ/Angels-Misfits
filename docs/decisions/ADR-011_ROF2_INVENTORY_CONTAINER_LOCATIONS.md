@@ -1,6 +1,6 @@
 # ADR-011: RoF2 Inventory Container Location Format
 
-**Status:** Accepted — personal inventory implemented; bank mapping pending live confirmation
+**Status:** Accepted — live personal and bank mappings confirmed; replacement migration available
 
 **Date:** 2026-08-01
 
@@ -21,6 +21,7 @@ A new level-one Iksar Shaman (`Testchar`) was used as a clean control:
 3. Items were moved from main inventory into the Backpack.
 4. No freeze, disconnect, or item loss occurred.
 5. After the bag was emptied and one item was placed in its first visible cell, the server stored that child as `inventory.slot_id = 5210`. The Backpack was in general slot `29`.
+6. A Backpack was placed in Testchar's first bank slot (`2000`) and one item was placed in its first visible cell. The server stored that child as `inventory.slot_id = 6210`.
 
 This proves that this server's active RoF2 personal-container persistence format is not the legacy `251 + (parent offset * 200)` format used by the original migration.
 
@@ -66,16 +67,37 @@ Angel's current in-game arrangement had subsequently moved the Blood of the Wolf
 
 ## Bank Containers
 
-No future SQL may insert **bank bag-child rows** until this server's live bank mapping has been measured with the same method. The existing legacy rows (`2031...`, `2231...`, etc.) are not evidence that those are correct for the active server.
+All future SQL which inserts an item inside a **bank bag** must use the live-format child locations below. It must not use legacy bank bag locations such as `2031`, `2231`, or `3431`.
 
-The EQEmu inventory reference documents server-recognized modern bank ranges beginning at `6210` for bank slot 2000, but the personal mapping above was established from this server's actual persistence behavior. A Testchar bank-container test must therefore confirm the deployed mapping before a bank migration or repair is written. Until then, a migration may insert parent bank bags (`2000...`) but must leave their child contents out.
+The bank-bag child formula is:
+
+```text
+child_slot_id = 6210 + ((parent_bank_slot - 2000) * 200) + child_index
+```
+
+Where `parent_bank_slot` is `2000` through `2023`, and `child_index` is zero-based and less than the parent item's `bagslots` value. The 200-row stride is an address reservation; it does not permit placing an item beyond the actual size of the bag.
+
+### Required bank-bag child ranges used by Angel's migration
+
+| Parent bank slot | First child row | Address range |
+|---:|---:|---:|
+| 2000 | 6210 | 6210–6409 |
+| 2001 | 6410 | 6410–6609 |
+| 2002 | 6610 | 6610–6809 |
+| 2003 | 6810 | 6810–7009 |
+| 2004 | 7010 | 7010–7209 |
+| 2005 | 7210 | 7210–7409 |
+| 2006 | 7410 | 7410–7609 |
+| 2007 | 7610 | 7610–7809 |
+
+The complete corrected inventory replacement is `scripts/angel_inventory_rof2_locations.sql`.
 
 ## Consequences
 
 - The original Angel migration must be amended before it is ever rerun; its legacy child inserts recreate the corruption.
 - Personal bag migration SQL must validate that destination rows are empty and that every target parent is a valid container before changing data.
 - Any inventory-related disconnect is triaged first by comparing the affected character's persisted slot locations with a server-created control character, rather than assuming the item itself is invalid.
-- Bank contents remain a separate, deliberately bounded follow-up to avoid moving stored player items on an inferred mapping.
+- The complete replacement migration can now restore Angel's listed bank contents using verified live-format rows.
 
 ## Related Decisions
 
