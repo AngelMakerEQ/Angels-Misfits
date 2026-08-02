@@ -56,7 +56,7 @@ Remaining known-stock/open areas, in current priority order:
 - Broader faction system verification (2,105 factions total) beyond the tier-boundary fix — ongoing background item.
 - Merchant/vendor inventory verification largely done for Cabilis and Field of Bone; the rest of the world (1,300+ merchants) remains an ongoing background item.
 - Tradeskill recipe data (trivial values, component lists) not yet checked against classic sources, though the underlying success-rate formula has been researched and confirmed.
-- Class epic quest content researched (see `docs/research/CLASS_EPIC_QUEST_REFERENCE.md`, covering Warrior/Shaman/Enchanter/Monk/Cleric/Bard/Necromancer) but not yet verified against the live database — quest NPCs, items, active quest scripting, and loot table drop rates all still need checking.
+- Class epic quest content for Warrior/Shaman/Enchanter/Monk/Cleric/Bard/Necromancer has passed a live database and active-script audit; see `docs/development/assessments/EPIC_QUEST_IMPLEMENTATION_AUDIT_2026-08-02.md`. GM-assisted end-to-end playthroughs remain a regression test, not an open data-verification task.
 - Active out-of-era NPCs (e.g., anachronistic race/NPC placements) not yet audited.
 
 ---

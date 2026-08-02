@@ -48,8 +48,9 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
    see that document for the full breakdown.
 3. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
-   increment verification, tradeskill recipe data, epic quest database
-   verification, out-of-era NPC audit.
+   increment verification, tradeskill recipe data, and the out-of-era NPC
+   audit. The seven researched epic 1.0 quests passed database/script
+   verification on 2026-08-02.
 
 ---
 
@@ -105,9 +106,6 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
 - Tradeskill recipe data verification (trivial values, components)
   against classic sources — success-rate formula itself is already
   researched and confirmed.
-- Epic quest database verification — research is complete, but
-  checking actual quest NPCs, items, active scripting, and loot table
-  drop rates against our live database has not started.
 - Out-of-era NPC audit.
 - Vendor greed/pricing calibration Phase 2 (per-vendor values).
 
@@ -131,8 +129,6 @@ learned content.
 - Resume and continue the mechanics sweep, working through the
   combat/casting/HP-regen/mana-regen items flagged as priority in
   `MECHANICS_REVIEW.md`.
-- Begin epic quest database verification once zone/mechanics work
-  reaches a natural pause point.
 - Continue faction, merchant, and tradeskill verification incrementally
   as background work.
 
