@@ -31,6 +31,8 @@ Lightweight chronological index of major project milestones. Each entry states w
 - **2026-08-02** — ADR-013: skill cap ceiling defect (uncapped linear climb with no maximum) corrected across all 8 classes with characters or relevance to this project, plus 3 additional gaps (Begging, Triple Attack, 2H Piercing) found and closed during verification. Angel's own drifted skill values corrected to match.
 - **2026-08-02** — ADR-014: mechanics and epic-quest tracking documentation consolidated — the former WIP mechanics checklist, three dated mechanics assessments, the epic quest research reference, and the epic quest audit (six documents total) retired in favor of two standing documents (`docs/development/MECHANICS_REVIEW.md`, `docs/gameplay/EPIC_QUESTS_REVIEW.md`), with every carried-forward item re-audited for true open/closed status. Corrected a stale `PROJECT_STATUS.md` claim that all characters were level 10 or below (Angel is level 40; ADR-013 measurably reduced several of her already-trained skills).
 
+- **2026-08-04** — Pets no longer despawning on zoning/logout traced to `Character:PetZoneWithOwner` (rule_values, ruleset 1) being `true`; toggled to `false` via Spire's rules dashboard. Note: this also stops pets from surviving a zone line while actively playing, a minor departure from live EQ behavior, in exchange for pets not surviving logout. (No ADR — routine rule toggle.)
+
 ---
 
 For full project history and reasoning, see `docs/decisions/`.
