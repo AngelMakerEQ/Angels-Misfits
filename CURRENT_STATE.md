@@ -4,7 +4,7 @@
 
 Angels Misfits is an operational local EverQuest Emulator server running on a Windows environment. The server has moved well beyond a stock PEQ baseline — substantial database correction, mechanical verification, and client-side visual restoration have been implemented and documented via the project's ADR series, changelog, and a growing body of research reference material.
 
-**Current focus:** server-side zone geometry data (zone points, safe coordinates, zone flags) is being reviewed against the classic zone files restored client-side in ADR-008, since visual restoration alone doesn't guarantee the underlying server-side configuration is still consistent with the geometry it's meant to describe. Once that review is complete, work resumes on the mechanics sweep (see below), prioritizing combat, casting, HP regen, and mana regen specifically.
+**Current focus:** the mechanics sweep (see below), prioritizing combat, casting, HP regen, and mana regen. The earlier concern that server-side zone geometry data (zone points, safe coordinates, zone flags) might be inconsistent with the classic zone files restored client-side in ADR-008 has been closed (2026-08-05) without a dedicated review — EQEmu's zone points were already correct, only the client-side files needed to match, and no in-game issues have been encountered.
 
 ---
 
@@ -40,7 +40,7 @@ Applied corrections to date (see `docs/decisions/` for full ADR detail, `CHANGEL
 - Full spell/discipline legacy audit completed across all 14 classes playable through Velious — non-legacy spells disabled, duplicates and wrong-level placements corrected, confirmed omissions restored (ADR-009).
 - Faction tier boundaries corrected to match documented classic thresholds across all 8 tiers (ADR-010).
 - RoF2 personal-bag and bank container child-slot location format corrected; Angel's affected inventory repaired (ADR-011).
-- Necromancer illusion-height defect corrected via a targeted spell-effect override; pet-model race correction (485→85) drafted for 37 rows but not yet applied (ADR-012).
+- Necromancer illusion-height defect corrected via a targeted spell-effect override; pet-model race correction (485→85) for 37 rows drafted and committed as `scripts/2026-08-02_necromancer_pet_race_correction.sql`, not yet applied to the live database (ADR-012).
 - Skill cap ceiling defect (uncapped linear climb past each class's true maximum) corrected across all 8 classes with characters or relevance to this project, plus 3 gaps found and closed during verification (ADR-013).
 - Sense Heading and Swimming skill mechanics corrected to require guildmaster training and skill-up through use, rather than auto-maxing at character creation.
 - Bard instrument-modifier mechanic verified correct against classic sources; one broken duplicate spell disabled and a non-classic post-Velious AE DoT restriction reverted.
@@ -52,16 +52,15 @@ A systematic, category-by-category mechanics sweep (skills, combat, aggro, corps
 
 Remaining known-stock/open areas, in current priority order:
 
-- Server-side zone architecture — zone points, safe coordinates, and zone flags not yet reviewed against the classic geometry restored client-side in ADR-008. Current top priority.
 - Mechanics sweep resumption, prioritizing combat, casting, HP regen, and mana regen — see `docs/development/MECHANICS_REVIEW.md` for the specific open/undecided items.
 - Item stat-budget conventions (era-appropriate scaling of AC/HP/mana/resists) not yet reviewed.
 - Zone Experience Modifiers (ZEM) — likely inherited non-classic values from PEQ's original data; deprioritized, since base experience rate has already been separately adjusted.
 - Broader faction system verification (2,105 factions total) beyond the tier-boundary fix — ongoing background item.
 - Merchant/vendor inventory verification largely done for Cabilis and Field of Bone; the rest of the world (1,300+ merchants) remains an ongoing background item.
 - Tradeskill recipe data (trivial values, component lists) not yet checked against classic sources, though the underlying success-rate formula has been researched and confirmed.
-- Class epic quest content for Warrior/Shaman/Enchanter/Monk/Cleric/Bard/Necromancer has passed a live database and active-script audit; see `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated via ADR-014). GM-assisted end-to-end playthroughs remain a regression test, not an open data-verification task. The remaining seven classes (Paladin, Ranger, Shadow Knight, Druid, Magician, Wizard, Rogue) are entirely unresearched. The epic weapon equip-level requirement (P99 uses level 46, of uncertain universality) remains an explicit open decision.
+- Class epic quest content for Warrior/Shaman/Enchanter/Monk/Cleric/Bard/Necromancer has passed a live database and active-script audit; see `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated via ADR-014). GM-assisted end-to-end playthroughs remain a regression test, not an open data-verification task. The remaining seven classes (Paladin, Ranger, Shadow Knight, Druid, Magician, Wizard, Rogue) are entirely unresearched. The epic weapon equip-level requirement (P99 uses level 46, of uncertain universality) has been decided: left ungated, since this server is currently single-player and the twinking scenario the P99 restriction guards against does not apply.
 - HP regeneration's Iksar/Troll racial bonus (`Character:BaseHPRegenBonusRaces`) has a credible engineering defect — the live `CalcHPRegen()` code path appears not to read this rule at all — identified 2026-08-01, not yet runtime-confirmed or fixed. See `docs/development/MECHANICS_REVIEW.md`, item 1.
-- The classic minimum mana-regen floor (`Character:OldMinMana`) has been applied but not yet runtime-verified in-game. The era-containment cleanup script (Beastlord/Berserker spell-grant cleanup, unused DoN content flag) has been drafted but its application against the live database is unconfirmed. Both tracked in `docs/development/MECHANICS_REVIEW.md`.
+- The classic minimum mana-regen floor (`Character:OldMinMana`) has been applied but not yet runtime-verified in-game. The era-containment cleanup script (`scripts/2026-08-01_era_containment_cleanup.sql`: Beastlord/Berserker spell-grant cleanup, unused DoN content flag) is drafted and committed to the repository, but its application against the live database is unconfirmed. Both tracked in `docs/development/MECHANICS_REVIEW.md`.
 - Active out-of-era NPCs (e.g., anachronistic race/NPC placements) not yet audited.
 
 ---

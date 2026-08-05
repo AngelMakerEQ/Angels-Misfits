@@ -222,40 +222,11 @@ edits directly, matching ADR-007's precedent.
 
 ### Implementation Status
 
-**Pending.** SQL drafted; not yet applied to the live database as of this
-writing.
-
-```sql
-UPDATE npc_types
-SET race = 85
-WHERE race = 485
-AND id IN (
-    -- Emissary of Thule (skel_pet_47_)
-    628, 905, 907, 906,
-    -- Legacy of Zek (skel_pet_61_)
-    629, 908, 909, 910, 911, 912,
-    -- Saryrn's Companion (skel_pet_63_)
-    630, 913, 914, 915, 916, 917,
-    -- Child of Bertoxxulous (skel_pet_65_)
-    631, 918, 919, 920, 921, 922,
-    -- Lost Soul (skel_pet_67_) — id 793 excluded, already at race 85
-    632, 789, 790, 791, 792, 840, 841,
-    -- Dark Assassin (skel_pet_70_)
-    843, 633, 784, 785, 786, 787, 788, 842
-);
-```
-
-Verification query (all 38 rows in the chain should show `race = 85` once
-applied):
-
-```sql
-SELECT p.type, n.id, n.name, n.race, n.texture, n.size
-FROM pets p
-JOIN npc_types n ON n.id = p.NPCID
-WHERE p.type IN ('skel_pet_47_','skel_pet_61_','skel_pet_63_',
-                  'skel_pet_65_','skel_pet_67_','skel_pet_70_')
-ORDER BY p.type, n.size;
-```
+**Drafted and committed, not yet applied to the live database.** The SQL
+(preflight check, transactional `UPDATE`, verification query) lives at
+`scripts/2026-08-02_necromancer_pet_race_correction.sql`. Run it via
+HeidiSQL/Spire against the live database, inspect the verification query's
+output, and `COMMIT` only once all 38 rows in the chain show `race = 85`.
 
 Unlike `spells_new`, `npc_types` is read live by zone processes at zone
 boot rather than through the `shared_memory` cache — a Spire restart alone

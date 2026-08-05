@@ -171,15 +171,21 @@ All three orbs combine via Jhassad Oceanson into the Orb of the Triumvirate, tur
 
 ---
 
+## Resolved Decisions
+
+### ✅ Epic weapon equip-level requirement — left ungated (2026-08-05)
+
+P99 requires level 46 to equip any epic weapon; P99's own documentation admits it is "unclear whether or not all epics on live required a specific level" universally, and the restriction itself exists on P99 largely to stop low-level twinking via higher-level players funneling an epic down to an alt. Per DESIGN_PHILOSOPHY.md's "authentic where players notice" principle, an equip-level gate is directly player-visible and was left as an explicit open decision pending project-lead call rather than silently inherited.
+
+**Decision: no equip-level gate.** This server is solo/single-player for now — there is no higher-level character available to complete an epic chain and hand the reward down to a lower-level alt, so the specific twinking scenario P99's level-46 requirement guards against does not apply here. Item `reqlevel` fields for the epic reward items are left as-is (unchanged from the 2026-08-02 audit); no new restriction is being added.
+
+**Follow-up (unconfirmed, not yet checked):** the live `reqlevel` values for the seven verified reward items (10908, 10651, 10650, 10652, 5532, 20542, 20544) were never directly queried during the 2026-08-02 audit — only confirmed *unchanged*. If any of them already carry an inherited level-46 (or other) restriction from the PEQ baseline, that would need a direct live-database check and a small `UPDATE` to actually reflect the ungated decision. If this project ever moves beyond single-player (a second real character reaches endgame), revisit this decision — the original twinking concern would then apply.
+
 ## Open Items
 
 ### Not yet researched (7 classes)
 
 Paladin, Ranger, Shadow Knight, Druid, Magician, Wizard, Rogue. No P99-sourced structural research or database verification has been done for any of these. Scope was originally limited to the 6 active characters' classes plus Necromancer; the remaining 7 are a real gap, not an oversight to explain away.
-
-### ⚠️ Decision needed: epic weapon equip-level requirement
-
-P99 requires level 46 to equip any epic weapon; P99's own documentation admits it is "unclear whether or not all epics on live required a specific level" universally. This server's item `reqlevel` fields were deliberately left unchanged during the 2026-08-02 audit pending an explicit call. Per DESIGN_PHILOSOPHY.md's "authentic where players notice" principle, an equip-level gate is directly player-visible — this needs a project-lead decision (adopt P99's level 46, adopt something else, or leave ungated) rather than silent inheritance of P99 behavior.
 
 ### Shaman: True Spirit faction turn-in count
 

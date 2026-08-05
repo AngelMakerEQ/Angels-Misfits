@@ -10,50 +10,51 @@
 
 # Current Objective
 
-Verify and correct server-side zone geometry data now that client-side
-zone visuals have been reverted to classic-era files (ADR-008), then
-resume the systematic mechanics sweep — prioritizing the open and
+Resume the systematic mechanics sweep, prioritizing the open and
 undecided items around combat, casting, HP regen, and mana regen.
 
 ---
 
 # Current Phase
 
-**Zone Architecture Correction, Mechanics Sweep Resuming Second**
+**Mechanics Sweep Resuming**
 
-The project has moved well past initial foundation work — ten ADRs are
-implemented, a full spell/discipline legacy audit is complete across
+The project has moved well past initial foundation work — fourteen ADRs
+are implemented, a full spell/discipline legacy audit is complete across
 all 14 classes playable through Velious, and a systematic mechanics
-sweep is well underway. The immediate focus now shifts to a gap created
-by that prior client-side work: restoring classic zone *visuals*
-(ADR-008) means the client geometry no longer necessarily matches
-whatever server-side zone data (zone points, safe coordinates, zone
-flags) was originally set up against RoF2's modern geometry. This needs
-to be reconciled before other work continues. Once that's in hand, the
-mechanics sweep resumes, focused on the categories most central to
-core gameplay feel: combat, spellcasting, and HP/mana regeneration.
+sweep is well underway. The prior concern that client-side classic zone
+restoration (ADR-008) might have left server-side zone data (zone points,
+safe coordinates, zone flags) inconsistent with the restored geometry has
+been closed without a dedicated review: EQEmu's zone points were already
+correct against the classic geometry, only the client-side files needed
+to match it, and no in-game issues have surfaced. Focus now returns fully
+to the mechanics sweep, on the categories most central to core gameplay
+feel: combat, spellcasting, and HP/mana regeneration.
 
 ---
 
 # Current Priorities
 
-1. **Server-side zone architecture review.** Audit zone-level data
-   (zone points/teleporters, safe coordinates, zone flags, and any
-   other server-side configuration tied to zone geometry) against the
-   classic zone files restored client-side in ADR-008, to confirm the
-   two are actually consistent rather than assumed to be.
-2. **Resume the mechanics sweep** (`docs/development/MECHANICS_REVIEW.md`,
+1. **Resume the mechanics sweep** (`docs/development/MECHANICS_REVIEW.md`,
    consolidated and re-audited via ADR-014), prioritizing the still-open
    items: the HP regen racial-bonus defect (likely requires a small
    server-source patch), mana regen runtime verification, era-containment
    cleanup application confirmation, and the unresearched casting/combat
    categories — see that document for the full breakdown.
+2. **Apply the two drafted-and-committed SQL scripts** against the live
+   database: `scripts/2026-08-01_era_containment_cleanup.sql` (Beastlord/
+   Berserker spell-grant cleanup, DoN flag) and
+   `scripts/2026-08-02_necromancer_pet_race_correction.sql` (ADR-012 Part
+   2, necromancer late-game pet models). Both are committed to the
+   repository but their application against the live database is
+   unconfirmed as of this writing.
 3. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
    increment verification, tradeskill recipe data, and the out-of-era NPC
    audit. The seven researched epic 1.0 quests passed database/script
    verification on 2026-08-02 (`docs/gameplay/EPIC_QUESTS_REVIEW.md`);
-   the remaining seven classes' epics are unresearched.
+   the remaining seven classes' epics are unresearched. The epic weapon
+   equip-level question is now decided (left ungated — see that document).
 
 ---
 
@@ -100,12 +101,22 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
   `docs/research/GAME_MECHANICS_REFERENCE.md`.
 - Multibox characters created, leveled, equipped, and bound — see
   Known Issues below for the corrected current level range.
+- Server-side zone architecture review closed (2026-08-05) without
+  further action needed: EQEmu's zone points, safe coordinates, and
+  zone flags were already correct against the classic geometry; only
+  the client-side files needed to match (ADR-008), and no in-game
+  issues have been encountered.
+- Epic weapon equip-level policy decided (2026-08-05): left ungated.
+  See `docs/gameplay/EPIC_QUESTS_REVIEW.md` for the full decision and
+  its single-player-server rationale.
 
 ## In Progress
 
-- Server-side zone architecture review (new, top priority — see above).
 - Mechanics sweep resumption, prioritized toward combat/casting/HP
   regen/mana regen per current focus.
+- Applying the two drafted, repository-committed SQL scripts
+  (era-containment cleanup, necromancer pet race correction) against the
+  live database.
 - Client visual restoration (ADR-008) remaining sub-items: loading
   screens still RoF2-era, Velious-era zone visual research, general
   in-client verification pass.
@@ -155,10 +166,11 @@ below" as unverified rather than assume it still holds.
 
 # Next Milestones
 
-- Complete the server-side zone architecture review.
 - Resume and continue the mechanics sweep, working through the
   combat/casting/HP-regen/mana-regen items flagged as priority in
   `MECHANICS_REVIEW.md`.
+- Apply the era-containment cleanup and necromancer pet race correction
+  SQL scripts against the live database.
 - Continue faction, merchant, and tradeskill verification incrementally
   as background work.
 
@@ -176,12 +188,14 @@ below" as unverified rather than assume it still holds.
   prioritized above TAKP for any question involving *when* content was
   introduced, since TAKP itself progressed through Luclin and PoP and
   cannot make that distinction.
-- Client-side classic zone restoration (ADR-008) is treated as
-  requiring a corresponding server-side zone data review — visual
-  restoration alone does not guarantee the underlying zone
-  configuration matches.
+- The server-side zone data concern raised alongside ADR-008 (whether
+  zone points/safe coordinates/flags still matched the restored classic
+  geometry) is closed: confirmed already correct, no review needed.
 - Mechanics sweep work is treated as a living, cross-session document
   rather than a one-time pass — see `MECHANICS_REVIEW.md`.
+- Epic weapon equip-level requirement decided as left ungated, given
+  this server's current single-player context — see
+  `EPIC_QUESTS_REVIEW.md`.
 
 ---
 
