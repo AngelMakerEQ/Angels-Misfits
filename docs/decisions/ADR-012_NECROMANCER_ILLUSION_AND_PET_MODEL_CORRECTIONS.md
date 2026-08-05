@@ -113,6 +113,32 @@ was run before assuming a `spells_new` edit is live, and ideally verify via
 a **separate** database connection before investing time in the
 cache-rebuild/restart cycle.
 
+### RoF2 Material Serialization Follow-up (Cross-Cutting)
+
+The RoF2 client patch that stops race 60 from being forced to texture 0 is
+necessary, but it is not sufficient by itself for every actor delivery path.
+Testing with `skel_pet_37_` established that an ordinary NPC spawn correctly
+receives its configured material and size, while the same NPC type created as
+a player pet did not receive its material data in the RoF2 spawn packet.
+
+The server-side correction in `common/patches/rof2.cpp` makes the RoF2 encoder
+include equipment/material data whenever `emu->is_pet` is set. It is
+intentionally generic: it applies to every client-owned pet and summon using
+RoF2, rather than to a particular Necromancer template or character.
+
+This is an engine compatibility fix, not a replacement for a content audit.
+Before declaring race-60 rendering complete, validate all applicable actor
+paths after deployment:
+
+- ordinary NPC spawns, including texture 0 and nonzero texture variants;
+- permanent pets and temporary/summoned pets for every class;
+- player and NPC illusion spell effects, including explicit size values; and
+- zoning, reconnecting, and respawning for each of those paths.
+
+Do not use the GM `#texture` command as a validation substitute. It sends an
+illusion appearance update; for race 60 that update can apply the client
+default 4.0 size. Test through the normal spawn or spell path instead.
+
 ### Verification
 
 - Live database confirmed (via independent connection) to show `effectid`

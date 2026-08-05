@@ -4,7 +4,7 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-07-31
+**Last Updated:** 2026-08-02
 
 ---
 
@@ -42,15 +42,18 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
    other server-side configuration tied to zone geometry) against the
    classic zone files restored client-side in ADR-008, to confirm the
    two are actually consistent rather than assumed to be.
-2. **Resume the mechanics sweep** (`docs/development/WIP/
-   MECHANICS_REVIEW.md`), prioritizing the still-open and undecided
-   items specifically in combat, casting, HP regen, and mana regen —
-   see that document for the full breakdown.
+2. **Resume the mechanics sweep** (`docs/development/MECHANICS_REVIEW.md`,
+   consolidated and re-audited via ADR-014), prioritizing the still-open
+   items: the HP regen racial-bonus defect (likely requires a small
+   server-source patch), mana regen runtime verification, era-containment
+   cleanup application confirmation, and the unresearched casting/combat
+   categories — see that document for the full breakdown.
 3. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
    increment verification, tradeskill recipe data, and the out-of-era NPC
    audit. The seven researched epic 1.0 quests passed database/script
-   verification on 2026-08-02.
+   verification on 2026-08-02 (`docs/gameplay/EPIC_QUESTS_REVIEW.md`);
+   the remaining seven classes' epics are unresearched.
 
 ---
 
@@ -59,11 +62,15 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
 ## Completed
 
 - GitHub repository and documentation structure established.
-- Ten Architectural Decision Records accepted and implemented
-  (ADR-001 through ADR-010), covering content scope, server rules and
-  level cap, NPC combat stats, spell mechanics, pet stats, starting
-  kit, NPC models, client visual restoration (Phase 1), the full
-  spell/discipline legacy audit, and faction tier boundaries.
+- Fourteen Architectural Decision Records accepted (ADR-001 through
+  ADR-014), covering content scope, server rules and level cap, NPC
+  combat stats, spell mechanics, pet stats, starting kit, NPC models,
+  client visual restoration (Phase 1), the full spell/discipline
+  legacy audit, faction tier boundaries, RoF2 inventory container
+  location format, necromancer illusion/pet-model corrections (Part 2
+  pending live application), the all-class skill cap ceiling
+  correction, and the mechanics/epic-quest documentation consolidation
+  covered by this update.
 - Sense Heading and Swimming skill mechanics corrected to require
   guildmaster training and skill-up through use.
 - Bard instrument-modifier mechanic verified correct; one broken
@@ -76,12 +83,23 @@ core gameplay feel: combat, spellcasting, and HP/mana regeneration.
 - NPC "leash"/training distance mechanic disabled, restoring classic
   chase-until-caught behavior.
 - A systematic mechanics sweep is substantially underway across
-  skills, combat, aggro, corpses, charm, tradeskills, and more — see
-  `docs/development/WIP/MECHANICS_REVIEW.md` for full detail.
-- Research reference material built for class epic quests
-  (`docs/research/CLASS_EPIC_QUEST_REFERENCE.md`) and core game
-  mechanics (`docs/research/GAME_MECHANICS_REFERENCE.md`).
-- Six multibox characters created, leveled, equipped, and bound.
+  skills, combat, aggro, corpses, charm, tradeskills, and more,
+  including a full re-audit of every item's true open/closed status —
+  see `docs/development/MECHANICS_REVIEW.md` (consolidated and
+  re-audited via ADR-014, replacing the former WIP checklist and
+  three dated assessments).
+- The all-class skill cap ceiling defect corrected (ADR-013); the
+  classic minimum mana-regen floor applied (`Character:OldMinMana`);
+  spell component consumption confirmed correct with no data change
+  needed.
+- Seven of fourteen classes' epic 1.0 quests researched and verified
+  against the live database and quest scripts — see
+  `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated via ADR-014,
+  replacing the former research reference and audit documents).
+  Core game mechanics reference material remains at
+  `docs/research/GAME_MECHANICS_REFERENCE.md`.
+- Multibox characters created, leveled, equipped, and bound — see
+  Known Issues below for the corrected current level range.
 
 ## In Progress
 
@@ -117,9 +135,21 @@ Lavastorm was mistakenly believed to have zoneid=6039 but this was due to the qu
 
 None blocking. All open items are individually scoped research or
 verification gaps rather than active problems affecting current
-gameplay. The six existing characters are level 10 or below, so none
-of the corrections made to date have caused any loss of previously-
-learned content.
+gameplay.
+
+**Correction (2026-08-02, via ADR-014):** this section previously
+stated all characters were level 10 or below and that no correction
+had caused any loss of previously-learned content. Both claims were
+stale — Angel, an Iksar Necromancer, is level 40, and ADR-013's skill
+cap ceiling correction reduced seven of her already-trained skills
+(1H/2H Blunt, Bind Wound, Defense, Dodge, Hand to Hand, 1H Piercing,
+Throwing, Alcohol Tolerance) plus a specialization that had drifted
+above the true cap. That reduction is intended and correct — the
+character had trained past a defect that has since been fixed — but
+it is a real, visible change to previously-learned content, not a
+no-op. Live character levels beyond Angel have not been re-confirmed
+as part of this correction; treat "six characters at level 10 or
+below" as unverified rather than assume it still holds.
 
 ---
 
@@ -136,8 +166,12 @@ learned content.
 
 # Recent Major Decisions
 
-- ADR-001 through ADR-010 — see `docs/decisions/` for full detail on
-  each.
+- ADR-001 through ADR-014 — see `docs/decisions/` for full detail on
+  each. ADR-011 through ADR-014 (RoF2 inventory container locations,
+  necromancer illusion/pet-model corrections, skill cap ceiling
+  correction, and this mechanics/epic-quest documentation
+  consolidation) postdate this document's prior update and were not
+  previously reflected here.
 - P99 wiki adopted as the primary era-accuracy reference throughout,
   prioritized above TAKP for any question involving *when* content was
   introduced, since TAKP itself progressed through Luclin and PoP and
