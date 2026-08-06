@@ -113,47 +113,78 @@ was run before assuming a `spells_new` edit is live, and ideally verify via
 a **separate** database connection before investing time in the
 cache-rebuild/restart cycle.
 
-### RoF2 Material Serialization Follow-up (Cross-Cutting)
+## Part 2: Race-60 Skeleton Pet Material Restoration (RoF2)
 
-The RoF2 client patch that stops race 60 from being forced to texture 0 is
-necessary, but it is not sufficient by itself for every actor delivery path.
-Testing with `skel_pet_37_` established that an ordinary NPC spawn correctly
-receives its configured material and size, while the same NPC type created as
-a player pet did not receive its material data in the RoF2 spawn packet.
+#### Context
 
-The server-side correction in `common/patches/rof2.cpp` makes the RoF2 encoder
-include equipment/material data whenever `emu->is_pet` is set. It is
-intentionally generic: it applies to every client-owned pet and summon using
-RoF2, rather than to a particular Necromancer template or character.
+RoF2 normally forces race 60 (Skeleton) to texture 0 in the client. After
+that behavior was corrected, ordinary race-60 NPCs with texture 1, including
+Oasis Dry Bones, rendered red/brown at size 6. This proved the client can
+render the intended classic skeleton variant.
 
-This is an engine compatibility fix, not a replacement for a content audit.
-Before declaring race-60 rendering complete, validate all applicable actor
-paths after deployment:
+Malignant Dead still created a white skeleton. Runtime inspection isolated
+the actual content mapping:
 
-- ordinary NPC spawns, including texture 0 and nonzero texture variants;
-- permanent pets and temporary/summoned pets for every class;
-- player and NPC illusion spell effects, including explicit size values; and
-- zoning, reconnecting, and respawning for each of those paths.
+| Actor | Race | Size | Runtime texture |
+|---|---:|---:|---:|
+| Dry Bones | 60 | 6 | 1 |
+| `#npctypespawn 624` test NPC | 60 | 6 | 1 |
+| Malignant Dead pet | 60 | 6 | 4 |
 
-Do not use the GM `#texture` command as a validation substitute. It sends an
-illusion appearance update; for race 60 that update can apply the client
-default 4.0 size. Test through the normal spawn or spell path instead.
+The Malignant Dead pet uses NPC template **623**, not template 624. Template
+623's texture was 4 (white), while 624 was an adjacent but unrelated template.
 
-### Verification
+#### Decision
 
-- Live database confirmed (via independent connection) to show `effectid`
-  89 with `effect_limit_value` 6 in the designated slot for all six spells.
-- In-game: Call of Bones cast on Angel (Level 40 Iksar Necromancer) held at
-  correct height following cache rebuild and server restart.
+Preserve the material configured on each skeleton pet's actual NPC template,
+and correct the Malignant Dead template to the intended classic material.
+
+The following changes are accepted and deployed:
+
+1. **RoF2 client.** In `eqgame.exe`, the race-60 texture-zero branch in
+   `EQPlayer::SwapNPCMaterials` is bypassed by changing the conditional jump
+   at file offset `0x193F09` from `75` (`JNE`) to `EB` (`JMP`). The original
+   executable is retained as `eqgame.exe.bak-race60-texture`.
+2. **Database.** `npc_types.id = 623` was changed from texture 4 to texture
+   1. Its race remains 60 and its explicit size remains 6. This is the
+   Malignant Dead content correction.
+3. **Version-matched server source.** The v23.10.3 source build now sends a
+   RoF2 appearance update for skeleton pets using the texture held by the
+   pet's own `NPCType` data, rather than the mutable runtime texture. This is
+   invoked both when a pet is created and when a client receives zone
+   appearance refreshes. The implementation is in `zone/npc.h`,
+   `zone/mob.cpp`, `zone/pets.cpp`, and `zone/spell_effects.cpp`; the rebuilt
+   `zone.exe` is deployed.
+
+This design is template-driven. It does not make all skeletons texture 1:
+future NPC, summon, or pet templates may use their own valid nonzero texture
+and retain that selection.
+
+#### Verification
+
+- Oasis Dry Bones reported race 60, size 6, texture 1 and rendered red/brown.
+- `#npctypespawn 624` reported race 60, size 6, texture 1 and rendered
+  red/brown.
+- A fresh Malignant Dead pet, after the template-623 update and server restart,
+  rendered red/brown at the intended size.
+
+#### Operational Notes
+
+- Run content updates in HeidiSQL (or another MariaDB query editor) and commit
+  the transaction before restarting the server.
+- `npc_types` changes require a zone/server restart to reload; no
+  `shared_memory.exe spells` rebuild is required.
+- Keep the prior deployed `zone.exe` backup alongside the new binary for a
+  direct rollback if a future server build is replaced.
 
 ### Implementation Status
 
-**Implemented and verified 2026-08-02.** All six spell rows updated and
-confirmed live; in-game height confirmed correct on cast.
+**Part 1 implemented and verified 2026-08-02. Part 2 implemented and
+verified 2026-08-05.** Part 3 remains drafted and unapplied.
 
 ---
 
-## Part 2: Necromancer Pet Model Race Correction (485 → 85)
+## Part 3: Necromancer Pet Model Race Correction (485 → 85)
 
 ### Investigation
 
