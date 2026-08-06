@@ -4,7 +4,7 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-08-05
+**Last Updated:** 2026-08-06
 
 ---
 
@@ -44,10 +44,12 @@ feel: combat, spellcasting, and HP/mana regeneration.
 2. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
    increment verification, tradeskill recipe data, and the out-of-era NPC
-   audit. The seven researched epic 1.0 quests passed database/script
-   verification on 2026-08-02 (`docs/gameplay/EPIC_QUESTS_REVIEW.md`);
-   the remaining seven classes' epics are unresearched. The epic weapon
-   equip-level question is now decided (left ungated — see that document).
+   audit. All fourteen classes' epic 1.0 quests have now passed full
+   database/quest-script verification — every NPC, loot source, and
+   hand-in script traced end to end, not just the final reward
+   (`docs/gameplay/EPIC_QUESTS_REVIEW.md`, closed 2026-08-06). The epic
+   weapon equip-level question is decided (left ungated — see that
+   document).
 
 ---
 
@@ -95,11 +97,13 @@ feel: combat, spellcasting, and HP/mana regeneration.
 - Late-game necromancer Spectre pet-model correction applied and verified:
   all 38 templates in the six affected pet chains use classic race 85; none
   remain at Luclin-era race 485 (ADR-012 Part 3).
-- Seven of fourteen classes' epic 1.0 quests researched and verified
-  against the live database and quest scripts — see
-  `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated via ADR-014,
-  replacing the former research reference and audit documents).
-  Core game mechanics reference material remains at
+- All fourteen classes' epic 1.0 quests researched and fully verified
+  against the live database and quest scripts (the last seven — Paladin,
+  Ranger, Shadow Knight, Druid, Magician, Wizard, Rogue — closed
+  2026-08-06 with a full NPC/loot-table/quest-script trace, not just the
+  final reward) — see `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated
+  via ADR-014, replacing the former research reference and audit
+  documents). Core game mechanics reference material remains at
   `docs/research/GAME_MECHANICS_REFERENCE.md`.
 - Multibox characters created, leveled, equipped, and bound — see
   Known Issues below for the corrected current level range.
