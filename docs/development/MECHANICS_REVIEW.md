@@ -31,27 +31,19 @@ This is a credible defect: the configured Iksar/Troll bonus (`Character:BaseHPRe
 
 `Character:OldMinMana` was set `true` in ruleset 1 (`scripts/2026-08-01_classic_minimum_mana_regen.sql`, applied 2026-08-02 per commit history). This restores the classic floor of 2 mana/tick sitting and 1/tick standing at zero Meditate skill, without altering the normal Meditate formula. **Not yet independently confirmed live in-game** — the recommended test (a character with zero Meditate, before/after comparison, expecting +1 standing / +2 sitting) has not been recorded as performed. Close this out with an in-game tick count once convenient; the SQL change itself is not in question, only whether the server picked it up correctly (ruleset reload requires a full World/Zone restart).
 
-### 3. 🔴 Casting — genuinely unresearched, not contested
+### 3. 🔴 Combat — remaining actionable item
 
-Four items with no research pass done at all, distinct from the contested/accepted items in the closed section below:
-- Spell interruption (movement/melee-push interrupt chance).
-- Spell recast/recovery time enforcement — confirming these are actually enforced server-side at the intended values, not just present in the stored data (component consumption below is the cautionary precedent: correct data does not guarantee correct runtime enforcement).
-- Spell component consumption on interruption/fizzle specifically as a runtime behavior — see the Spell Component Consumption item below; the *data* is confirmed correct and no SQL change is needed, but the smoke test confirming runtime behavior has not been recorded as performed.
-- Line-of-sight requirements for spellcasting.
+- Item stacking rules by item type beyond the explicitly verified phase-1
+  Classic corrections (Bone Chips, Bat Wings, Spiderling Silk, and Peridots;
+  see `scripts/2026-08-06_classic_item_stack_size_phase_1.sql`). Further
+  changes must remain item-by-item: Classic ammunition legitimately uses
+  100-item stacks, so a blanket stack-size conversion is incorrect.
 
-### 4. 🔴 Combat — genuinely unresearched, not contested
+### 4. 🔲 Not yet researched — small, low-effort items
 
-- Critical hit chance formula (distinct from critical hit *damage*, already documented — see Closed Reference Material below).
-- Bash/kick/other combat skill-based special attack mechanics.
-- Line-of-sight for aggro.
-- Snare/root stacking rules on run speed (no specific stacking rule has been found beyond general debuff-slot behavior).
-- Item stacking rules by item type.
+Carried forward from the original sweep, none individually large: pet command responsiveness (cast-time lag on pet commands, if any).
 
-### 5. 🔲 Not yet researched — small, low-effort items
-
-Carried forward from the original sweep, none individually large: pet command responsiveness (cast-time lag on pet commands, if any); corpse summoning rules/range beyond configured decay timers; item-loss-on-death mechanic itself (which items are eligible to be lost, separate from the already-set `DeathItemLossLevel` threshold); skill cap enforcement edge cases beyond the ceiling fix in ADR-013.
-
-### 6. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
+### 5. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
 
 Preserve current EQEmu behavior on all of these unless a runtime test finds an actual discrepancy against a real classic target. Do not infer a correction from P99 forum disagreement or a modern-sounding rule name alone: weapon damage caps/max-damage formula/weighted D20/proc rate/backstab formula (conceptually documented, not checked against this project's source); Bind Wound's 50%/70%-at-completion threshold behavior; AA/veteran reward and guild inaccessibility under the Velious gate (near-certain already correct via the expansion gate, worth one quick confirmation rather than an assumption).
 
@@ -64,6 +56,38 @@ Preserve current EQEmu behavior on all of these unless a runtime test finds an a
   and the Velious expansion gate unchanged. The committed
   `2026-08-01_era_containment_cleanup.sql` has been applied successfully.
 - **Charm break mechanic.** `Spells:CharmBreakCheckChance = 25` (25% chance per buff tick) matches EQEmu's own developer-commented calibration against a documented ~68-tick average charm duration at 0% resist. `Pets:LivelikeBreakCharmOnInvis = true` also confirmed at its correct default.
+- **Spell recast/recovery enforcement.** `CastedSpellFinished()` rejects an
+  unexpired per-spell reuse timer server-side, then starts that timer from the
+  spell's stored recast value after a successful cast. Linked spell timers and
+  item-click timers are checked separately. This prevents client/UI bypasses;
+  no data or rules change is needed.
+- **Spellcasting line-of-sight.** Detrimental single-target spells are checked
+  against both geometric and water line of sight in `SpellFinished()`, after
+  the cast completes; area effects test each target at resolution. This is the
+  pre-September-2002 Classic timing rather than the later cast-start check, so
+  no change is needed.
+- **Melee/ranged critical hits.** The source limits innate critical hits to
+  level-12+ Warriors for melee, Rangers for archery, and Rogues for throwing,
+  with no ordinary spell crits in the Classic era. The active critical
+  difficulties retain the EQEmu Classic defaults (melee 8,900; archery 3,400;
+  throwing 1,100), and NPC critical hits are disabled. This agrees with P99's
+  documented Classic class restrictions; no rule or data change is needed.
+- **Pet attack engagement range.** `Pets:AttackCommandRange` is the default
+  40,000 squared units (200 units), matching P99's archival Classic testing.
+  No range adjustment is justified. This does not decide the separate,
+  disputed historical ability to use `/pet attack [name]` as a zone-wide
+  target-discovery tool.
+- **Aggro line-of-sight.** `CheckWillAggro()` and social-assist evaluation both
+  require `CheckLosFN()` before an NPC aggroes. This matches the P99 Classic
+  baseline: an NPC needs line of sight to body-aggro a player or socially
+  assist another NPC. Zone-specific outdoor map geometry remains a map-data
+  matter, not a global ruleset discrepancy.
+- **Root/snare movement stacking.** Source confirms Root and Snare are
+  separate effects. A Snare overwrites a positive movement-speed effect such
+  as Spirit of Wolf, while Spirit of Wolf cannot overwrite an existing Snare;
+  Root leaves the movement effect intact. This matches the January 2001
+  Classic behavior. `Spells:SnareOverridesSpeedBonuses` does not govern the
+  normal Classic Snare line and requires no change.
 - **Mesmerize.** Confirmed non-stacking (a second cast before the first expires fails to extend it) and confirmed to interrupt a casting mob's spell for free (no mana cost to the caster) on a successful land.
 - **Root.** Direct-damage spells confirmed able to break Root early (dedicated P99 Spell page). The specific "20% of damage dealt" root-break figure remains ambiguous on PvE-general vs. PvP-specific applicability — not fully resolved, low priority.
 - **Social aggro / assist radius fallback.** Only 4.4% of NPCs (2,957/67,530) have a nonzero explicit `assistradius`; checking `aggro.cpp` confirms the fallback (`if (assist_range > aggro_range) aggro_range = assist_range`) correctly uses the NPC's regular ADR-003 aggro radius otherwise. Initial appearance of a gap was a false alarm — no fix needed.
@@ -72,9 +96,18 @@ Preserve current EQEmu behavior on all of these unless a runtime test finds an a
 - **Out-of-combat "Rested" regen bonus: confirmed we should NOT have this.** Agnarr-specific (a later progression server), not classic/P99 behavior. Useful negative confirmation, not an open item.
 - **Bind Wound formula.** ~10 seconds, interrupted by attacking/being attacked. 1 HP per 4 skill points at skill ≤200 (max 50 HP); 1 HP per 2.5 skill points at skill 201+ (max 84 HP at 210). Usable only while target HP is below 50% (70% at 201+ skill) *at the moment bandaging finishes*, not when started. High confidence on the formula; the completion-time threshold behavior against this project's own source is Tier 2 (unconfirmed, low priority).
 - **Resurrection window.** `Character:CorpseResTime = 10,800,000ms` = exactly 3 hours, matching P99 precisely.
+- **Corpse summoning.** The live `Summon Corpse` spell matches the Classic
+  level-39 Necromancer version: 700 mana, 5-second cast, Jade Inlaid Coffin
+  reagent, same-zone corpse lookup, and a group-member requirement. No
+  additional range rule or data correction is needed.
+- **Player-corpse item transfer.** Once the deliberately selected level-15
+  item-loss threshold is met, the source transfers worn equipment, general
+  inventory, contents of carried bags, and coin to the corpse in one database
+  transaction. This is the Classic all-possessions corpse behavior; no item
+  eligibility correction is needed.
 - **NPC empty corpse decay.** `NPC:EmptyNPCCorpseDecayTime = 0` (instant), matching "usually decay instantly when the loot window is closed."
 - **NPC minor corpse decay.** `NPC:MinorNPCCorpseDecayTime = 450,000ms` (7.5 min), essentially matching "approximately seven minutes."
-- **Spell component consumption — data and cast-path logic confirmed correct (2026-08-01).** `Character:PetsUseReagents = true`; all 774 level-50-playable spells with components resolve their component IDs to valid `items` rows (the 12 unmatched IDs are test/NPC-only records, not playable classic spells). The EQEmu cast path performs the fizzle check *before* component handling, so a fizzle costs 1/4 mana and no reagent, and an interrupted cast never reaches component handling either — both are the intended classic behavior, not a gap. Necromancer pet Bone Chip requirements (1 for Cavorting Bones, 2 for the later pet line) confirmed correct. **No SQL change was or is needed.** The optional in-game smoke test (cast with exact/insufficient components, force a fizzle) remains an operational nice-to-have, not a blocking verification gap — folded into item 3 above only as a "hasn't been recorded as run" note, not a data concern.
+- **Spell component consumption — data and cast-path logic confirmed correct (2026-08-01).** `Character:PetsUseReagents = true`; all 774 level-50-playable spells with components resolve their component IDs to valid `items` rows (the 12 unmatched IDs are test/NPC-only records, not playable classic spells). The EQEmu cast path performs the fizzle check *before* component handling, so a fizzle costs 1/4 mana and no reagent, and an interrupted cast never reaches component handling either — both are the intended classic behavior, not a gap. Necromancer pet Bone Chip requirements (1 for Cavorting Bones, 2 for the later pet line) confirmed correct. **No SQL change was or is needed.** An in-game smoke test remains optional operational confirmation, not an actionable verification gap.
 
 ---
 
@@ -86,14 +119,31 @@ Researched and found genuinely contested even within P99's own community (its ow
 - **Resist checks / resist rate scaling.** P99's own Statistics page states its resist-formula information "is not necessarily correct for P99... but it's probably pretty close," with an explicit unfilled "(Todo)" placeholder for the actual formula. No confidence-worthy target exists anywhere, including on P99 itself.
 - **Charm duration formula / CHA's role.** The Enchanter class page claims CHA extends charm duration; independent forum testing found no measurable CHA effect. This project's own source checked directly: CHA only appears in `aggro.cpp` for Lull's resist check, nowhere in charm break-check logic — i.e. this implementation matches the "no CHA effect" camp. Given the wiki's own internal disagreement, not treated as a bug.
 - **Stun duration and resist mechanics.** Mostly documented in PvP-specific, actively-disputed threads not relevant to this cooperative server; P99's own Game Mechanics page admits "values still being tuned."
+- **Spell interruption/channeling.** Player casts use the existing
+  skill-based concentration calculation; NPC casts use the upstream generic
+  85% concentration baseline, reduced by incoming hits and movement. The
+  historical NPC interruption target is disputed and there is no rules-only
+  correction. A source patch was intentionally not pursued after its separate
+  build/deployment test proved incompatible with the live zone binary; preserve
+  current behavior unless a concrete player-visible problem emerges.
 - **Riposte/dodge/parry/block.** No clean formula found, mostly qualitative (AGI affects Dodge/Defense/Parry skill-up rate and avoidance AC, with a breakpoint around 75 AGI; a separate low-HP AGI penalty starts near 25% health). Same bucket as fizzle/resist.
+- **Bash, slam, and kick details.** The Warrior kick stun gate was corrected
+  from 56 to the Classic value of 55 on 2026-08-05. The remaining Bash/Slam
+  path retains the EQEmu defaults (base damage 2, shield-AC divisor 25,
+  two-second stun when a stun lands). P99 evidence supports the level gate and
+  duration but not a reliable universal landing/interrupt formula, so no
+  further tuning is justified.
 - **Sneak/invisibility and social aggro.** P99's Aggro page states plainly that sneak/invis "no longer prevent social aggro on P99" — the phrase "no longer" implies a change from an earlier P99 implementation, and a forum thread theorizes true classic behavior differed, explicitly labeled speculation by its own author. Even P99 itself isn't settled here; match current implementation.
 - **Feign Death: resisted-spell interaction.** Whether a resisted (not landed) spell cast on a feigned player should break FD is a real, disputed community question with conflicting patch dates (~2001 vs. ~2005-2006). The core re-aggro percentages above are solid; this sub-question is not.
 - **Normal player corpse decay (with items), ~24.86 days vs. classic 7 days.** Deliberate ADR-002 deviation for solo-play convenience, explicitly recorded there as a known non-classic choice, not an oversight.
 - **Player empty/naked corpse decay, 30 seconds.** Community sources describe classic values ranging 3 minutes to 3 hours depending on era (with a Feb 21, 2001 patch — inside this project's window — suggesting 3 hours for a naked corpse above level 30). Raised for a decision; **project lead reviewed and elected to keep the current 30-second value.** Closed by decision, not by evidence resolution.
 - **NPC major (high-level) corpse decay: 25 min vs. documented 30 min.** A 5-minute gap, small enough not to warrant a dedicated fix on its own — batch in if this rule is ever touched for another reason.
 - **General (non-tradeskill) skill-up rate formula.** No formula distinct from the tradeskill skill-up mechanic was found; same shape (governing stat determines chance to gain a point), same lower confidence, not independently verified against source.
-- **Pet leash/follow mechanics.** `/pet guard here` confirmed to have no distance limit. `/pet attack [name]` targeting range is reported by the community as much larger in true classic than on current P99, without a precise confirmed number — lower confidence, not verified against source in this pass.
+- **Skill-cap edge cases.** ADR-013's final comprehensive post-fix sweep found
+  no remaining functional cap outliers in the eight in-scope Classic classes.
+  The apparent exceptions were either intentionally inert unavailable skills
+  or explicitly excluded tradeskills; no further cap migration is needed.
+- **Pet leash/follow mechanics.** `/pet guard here` is confirmed to have no distance limit. The actual 200-unit `/pet attack` engagement range is confirmed correct above; only the historical zone-wide target-discovery behavior of `/pet attack [name]` remains disputed and is not worth custom implementation.
 
 ---
 
