@@ -71,6 +71,7 @@ docs/
 ├── database/
 ├── decisions/
 ├── development/
+│   └── assessments/
 ├── gameplay/
 ├── quests/
 └── research/
