@@ -1,4 +1,4 @@
-# P99 NPC Reconciliation: Fresh-Agent Handoff
+# Classic NPC Reconciliation: Fresh-Agent Handoff
 
 ## Objective
 
