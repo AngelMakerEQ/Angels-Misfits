@@ -4,7 +4,7 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-08-02
+**Last Updated:** 2026-08-05
 
 ---
 
@@ -196,6 +196,30 @@ below" as unverified rather than assume it still holds.
 - Epic weapon equip-level requirement decided as left ungated, given
   this server's current single-player context — see
   `EPIC_QUESTS_REVIEW.md`.
+
+---
+
+# Environment
+
+**Server platform:**
+- Local Windows installation
+- EQEmu Windows Installer v23.10.3 (Akk Stack Docker)
+- MariaDB database, managed via HeidiSQL
+- Spire for server management and configuration
+- Rain of Fear 2 (RoF2) client, base client sourced from AddictedDads'
+  "RoF2_Full.zip" (used as a pristine base only; see ADR-008)
+- EQEmu MCP — connected and in active use for direct database
+  inspection and modification
+
+**Database origin:** Originally imported as a pure PEQ database (Sept
+2025 dump); has since undergone extensive, documented correction
+toward classic/Velious-era accuracy — see `docs/decisions/` for the
+full ADR series and `CHANGELOG.md` for smaller fixes.
+
+**Key reference material:** `docs/research/GAME_MECHANICS_REFERENCE.md`
+(core mechanics formulas), `docs/development/MECHANICS_REVIEW.md`
+(living mechanics sweep tracker), `docs/gameplay/EPIC_QUESTS_REVIEW.md`
+(epic quest tracker).
 
 ---
 

@@ -102,3 +102,28 @@ note (confirming the Krono item does not exist in Angels Misfits'
 item database) remains a distinct, small, low-priority check — not a
 UI concern — and can be folded into a future database audit pass
 rather than tracked under this ADR.
+
+## Addendum: Spell Particle Effects Root Cause Corrected (2026-08-04, see ADR-015)
+
+Decision #3 above logged classic spell particle effects not emitting
+correctly from the caster's hands as a "known accepted cosmetic
+limitation," attributed to an assumed RoF2 engine-level incompatibility
+and not investigated further at the time.
+
+ADR-015 (Classic Spell Particle Texture Restoration) investigated this
+symptom directly and found a different root cause: when this ADR's
+Decision #3 originally applied FV Project's classic spell effect files,
+only the effect *definition* files (`spellsnew.eff`/`.edd`) were
+copied — the 41 texture *images* those definitions point to were left
+behind in the source client. The effect system was triggering
+correctly; it simply had no sprite to draw. Copying the missing texture
+files (no `spells_new`/database changes involved) resolved the issue,
+confirmed in-game 2026-08-04.
+
+**This was not an engine-level limitation** — it was an incomplete
+asset copy, a straightforward data-completeness gap. Read this ADR's
+Decision #3 alongside ADR-015 going forward; the "known accepted
+cosmetic limitation" characterization there is superseded for the
+particle-emission symptom specifically. (A single unrelated texture,
+`lightningsp501.dds`, remains genuinely missing from both the live and
+reference clients — see ADR-015 for that narrow residual gap.)

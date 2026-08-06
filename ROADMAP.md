@@ -15,7 +15,7 @@ Goals achieved:
 
 # Phase 2: Classic Experience Restoration — IN PROGRESS
 
-See ADR-008 for full detail on work completed and outstanding.
+See ADR-008 (and its addenda) for full detail on work completed and outstanding.
 
 Completed:
 
@@ -23,31 +23,60 @@ Completed:
 - Classic zone files applied (FV Project source, 14 zones)
 - Spell icons, gems, effects, and skeleton models updated
 - UI selected (TaipoUI, after evaluating and rejecting Defiance, SARS, and Default Old Interface by Drakah)
+- Troll/Ogre Luclin-model question dropped from tracking — low-stakes, fluid preference (ADR-008 addendum)
+- Marketplace UI cleanup substantially resolved under TaipoUI (ADR-008 addendum)
+- Spell particle effects restored — root cause was 41 missing texture files from an incomplete original asset copy, not an engine limitation as first assumed (ADR-015, corrects ADR-008)
 
 Outstanding:
 
 - Loading screen restoration (not yet researched)
 - Velious-era zone visual research (not yet started)
-- Spell icon mismatch diagnosis (known issue)
+- Spell icon mismatch diagnosis (known issue, distinct from the particle-texture issue resolved by ADR-015)
 - Formal in-client verification pass (deferred)
+- Krono database-absence check (small, low-priority)
 
 Player model philosophy (unchanged):
 
-- Allow optional Luclin player models — currently all off; Troll/Ogre exception under consideration
+- Allow optional Luclin player models — currently all off
 - Prefer classic-era NPC appearances — achieved by default for non-playable NPC races; not achievable for NPCs sharing playable race IDs (confirmed engine limitation)
 
 ---
 
 # Phase 3: Database Baseline and Gameplay Foundation — SUBSTANTIALLY COMPLETE
 
-Completed via ADR-001 through ADR-007:
+Completed via the database-correction ADR series (ADR-001–ADR-007, ADR-009–ADR-013):
 
 - Compared Angels Misfits database against PEQ and TAKP
 - Documented imported systems and server rules
-- Corrected NPC combat stats, spell mechanics, pet stats, starting items, and NPC model data
-- Established database change tracking via the ADR series
+- Corrected NPC combat stats, spell mechanics, pet stats, starting items, and NPC model data (ADR-001–ADR-007)
+- Full spell/discipline legacy audit across all 14 Velious-playable classes (ADR-009)
+- Faction tier boundaries corrected across all 8 tiers (ADR-010)
+- RoF2 inventory container location format corrected (ADR-011)
+- Necromancer illusion-height and pet-model race corrections (ADR-012 — Part 2, the pet-model race correction, drafted but not yet applied live)
+- Skill cap ceiling defect corrected across 8 classes (ADR-013)
+- Database change tracking established via the ADR series, with migrations increasingly captured as versioned, committed SQL scripts under `scripts/`
 
 Outstanding:
 
-- Item and spell-level expansion scoping (ongoing, incremental per ADR-001)
+- Item stat-budget conventions for era-appropriate itemization
 - Broader itemization and quest content review
+- Out-of-era NPC audit
+
+---
+
+# Phase 4: Systematic Mechanics & Epic Quest Verification Sweep — IN PROGRESS
+
+Ongoing, living-document work — see `docs/development/MECHANICS_REVIEW.md`
+and `docs/gameplay/EPIC_QUESTS_REVIEW.md` for current item-level status
+rather than duplicating it here (both consolidated and re-audited via
+ADR-014).
+
+- Category-by-category mechanics sweep (combat, casting, regen, aggro,
+  corpses, tradeskills, and more) — several categories closed; current
+  priority is HP/mana regen and casting/combat.
+- Class epic 1.0 quest research and database/script verification — 7
+  of 14 classes complete.
+
+---
+
+For current priorities and active work, see `PROJECT_STATUS.md`.

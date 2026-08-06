@@ -9,7 +9,7 @@ Angels Misfits is a well-documented, configuration-first EQEmu project. Its core
 
 The completed correction work is substantial and generally well validated: expansion gating, level-cap correction to 60, classic spell mechanics, class spell availability, NPC and pet tuning, starting inventory, skeleton models, faction boundaries, skill behavior, bard mechanics, merchant pricing, and NPC chase behavior. The project’s database verification standard is particularly strong: direct live queries, targeted checks, random samples, exclusion checks, and anomaly investigation.
 
-The central architectural weakness is reproducibility. The live database currently contains the real implementation, while the repository primarily documents it. Applied migrations, rule exports, and client patch manifests are not versioned in a form that can deterministically rebuild the live state.
+The central architectural weakness is reproducibility. The live database currently contains the real implementation, while the repository primarily documents it. **Update (2026-08-05):** since this review, applied migrations have increasingly been captured as versioned, committed SQL scripts under `scripts/` — this is no longer accurate as an absolute claim. A full rule-value export and a client patch manifest still do not exist, so the underlying gap (not everything needed to deterministically rebuild the live state is versioned) remains real, just narrower than originally assessed.
 
 ## Architecture Map
 
@@ -52,6 +52,8 @@ Repository: ADRs, research, status, and standards
 - **ADR-009:** Audits all 14 Velious-playable classes, disables non-legacy spells/disciplines, fixes wrong levels/duplicates, restores omissions, and resolves Harm Touch duplicate behavior.
 - **ADR-010:** Corrects eight global faction-tier boundaries and verifies the core faction-hit mechanism against a documented example.
 
+**Update (2026-08-05):** five further ADRs have been accepted since this list was written — ADR-011 (RoF2 inventory container location format), ADR-012 (necromancer illusion-height and pet-model race corrections), ADR-013 (skill cap ceiling correction, all 8 relevant classes), ADR-014 (mechanics/epic-quest documentation consolidation), and ADR-015 (spell particle texture restoration — a defect not yet discovered at the time this assessment was written). Not individually detailed here — see `CHANGELOG.md` and `docs/decisions/` for full detail on each.
+
 ## Unfinished Work
 
 ### Mechanics verification
@@ -74,7 +76,7 @@ The active priority is correctly the mechanics sweep. Its remaining work should 
 - Audit item era/stat budgets, item/loot exposure, tradeskill recipe and trivial-value data, and out-of-era NPCs.
 - Continue merchant inventory verification outside Cabilis and Field of Bone; begin per-vendor `greed` calibration.
 - Finish epic research for Paladin, Ranger, Shadow Knight, Druid, Magician, Wizard, and Rogue.
-- Verify all 14 epic quests end-to-end: NPCs, spawns, factions, scripts, containers, drops, and rewards.
+- **Update (2026-08-05):** the other 7 classes (Warrior, Shaman, Enchanter, Monk, Cleric, Bard, Necromancer) have since passed a database/quest-script structural audit — see `docs/gameplay/EPIC_QUESTS_REVIEW.md`. Live end-to-end player verification (GM-assisted walkthroughs) remains outstanding for those 7; the other 7 classes remain entirely unresearched as originally noted.
 - Complete deep content reviews of the eleven identified external repositories only where they fill a specific project gap.
 
 ### Client and operations
@@ -88,19 +90,13 @@ The active priority is correctly the mechanics sweep. Its remaining work should 
 
 ## Technical Debt
 
-### 1. Reproducibility debt — critical
+### 1. Reproducibility debt — critical at the time, partially resolved since
 
-The repository contains no versioned applied SQL migrations or live configuration export; `scripts/` is effectively empty. Backups and post-change verification are valuable, but they do not recreate a server deterministically. The live database is therefore the actual implementation source, which conflicts with the repository’s intended role as source of truth.
+**Update (2026-08-05):** `scripts/` is no longer effectively empty — several transactional, committed migration scripts now exist (e.g. era-containment cleanup, classic minimum mana regen, necromancer pet race correction, RoF2 inventory/personal-bag repairs). The core gap this item identified — no comprehensive rule-value export and no client patch manifest — is still real and still worth solving, but the specific claim that no migrations are versioned at all is now out of date.
 
-### 2. Documentation drift — high
+### 2. Documentation drift — high (as of this review's date)
 
-Several documents are stale or contradictory:
-
-- ADR-004 opens with an obsolete “implementation pending” status before later documenting completion.
-- The WIP progress log says NPC leash behavior is enabled/pending, while `CHANGELOG.md` and `PROJECT_STATUS.md` state it was disabled.
-- `PROJECT_STATUS.md` describes six level-10 characters, while `Angel.md` records a level-40 Necromancer.
-- `ROADMAP.md` and `CURRENT_STATE.md` largely stop at ADR-007-era status and omit ADR-008 through ADR-010 and newer mechanics work.
-- ZEM is recommended next in the WIP document but explicitly deprioritized in the authoritative status document.
+**Update (2026-08-05):** every specific item originally listed here has since been resolved — ADR-004 reads `Implemented` outright; the WIP progress log (and the leash-behavior contradiction it caused) no longer exists, retired via ADR-014; `PROJECT_STATUS.md`'s character-level claim was corrected via ADR-014 (Angel is level 40, and ADR-013 measurably reduced several of her trained skills); `ROADMAP.md` has been brought current through ADR-015 and `CURRENT_STATE.md` was retired into `PROJECT_STATUS.md` to remove the duplication that caused this drift in the first place; ZEM's WIP-vs-status contradiction no longer exists, also retired via ADR-014. This item is left in place as a record of a real, now-closed problem, not as an open action item.
 
 ### 3. Evidence-quality debt — high
 
@@ -122,10 +118,10 @@ Database verification is excellent, but the formal testing standard does not yet
 
 ### Phase 1: Stabilize the project record
 
-1. Reconcile `PROJECT_STATUS.md`, `ROADMAP.md`, `CURRENT_STATE.md`, ADR implementation headers, WIP logs, and character records.
-2. Create a live-state ledger recording each decision, migration ID, expected final state, evidence, verification date, and intentional deviations.
-3. Version all applied migrations and rule changes, with rollback/rebuild guidance where practical.
-4. Create a RoF2 patch manifest with file paths, sources, checksums, dates, and rollback location.
+1. Reconcile `PROJECT_STATUS.md`, `ROADMAP.md`, `CURRENT_STATE.md`, ADR implementation headers, WIP logs, and character records. **Update (2026-08-05): done** — ADR-014 reconciled the mechanics/epic-quest tracking cluster and corrected the character-level claim; `CURRENT_STATE.md` has since been retired (its unique content folded into `PROJECT_STATUS.md`) and `ROADMAP.md` brought current through ADR-015, removing the exact duplication that caused this drift.
+2. Create a live-state ledger recording each decision, migration ID, expected final state, evidence, verification date, and intentional deviations. Still outstanding.
+3. Version all applied migrations and rule changes, with rollback/rebuild guidance where practical. **Partially done** — recent migrations are captured as committed, transactional SQL scripts under `scripts/`; a comprehensive rule-value export/ledger still does not exist.
+4. Create a RoF2 patch manifest with file paths, sources, checksums, dates, and rollback location. Still outstanding.
 
 ### Phase 2: Close the mechanics baseline
 
