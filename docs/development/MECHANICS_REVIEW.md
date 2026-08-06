@@ -47,17 +47,11 @@ Four items with no research pass done at all, distinct from the contested/accept
 - Snare/root stacking rules on run speed (no specific stacking rule has been found beyond general debuff-slot behavior).
 - Item stacking rules by item type.
 
-### 5. 🔴 Era-containment cleanup — drafted, execution not confirmed
-
-`scripts/2026-08-01_era_containment_cleanup.sql` disables the two confirmed live data conflicts with ADR-009's Beastlord/Berserker exclusion (57 Beastlord + 37 Berserker active-level spell grants at the time of review) and disables the unused `don_nest_unlocked` content flag as defense-in-depth alongside ADR-001's expansion gate. The script exists, is transactional, and was written to leave its own transaction open pending manual `COMMIT`/`ROLLBACK` after reviewing the verification queries.
-
-**No document or commit confirms this was actually committed against the live database.** Treat as genuinely open until a project-lead confirmation (or a follow-up MCP/HeidiSQL query showing both grant counts at zero and the flag disabled) is recorded — do not assume "drafted" means "applied."
-
-### 6. 🔲 Not yet researched — small, low-effort items
+### 5. 🔲 Not yet researched — small, low-effort items
 
 Carried forward from the original sweep, none individually large: pet command responsiveness (cast-time lag on pet commands, if any); corpse summoning rules/range beyond configured decay timers; item-loss-on-death mechanic itself (which items are eligible to be lost, separate from the already-set `DeathItemLossLevel` threshold); skill cap enforcement edge cases beyond the ceiling fix in ADR-013.
 
-### 7. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
+### 6. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
 
 Preserve current EQEmu behavior on all of these unless a runtime test finds an actual discrepancy against a real classic target. Do not infer a correction from P99 forum disagreement or a modern-sounding rule name alone: weapon damage caps/max-damage formula/weighted D20/proc rate/backstab formula (conceptually documented, not checked against this project's source); Bind Wound's 50%/70%-at-completion threshold behavior; AA/veteran reward and guild inaccessibility under the Velious gate (near-certain already correct via the expansion gate, worth one quick confirmation rather than an assumption).
 
@@ -65,6 +59,10 @@ Preserve current EQEmu behavior on all of these unless a runtime test finds an a
 
 ## Closed — Confirmed Correct (🟢)
 
+- **Era-containment cleanup (2026-08-05).** Live MCP queries confirmed zero
+  active-level Beastlord and Berserker grants, `don_nest_unlocked` disabled,
+  and the Velious expansion gate unchanged. The committed
+  `2026-08-01_era_containment_cleanup.sql` has been applied successfully.
 - **Charm break mechanic.** `Spells:CharmBreakCheckChance = 25` (25% chance per buff tick) matches EQEmu's own developer-commented calibration against a documented ~68-tick average charm duration at 0% resist. `Pets:LivelikeBreakCharmOnInvis = true` also confirmed at its correct default.
 - **Mesmerize.** Confirmed non-stacking (a second cast before the first expires fails to extend it) and confirmed to interrupt a casting mob's spell for free (no mana cost to the caster) on a successful land.
 - **Root.** Direct-damage spells confirmed able to break Root early (dedicated P99 Spell page). The specific "20% of damage dealt" root-break figure remains ambiguous on PvE-general vs. PvP-specific applicability — not fully resolved, low priority.
@@ -133,10 +131,10 @@ These categories are fully covered in existing documents and are not duplicated 
 - **2026-07-23 to 2026-07-28:** Original sweep conducted category-by-category (Spellcasting, Charm/Mez/Root/Snare, Combat, Aggro/AI, Regen, Death/Corpses, Tradeskills, Movement, Pets, Skills, Economy). Every major category researched at least once; most cross-checked against source or live database where MCP access allowed.
 - **2026-07-28:** NPC leash/training-distance mechanic identified as the one item requiring a direct project-lead decision; resolved same day (disabled, logged in `CHANGELOG.md`).
 - **2026-07-30:** Priority order rewritten to focus on HP regen, mana regen, casting, and combat — the categories closest to core moment-to-moment gameplay feel — ahead of the previously-listed ZEM-first order.
-- **2026-08-01:** HP/Mana regeneration runtime review. Identified the `CalcHPRegen()` racial-bonus gap (item 1 above, still open) and the `Character:OldMinMana` mana-regen fix (item 2, applied). Spell component consumption reviewed and confirmed correct (no SQL change needed). Era-containment cleanup SQL drafted for the confirmed Beastlord/Berserker/DoN-flag conflicts (item 5, still open — application unconfirmed).
+- **2026-08-01:** HP/Mana regeneration runtime review. Identified the `CalcHPRegen()` racial-bonus gap (item 1 above, still open) and the `Character:OldMinMana` mana-regen fix (item 2, applied). Spell component consumption reviewed and confirmed correct (no SQL change needed). Era-containment cleanup SQL drafted for the confirmed Beastlord/Berserker/DoN-flag conflicts.
 - **2026-08-02:** Skill cap ceiling defect found and fixed across 8 classes (ADR-013), closing what had been an open "skill cap enforcement edge case." Necromancer illusion-height and pet-model-race defects found and corrected (ADR-012); Part 2 of that ADR (485→85 pet race correction) remains pending live application per ADR-012's own status.
 - **2026-08-02:** This document consolidated from the WIP checklist plus three dated assessments, with every item re-audited for true open/closed status rather than carried forward by assumption (see ADR-014). The most consequential correction made during that re-audit: ZEM was miscategorized as still-actionable in the prior WIP draft despite being explicitly deprioritized in `PROJECT_STATUS.md` — now correctly closed as a deliberate deprioritization.
 
 ## Suggested Order of Attack
 
-HP regen and mana regen runtime verification first (both foundational, both have a concrete test defined, item 1 specifically may require an actual server-source patch once confirmed) — then era-containment cleanup application confirmation (item 5, cheap to close) — then the genuinely unresearched casting/combat items (spell interruption, recast/recovery enforcement, LoS, crit chance, bash/kick) — treating everything in the Accepted Current Behavior section as settled unless materially new evidence appears.
+HP regen and mana regen runtime verification first (both foundational, both have a concrete test defined, item 1 specifically may require an actual server-source patch once confirmed) — then the genuinely unresearched casting/combat items (spell interruption, recast/recovery enforcement, LoS, crit chance, bash/kick) — treating everything in the Accepted Current Behavior section as settled unless materially new evidence appears.

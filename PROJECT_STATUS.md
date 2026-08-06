@@ -38,17 +38,10 @@ feel: combat, spellcasting, and HP/mana regeneration.
 1. **Resume the mechanics sweep** (`docs/development/MECHANICS_REVIEW.md`,
    consolidated and re-audited via ADR-014), prioritizing the still-open
    items: the HP regen racial-bonus defect (likely requires a small
-   server-source patch), mana regen runtime verification, era-containment
-   cleanup application confirmation, and the unresearched casting/combat
+   server-source patch), mana regen runtime verification, and the
+   unresearched casting/combat
    categories — see that document for the full breakdown.
-2. **Apply the two drafted-and-committed SQL scripts** against the live
-   database: `scripts/2026-08-01_era_containment_cleanup.sql` (Beastlord/
-   Berserker spell-grant cleanup, DoN flag) and
-   `scripts/2026-08-02_necromancer_pet_race_correction.sql` (ADR-012 Part
-   2, necromancer late-game pet models). Both are committed to the
-   repository but their application against the live database is
-   unconfirmed as of this writing.
-3. Continue the remaining standing research gaps as background work
+2. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
    increment verification, tradeskill recipe data, and the out-of-era NPC
    audit. The seven researched epic 1.0 quests passed database/script
@@ -93,6 +86,15 @@ feel: combat, spellcasting, and HP/mana regeneration.
   classic minimum mana-regen floor applied (`Character:OldMinMana`);
   spell component consumption confirmed correct with no data change
   needed.
+- Era-containment cleanup applied and verified live: Beastlord and Berserker
+  active-level grants are zero, `don_nest_unlocked` is disabled, and the
+  Velious expansion gate remains intact.
+- Race-60 skeleton pet material restoration implemented and verified live:
+  Malignant Dead now summons its correct red/brown, size-6 skeleton using NPC
+  template 623, texture 1 (ADR-012 Part 2).
+- Late-game necromancer Spectre pet-model correction applied and verified:
+  all 38 templates in the six affected pet chains use classic race 85; none
+  remain at Luclin-era race 485 (ADR-012 Part 3).
 - Seven of fourteen classes' epic 1.0 quests researched and verified
   against the live database and quest scripts — see
   `docs/gameplay/EPIC_QUESTS_REVIEW.md` (consolidated via ADR-014,
@@ -114,9 +116,6 @@ feel: combat, spellcasting, and HP/mana regeneration.
 
 - Mechanics sweep resumption, prioritized toward combat/casting/HP
   regen/mana regen per current focus.
-- Applying the two drafted, repository-committed SQL scripts
-  (era-containment cleanup, necromancer pet race correction) against the
-  live database.
 - Client visual restoration (ADR-008) remaining sub-items: loading
   screens still RoF2-era, Velious-era zone visual research, general
   in-client verification pass.
@@ -169,8 +168,6 @@ below" as unverified rather than assume it still holds.
 - Resume and continue the mechanics sweep, working through the
   combat/casting/HP-regen/mana-regen items flagged as priority in
   `MECHANICS_REVIEW.md`.
-- Apply the era-containment cleanup and necromancer pet race correction
-  SQL scripts against the live database.
 - Continue faction, merchant, and tradeskill verification incrementally
   as background work.
 

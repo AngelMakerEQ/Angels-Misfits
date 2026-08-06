@@ -1,6 +1,6 @@
 -- Angels Misfits: Necromancer Pet Model Race Correction (485 -> 85)
 -- Date: 2026-08-02
--- Reference: docs/decisions/ADR-012_NECROMANCER_ILLUSION_AND_PET_MODEL_CORRECTIONS.md, Part 2
+-- Reference: docs/decisions/ADR-012_NECROMANCER_ILLUSION_AND_PET_MODEL_CORRECTIONS.md, Part 3
 -- Purpose:
 --   Correct npc_types.race from 485 (Luclin-era "Spectre" duplicate model) to
 --   85 (classic/Kunark-appropriate "Spectre" model, already in live use

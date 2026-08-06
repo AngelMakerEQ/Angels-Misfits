@@ -180,7 +180,7 @@ and retain that selection.
 ### Implementation Status
 
 **Part 1 implemented and verified 2026-08-02. Part 2 implemented and
-verified 2026-08-05.** Part 3 remains drafted and unapplied.
+verified 2026-08-05. Part 3 applied and verified 2026-08-05.**
 
 ---
 
@@ -253,11 +253,10 @@ edits directly, matching ADR-007's precedent.
 
 ### Implementation Status
 
-**Drafted and committed, not yet applied to the live database.** The SQL
-(preflight check, transactional `UPDATE`, verification query) lives at
-`scripts/2026-08-02_necromancer_pet_race_correction.sql`. Run it via
-HeidiSQL/Spire against the live database, inspect the verification query's
-output, and `COMMIT` only once all 38 rows in the chain show `race = 85`.
+**Applied and verified 2026-08-05.** Live MCP verification found all 38 rows
+in the chain at `race = 85`, with none remaining at race 485. The SQL
+(preflight check, transactional `UPDATE`, verification query) remains at
+`scripts/2026-08-02_necromancer_pet_race_correction.sql` for reproducibility.
 
 Unlike `spells_new`, `npc_types` is read live by zone processes at zone
 boot rather than through the `shared_memory` cache — a Spire restart alone
