@@ -6,8 +6,8 @@ Lightweight chronological index of major project milestones. Each entry states w
 
 - **2026-07-22** — Project documentation structure established. (No ADR — foundational setup.)
 - **2026-07-22 → 2026-07-23** — ADR-001: Content scope restricted to Velious-and-earlier. Later-expansion content is retained in the database but hidden from players.
-- **2026-07-23** — ADR-002: Server rules rebaselined against PEQ/TAKP — restored several classic mechanics (hunger, Master Wu, no `/tgb`), removed class/race exp penalties, added faster exp rate and always-bindable for solo play.
-- **2026-07-23** — ADR-003: NPC combat stats increased across ~12,574 Classic/Kunark/Velious NPCs — higher HP, damage, AC, resists, and regen; aggro radius widened moderately (not full TAKP widening, to preserve multibox viability).
+- **2026-07-23** — ADR-002: Server rules rebaselined against PEQ and the TAKP-claimed comparison database (see `docs/research/TAKP.md`) — restored several classic mechanics (hunger, Master Wu, no `/tgb`), removed class/race exp penalties, added faster exp rate and always-bindable for solo play.
+- **2026-07-23** — ADR-003: NPC combat stats increased across ~12,574 Classic/Kunark/Velious NPCs — higher HP, damage, AC, resists, and regen; aggro radius widened moderately (not the comparison database's full widening, to preserve multibox viability).
 - **2026-07-23** — ADR-004: Spell mechanics replaced wholesale (37,729 spells) with data verified against the real classic client — affects cast times, targeting, effects, and reagents across all classes.
 - **2026-07-23** — ADR-005: Pet stats reduced to align with classic behavior — pets hit softer and self-heal slower, but resist magic/fire better and move faster.
 - **2026-07-25** — ADR-006: Starting kit corrected — removed a non-classic backpack and Gloomingdeep lantern; all other starting items verified classic and kept.
