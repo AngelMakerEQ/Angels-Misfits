@@ -19,7 +19,7 @@ undecided items around combat, casting, HP regen, and mana regen.
 
 **Mechanics Sweep Resuming**
 
-The project has moved well past initial foundation work — fourteen ADRs
+The project has moved well past initial foundation work — fifteen ADRs
 are implemented, a full spell/discipline legacy audit is complete across
 all 14 classes playable through Velious, and a systematic mechanics
 sweep is well underway. The prior concern that client-side classic zone
@@ -58,8 +58,8 @@ feel: combat, spellcasting, and HP/mana regeneration.
 ## Completed
 
 - GitHub repository and documentation structure established.
-- Fourteen Architectural Decision Records accepted (ADR-001 through
-  ADR-014), covering content scope, server rules and level cap, NPC
+- Fifteen Architectural Decision Records accepted (ADR-001 through
+  ADR-015), covering content scope, server rules and level cap, NPC
   combat stats, spell mechanics, pet stats, starting kit, NPC models,
   client visual restoration (Phase 1), the full spell/discipline
   legacy audit, faction tier boundaries, RoF2 inventory container
@@ -179,16 +179,18 @@ below" as unverified rather than assume it still holds.
 
 # Recent Major Decisions
 
-- ADR-001 through ADR-014 — see `docs/decisions/` for full detail on
-  each. ADR-011 through ADR-014 (RoF2 inventory container locations,
+- ADR-001 through ADR-015 — see `docs/decisions/` for full detail on
+  each. ADR-011 through ADR-015 (RoF2 inventory container locations,
   necromancer illusion/pet-model corrections, skill cap ceiling
   correction, and this mechanics/epic-quest documentation
   consolidation) postdate this document's prior update and were not
   previously reflected here.
 - P99 wiki adopted as the primary era-accuracy reference throughout,
-  prioritized above TAKP for any question involving *when* content was
-  introduced, since TAKP itself progressed through Luclin and PoP and
-  cannot make that distinction.
+  prioritized above the TAKP-claimed comparison database for any question
+  involving *when* content was introduced, since that database itself
+  progressed through Luclin and PoP and cannot make that distinction. That
+  database's provenance is also unverified — see `docs/research/TAKP.md` —
+  so it's not treated as authoritative for any question, not just dating.
 - The server-side zone data concern raised alongside ADR-008 (whether
   zone points/safe coordinates/flags still matched the restored classic
   geometry) is closed: confirmed already correct, no review needed.

@@ -20,7 +20,7 @@ EQEmu server (stock engine; no fork)
         |
 MariaDB live database
   |- PEQ schema/current-era content baseline
-  |- TAKP/classic-client-derived mechanical corrections
+  |- TAKP-claimed-database/classic-client-derived mechanical corrections
   `- rule_values, NPCs, spells, starting items, factions
         |
 Administration: Spire, HeidiSQL, MCP
@@ -31,7 +31,7 @@ Repository: ADRs, research, status, and standards
 | System | Current State | Principal Risk |
 |---|---|---|
 | Content scope | Velious gate implemented through expansion rules | Items and NPC spell/loot content have no complete era-scoping strategy |
-| Combat | NPC/pet data tuned; classic spell data adopted | Some outcomes are TAKP-derived tuning rather than independently historical values |
+| Combat | NPC/pet data tuned; classic spell data adopted | Some outcomes are tuning derived from the unverified TAKP-claimed comparison database rather than independently historical values (see `docs/research/TAKP.md`) |
 | Spells/classes | 37,729 spell records restored; 14-class availability audit complete | NPC spells and post-era residual data still need auditing |
 | Character progression | Level 60, faster XP, no race/class penalties | Deliberate QoL deviations need periodic balance validation |
 | Faction/economy | Global faction tiers and classic price formula corrected | Per-faction data, starting standings, vendor greed, and inventories remain largely unaudited |
@@ -42,10 +42,10 @@ Repository: ADRs, research, status, and standards
 ## Completed Architectural Decisions
 
 - **ADR-001:** Restricts normal player access to Classic, Kunark, and Velious through `World:ExpansionSettings = 3`, `Expansion:CurrentExpansion = 2`, character-select gating, and disabled client-based expansion settings. The full PEQ dataset is intentionally retained.
-- **ADR-002:** Establishes a PEQ/TAKP-informed rules baseline; restores selected classic mechanics while deliberately retaining faster XP, no race/class XP penalties, bind-anywhere, no de-leveling, and very long item-corpse persistence. The cap was corrected from 50 to the historically correct 60.
-- **ADR-003:** Applies TAKP-derived NPC HP, damage, AC, resists, and regeneration; uses a custom PEQ/TAKP midpoint for aggro radius to account for multibox play.
-- **ADR-004:** Replaces 37,729 `spells_new` records with values verified byte-for-byte against a classic client spell file.
-- **ADR-005:** Applies mixed TAKP pet-template tuning: weaker damage/regen, altered resists, and faster movement.
+- **ADR-002:** Establishes a PEQ/TAKP-claimed-comparison-database-informed rules baseline; restores selected classic mechanics while deliberately retaining faster XP, no race/class XP penalties, bind-anywhere, no de-leveling, and very long item-corpse persistence. The cap was corrected from 50 to the historically correct 60.
+- **ADR-003:** Applies NPC HP, damage, AC, resists, and regeneration derived from the TAKP-claimed comparison database (unverified provenance — internal self-consistency with that file's own claims, not primary-source verification; see `docs/research/TAKP.md`); uses a custom PEQ/comparison-database midpoint for aggro radius to account for multibox play.
+- **ADR-004:** Replaces 37,729 `spells_new` records with values verified byte-for-byte against a classic client spell file — genuine primary-source verification, independent of the comparison database's own provenance.
+- **ADR-005:** Applies mixed pet-template tuning from the TAKP-claimed comparison database (same unverified-provenance caveat as ADR-003): weaker damage/regen, altered resists, and faster movement.
 - **ADR-006:** Removes the non-classic Gloomingdeep Lantern and starting backpack while retaining classic notes, food, weapons, bandages, and starter spells.
 - **ADR-007:** Corrects skeleton-family NPC model IDs while preserving genuine Iksar-identity NPCs; acknowledges the unsolved client limitation around playable-race NPC models.
 - **ADR-008:** Partially restores classic RoF2 presentation with classic zone overrides, spell assets, skeleton assets, Luclin-model configuration, and TaipoUI.
@@ -100,7 +100,7 @@ The active priority is correctly the mechanics sweep. Its remaining work should 
 
 ### 3. Evidence-quality debt — high
 
-The project appropriately distinguishes source strength, but high-impact decisions span classic-client evidence, EQEmu behavior, TAKP tuning, P99 research, and intentional house rules. Future work should consistently label each conclusion as verified historical behavior, verified EQEmu behavior, community consensus, inference, or deliberate deviation.
+The project appropriately distinguishes source strength, but high-impact decisions span classic-client evidence, EQEmu behavior, tuning derived from the TAKP-claimed comparison database, P99 research, and intentional house rules. Future work should consistently label each conclusion as verified historical behavior, verified EQEmu behavior, community consensus, inference, or deliberate deviation. **Update (2026-08-06):** this specific gap was acted on — the comparison database's unverified provenance is now explicitly documented in `docs/research/TAKP.md`, and `CLAUDE.md`/`AGENTS.md` no longer treat it as an authoritative source in the research priority hierarchy.
 
 ### 4. Era-containment debt — high
 

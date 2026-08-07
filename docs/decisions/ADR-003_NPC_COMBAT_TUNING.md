@@ -1,16 +1,29 @@
-# ADR-003: NPC Combat Stat Tuning (PEQ vs TAKP)
+# ADR-003: NPC Combat Stat Tuning (PEQ vs. TAKP-Claimed Comparison Database)
 
 **Status:** Accepted — Implemented
 
 **Date:** 2026-07-23
+
+**Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
+local comparison database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) — this project has no independent way to
+verify that claim. Unlike ADR-004's spell data (independently verified
+against the real classic client file), this ADR's adoption rests on the
+comparison file matching its own author's *stated* tuning methodology —
+internal self-consistency, not primary-source verification. See
+`docs/research/TAKP.md` for the full caveat. The underlying stat changes
+below remain applied and verified against live server state; this note
+only corrects how the comparison source should be characterized, and
+flags this area as a candidate for future re-examination against a
+primary source if one becomes available.
 
 ---
 
 ## Context
 
 A field-level comparison of `npc_types` was performed between the
-imported PEQ database and the TAKP Reference database, scoped to NPCs
-whose spawns occur exclusively in Classic, Kunark, or Velious zones
+imported PEQ database and the TAKP-claimed comparison database, scoped to
+NPCs whose spawns occur exclusively in Classic, Kunark, or Velious zones
 (per the mapping established in ADR-001).
 
 ### Scope Definition
@@ -28,14 +41,14 @@ whose spawns occur exclusively in Classic, Kunark, or Velious zones
 
 ### External Corroboration
 
-The TAKP file's original author, in an accompanying note, states their
-own edit methodology: *stronger-in-TAKP mob stats were adopted;
-stronger-or-equal-in-PEQ stats were left unchanged.* This exactly
-matches what the data-only comparison independently found — 100% of
-differing values favor TAKP, with zero counterexamples across every
-stat examined. This is treated as **community/self-reported
-corroboration**, not independent verification, per the project's
-research evidence hierarchy — but the match between an independently
+The comparison file's unverified original author, in an accompanying
+note, states their own edit methodology: *stronger-in-comparison-file mob
+stats were adopted; stronger-or-equal-in-PEQ stats were left unchanged.*
+This exactly matches what the data-only comparison independently found —
+100% of differing values favor the comparison file, with zero
+counterexamples across every stat examined. This is treated as
+**unverified self-reported corroboration**, not independent verification,
+per the project's research evidence hierarchy — but the match between an independently
 run comparison and the author's stated method is a meaningful
 consistency check.
 
@@ -83,19 +96,21 @@ level.
 |---|---|---|---|
 | `aggroradius` | 1,132 | 100% | 1.33× (range: 1.07×–10×) |
 
-**Not a straight adopt.** TAKP's full values are the one stat directly
-in tension with this server's multibox-based group content — a human
-group can react to an accidental add faster than one person managing
-six clients can. A flat scalar was also rejected, since a single
-multiplier would overcorrect NPCs TAKP barely touched and undercorrect
-the handful of extreme outliers (up to 10× in TAKP).
+**Not a straight adopt.** The comparison database's full values are the
+one stat directly in tension with this server's multibox-based group
+content — a human group can react to an accidental add faster than one
+person managing six clients can. A flat scalar was also rejected, since a
+single multiplier would overcorrect NPCs the comparison database barely
+touched and undercorrect the handful of extreme outliers (up to 10× in
+that database).
 
 **Method adopted:** for each NPC where aggro radius differs, the new
-value is the **arithmetic midpoint** of the PEQ and TAKP values
-(`(peq + takp) / 2`, rounded). This lands at a median of **1.17×** PEQ
-baseline — meaningfully tighter than PEQ's current looseness (so
-careless positioning is still punished), well short of TAKP's full
-widening (so simultaneous multi-client adds aren't the default
+value is the **arithmetic midpoint** of the PEQ and comparison-database
+values (`(peq + comparison) / 2`, rounded). This lands at a median of
+**1.17×** PEQ baseline — meaningfully tighter than PEQ's current
+looseness (so careless positioning is still punished), well short of the
+comparison database's full widening (so simultaneous multi-client adds
+aren't the default
 outcome), and scales naturally per-NPC rather than via a blanket rule.
 
 Example outcomes:
@@ -139,9 +154,9 @@ changes above. Revisit as a follow-on investigation.
 - Encounter difficulty for Velious-and-earlier content increases
   meaningfully and consistently: tougher mobs, better mob self-healing,
   and much stronger resists against player CC/DoTs.
-- Aggro radius increases moderately rather than matching TAKP's full
-  widening, in recognition of the multibox playstyle this server is
-  built around.
+- Aggro radius increases moderately rather than matching the comparison
+  database's full widening, in recognition of the multibox playstyle this
+  server is built around.
 - Pet balance remains at PEQ defaults until the deferred spell-level
   investigation is completed.
 

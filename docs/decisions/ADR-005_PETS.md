@@ -4,15 +4,24 @@
 
 **Date:** 2026-07-23
 
+**Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
+local comparison database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) — this project has no independent way to
+verify that claim. As with ADR-003, this ADR's adoption rests on the
+comparison file matching its own author's *stated* tuning intent —
+internal self-consistency, not primary-source verification. See
+`docs/research/TAKP.md` for the full caveat.
+
 ---
 
 ## Context
 
-The TAKP author's note specifically claimed pet stats (particularly
-mage pets, levels 1-50) were "manually tuned" to be less overpowered.
-This was deferred in ADR-003 because the `pets` linkage table (type →
-NPC template, `petpower`) was found to be byte-identical between PEQ
-and TAKP, and the claimed tuning wasn't reflected there.
+The comparison database's file author's note specifically claimed pet
+stats (particularly mage pets, levels 1-50) were "manually tuned" to be
+less overpowered. This was deferred in ADR-003 because the `pets`
+linkage table (type → NPC template, `petpower`) was found to be
+byte-identical between PEQ and the comparison database, and the claimed
+tuning wasn't reflected there.
 
 Investigation traced the actual mechanism: pet-summoning spells (e.g.
 "Elementalkin: Fire", id 316) store a pet template key in the
@@ -51,11 +60,12 @@ powerful" part; the resist increases follow the same pattern found
 everywhere else in this database (ADR-003). The uniform movement speed
 increase has no stated rationale in the author's note and is adopted
 as-is along with everything else, since it was part of the same
-verified TAKP dataset.
+TAKP-claimed comparison dataset (unverified provenance, see
+`docs/research/TAKP.md`).
 
 ## Decision
 
-Adopt TAKP's pet NPC template values in full for all 140 templates
+Adopt the TAKP-claimed comparison database's pet NPC template values in full for all 140 templates
 where a difference exists.
 
 ## Risk

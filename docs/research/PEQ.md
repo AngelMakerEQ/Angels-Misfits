@@ -12,11 +12,11 @@ PEQ is Angels Misfits' structural foundation and the project's baseline import �
 ## Where PEQ Diverges From Classic — Confirmed Pattern
 
 - **Spell mechanics.** Diverges from real classic client data on hundreds to 1,000+ spells per mechanical field (recast time, range, effect values, target type, skill, components) — not just cosmetic fields. See ADR-004.
-- **NPC combat stats.** Consistently and uniformly softer than TAKP's classic-tuned values across every stat examined (HP, damage, AC, resists, regen) — 100% directional, no exceptions found. See ADR-003.
+- **NPC combat stats.** Consistently and uniformly softer than the TAKP-claimed comparison database's values across every stat examined (HP, damage, AC, resists, regen) — 100% directional, no exceptions found. See ADR-003, and `docs/research/TAKP.md` for why "softer than the comparison database" is treated as a lead worth investigating rather than proof PEQ is wrong.
 - **Server rules.** Defaults target a modern, full-expansion server experience by design (e.g., `World:ExpansionSettings` ships seeded to `524287`, everything through Rain of Fear) — expected to need correction for any era-restricted project, not a PEQ flaw so much as a mismatch with this project's goals. See ADR-001, ADR-002.
-- **Starting items.** Included two non-classic items (Gloomingdeep Lantern, Backpack) not present in TAKP or documented classic sources. See ADR-006.
+- **Starting items.** Included two non-classic items (Gloomingdeep Lantern, Backpack) not present in the TAKP-claimed comparison database or documented classic sources. See ADR-006.
 - **NPC models.** Certain skeleton-family NPCs left at newer race IDs rather than the best-available classic approximation. See ADR-007.
 
 ## Working Takeaway
 
-Treat PEQ as correct on structure and completeness, but assume any given **default value** reflects modern/live-era design intent until checked against a more classic-focused source (TAKP, client data, P99 wiki) — this pattern has held without exception across every ADR to date. When evaluating a new PEQ default for a future area (itemization, quests), the default assumption should be "verify before trusting," not "PEQ is probably fine."
+Treat PEQ as correct on structure and completeness, but assume any given **default value** reflects modern/live-era design intent until checked against a more classic-focused source (client data, P99 wiki — see `docs/research/TAKP.md` before treating the TAKP-claimed comparison database as anything more than a candidate-generation lead) — this pattern has held without exception across every ADR to date. When evaluating a new PEQ default for a future area (itemization, quests), the default assumption should be "verify before trusting," not "PEQ is probably fine."

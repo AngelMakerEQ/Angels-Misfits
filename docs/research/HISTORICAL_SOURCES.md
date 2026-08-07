@@ -1,6 +1,6 @@
 # Angels Misfits — External Research Resources
 
-This document is a running list of external reference sources used for classic-accuracy research on Angels Misfits. Treat these as supplemental to the project's research priority order (client data > EQEmu source > PEQ > TAKP > archived Allakhazam/Lucy > wikis > community discussion) — these wiki/community sources sit toward the lower-but-still-valuable end of that hierarchy and should be cross-checked against source/client data where possible.
+This document is a running list of external reference sources used for classic-accuracy research on Angels Misfits. Treat these as supplemental to the project's research priority order (client data > EQEmu source > P99 wiki > PEQ > archived Allakhazam/Lucy > wikis > community discussion) — these wiki/community sources sit toward the lower-but-still-valuable end of that hierarchy and should be cross-checked against source/client data where possible. The project's local "TAKP-claimed" comparison database is not part of this ranking — see `docs/research/TAKP.md` for why it's treated as an unverified starting point rather than an authoritative source.
 
 **Note on relative confidence:** within the "wiki" tier, the P99 wiki should be treated with higher confidence than archived Lucy or Allakhazam. P99 wiki entries are actively cross-checked by its community against classic-era behavior; archived Lucy/Allakhazam snapshots are raw historical data with no such review layer, and their non-archived/live versions reflect current live EQ, not the classic era, unless the specific field is known not to have changed since then.
 
@@ -34,14 +34,17 @@ This document is a running list of external reference sources used for classic-a
 
 - **Game Mechanics overview** (P99 wiki) — reference for comparing against current server mechanics: https://wiki.project1999.com/Game_Mechanics
 - **Skills page** (P99 wiki) — use to verify skill gain rates/caps and era-correct availability.
-  **Note: Sense Heading was manually trained/leveled prior to 2003; after 2003 it starts maxed. Our server currently maxes it at character creation — needs verification against target era.**
+  **Status:** Sense Heading and Swimming were verified and corrected: both now
+  require guildmaster training and skill up through use. See `CHANGELOG.md`.
   https://wiki.project1999.com/Skills
 - **Deity combinations, classic list** (P99 wiki): https://wiki.project1999.com/Deities
 - **NPC-only spells category** (P99 wiki) — player spells are being audited separately (ADR-009); this covers NPC-side spells: https://wiki.project1999.com/Category:NPC_Only_Spells
 
 ## Bard Instrument Modifiers
 
-**Priority: HIGH** — song verification is already covered under the ADR-009 spell audit, but instrument-modifier mechanics were not yet discussed and need their own pass.
+**Status: verified and closed.** Instrument modifiers were checked end to end;
+one invalid duplicate spell was disabled and the non-classic AE DoT restriction
+was reverted. See `CHANGELOG.md` for the implementation record.
 
 - **Bard Instruments** (P99 wiki) — core mechanic explanation; instruments act as a multiplier on certain song effects, keyed to instrument skill type: https://wiki.project1999.com/Bard_Instruments
 - **Thrasos' Bard Guide** (P99 wiki) — practical breakdown of which instrument skill (Singing / Brass / Wind / Percussion / Stringed) affects which songs, and notes the Bard Epic's unique behavior (acts as a flat 1.8× modifier across all instrument types with nothing equipped, and is the only item that affects Singing): https://wiki.project1999.com/Thrasos'_Bard_Guide

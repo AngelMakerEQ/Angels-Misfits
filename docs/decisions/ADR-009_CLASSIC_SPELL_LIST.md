@@ -3,6 +3,14 @@
 **Status:** Accepted — Implemented
 **Date:** 2026-07-28
 
+**Provenance note (2026-08-06):** where this ADR references "TAKP," it
+means the local comparison database the user obtained and was told is
+sourced from TAKP (The Al'Kabor Project) — this project has no
+independent way to verify that claim. See `docs/research/TAKP.md` for the
+full caveat. This ADR's own reasoning below is already a good model for
+the broader project standard: it explicitly avoids relying on that
+database for exactly this kind of era-boundary question.
+
 ---
 
 ## Context
@@ -11,15 +19,16 @@ Following the level cap correction (ADR-002 addendum, 2026-07-26), a
 comprehensive audit was undertaken to identify every spell and discipline
 currently learnable by each class that did not exist by the end of
 Velious. Unlike prior ADRs, which relied primarily on comparison against
-the TAKP reference database, this audit used the **Project 1999 wiki**
-as the primary source of truth throughout.
+the TAKP-claimed comparison database, this audit used the **Project 1999
+wiki** as the primary source of truth throughout.
 
-This choice was deliberate: TAKP progressed through Kunark, Velious,
-Luclin, and Planes of Power before its data was captured, and its spell
-tables have no era tagging — a spell existing in TAKP only confirms it
-existed by TAKP's snapshot point, not that it existed by end of Velious
-specifically. P99, by contrast, is explicitly Velious-locked (its Blue
-and Green servers do not progress into Luclin), and its class spell
+This choice was deliberate: the comparison database progressed through
+Kunark, Velious, Luclin, and Planes of Power before its data was
+captured, and its spell tables have no era tagging — a spell existing in
+that database only confirms it existed by the snapshot point, not that it
+existed by end of Velious specifically. P99, by contrast, is explicitly
+Velious-locked (its Blue and Green servers do not progress into Luclin),
+and its class spell
 pages carry explicit **Cla / Kun / Vel** era tags per spell, along with
 several sub-era tags (Pai = Paineel Era, Fea = Fear Era, Hol = Hole Era,
 Sky = Sky Era, C2.0 = Chardok Revamp Era) that are all still pre-Luclin

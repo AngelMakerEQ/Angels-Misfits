@@ -1,4 +1,4 @@
-# ADR-002: Server Rules Baseline (PEQ vs TAKP)
+# ADR-002: Server Rules Baseline (PEQ vs. TAKP-Claimed Comparison Database)
 
 **Status:** Accepted — Implemented
 
@@ -6,25 +6,33 @@
 
 **Supersedes:** Earlier draft titled "ADR-002: Experience & Level Cap Rules"
 
+**Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
+local comparison database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) — this project has no independent way to
+verify that claim. See `docs/research/TAKP.md` for the full caveat; the
+underlying rule changes below remain applied and verified against live
+server state, this note only corrects how the comparison source should be
+characterized.
+
 ---
 
 ## Context
 
 A complete diff of the `rule_values` table was performed between the
-imported PEQ database (Sept 2025 dump) and the TAKP Reference database
-(2023-era dump, content-only extraction).
+imported PEQ database (Sept 2025 dump) and the TAKP-claimed comparison
+database (2023-era dump, content-only extraction).
 
 Results of the comparison, ruleset_id 1:
 
 - PEQ: 1,001 rules
 - TAKP: 714 rules
 - Differing in value: 39
-- Present only in TAKP: 12 (see "Rule Renames" — most are not
-  genuinely new)
+- Present only in the TAKP-claimed comparison database: 12 (see "Rule
+  Renames" — most are not genuinely new)
 - Present only in PEQ: 299 (almost entirely rules added to EQEmu after
-  TAKP's 2023 dump; not deliberate removals)
+  the comparison database's 2023 dump; not deliberate removals)
 
-PEQ defaults target a modern, full-expansion server. TAKP reconstructs
+PEQ defaults target a modern, full-expansion server. The comparison database reconstructs
 classic-era mechanics but also contains the file author's personal
 changes, notably an enabled bot system and several difficulty
 reductions. Each difference was evaluated individually rather than
@@ -90,7 +98,7 @@ proves to be a problem in play, revisit then.
 
 ### Bot System — Excluded Entirely
 
-All bot-related rule changes present in the TAKP file are **rejected**.
+All bot-related rule changes present in the comparison database are **rejected**.
 PEQ defaults are retained, including `Bots:Enabled = false`.
 
 Rejected TAKP bot changes: `Bots:Enabled`, `Bots:BotLevelsWithOwner`,
@@ -101,7 +109,7 @@ Rejected TAKP bot changes: `Bots:Enabled`, `Bots:BotLevelsWithOwner`,
 
 Rationale: group content is handled through Very Vanilla MQ
 multiboxing (see VELIOUS_VISION.md). The EQEmu bot system is not part
-of this project's design, and its enablement in the TAKP file reflects
+of this project's design, and its enablement in the comparison database reflects
 the file author's personal preferences, not classic accuracy.
 
 ### Other TAKP Changes Rejected
@@ -144,7 +152,7 @@ Value 10 was chosen over both PEQ (12) and TAKP (80).
   recall level 10 and level 30, with one attributing the addition to an
   early Kunark-era caster rebalance. The exact level is disputed.
 
-TAKP's value of 80 disables the mechanic entirely at a level 50 cap,
+The comparison database's value of 80 disables the mechanic entirely at a level 50 cap,
 which appears inconsistent with Velious-era behavior. Existence of the
 mechanic is well-supported; the precise level is not verified.
 

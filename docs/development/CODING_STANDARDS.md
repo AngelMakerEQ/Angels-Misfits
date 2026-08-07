@@ -19,7 +19,10 @@ ADR-007 and should be treated as the standard approach for any future
 database change:
 
 1. **Investigate and document first.** Compare data sources (e.g. PEQ vs.
-   TAKP), identify the scope of a change, and write the reasoning and
+   client data, P99 wiki, or the TAKP-claimed comparison database —
+   treating the latter as an unverified candidate-generating starting
+   point, not an authoritative source; see `docs/research/TAKP.md`),
+   identify the scope of a change, and write the reasoning and
    decision into an ADR before writing migration SQL.
 2. **Generate a migration script rather than hand-run ad hoc statements**
    for any change affecting more than a handful of rows. Hand-written

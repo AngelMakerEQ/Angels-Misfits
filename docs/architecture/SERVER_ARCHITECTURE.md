@@ -67,7 +67,7 @@ MariaDB stores the persistent server data, including:
 
 The Angels Misfits database is the active working database.
 
-PEQ and TAKP-derived databases serve as historical and developmental references.
+PEQ and the TAKP-claimed comparison database (see `docs/research/TAKP.md`) serve as historical and developmental references.
 
 Detailed database structure, baseline data, and change tracking are maintained in `docs/database/` (see `DATABASE_BASELINE.md`), which is the authoritative source for database-level documentation.
 

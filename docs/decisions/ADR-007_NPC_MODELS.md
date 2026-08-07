@@ -4,6 +4,12 @@
 
 **Date:** 2026-07-26
 
+**Provenance note (2026-08-06):** where this ADR references "TAKP," it
+means the local comparison database the user obtained and was told is
+sourced from TAKP (The Al'Kabor Project) — this project has no
+independent way to verify that claim. See `docs/research/TAKP.md` for the
+full caveat.
+
 ---
 
 ## Context
@@ -38,7 +44,7 @@ problem:
    known method (per community sources) is a client executable
    modification, as Project 1999 uses — out of scope here.
 
-Verified empirically (PEQ vs. TAKP race-value comparison, the same
+Verified empirically (PEQ vs. TAKP-claimed comparison database race-value comparison, the same
 method used throughout ADR-003) that wolves, orcs, gnolls, spiders,
 bears, and snakes show **zero** race disagreement between the two
 databases — consistent with these also falling into the

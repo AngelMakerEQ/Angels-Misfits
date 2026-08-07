@@ -25,15 +25,22 @@ future deliberate expansion per project philosophy.
 
 ## Supplemental Database
 
-**TAKP Rebalanced**
+**TAKP-claimed comparison database**
 
-Purpose: Reference material for Velious-era progression values.
+Purpose: Candidate-generation reference for Velious-era progression
+values. A local database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) with additional tuning — provenance not
+independently verifiable by this project. See `docs/research/TAKP.md`
+before treating any value from it as established rather than a lead to
+verify.
 
-TAKP has been compared against PEQ and adopted, in whole or in part,
-across multiple areas — see ADR-002 (server rules), ADR-003 (NPC
-combat stats), ADR-004 (spell mechanics), and ADR-005 (pet stats) for
-full detail on what was adopted, rejected, or deferred from this
-source.
+This comparison database has been checked against PEQ and adopted, in
+whole or in part, across multiple areas — see ADR-002 (server rules),
+ADR-003 (NPC combat stats), ADR-004 (spell mechanics), and ADR-005 (pet
+stats) for full detail on what was adopted, rejected, or deferred, and
+`docs/research/TAKP.md` for which of those adoptions were independently
+verified against primary classic data versus only internally consistent
+with the comparison file's own claims about itself.
 
 ## Database Philosophy
 
@@ -60,7 +67,7 @@ per the ADR series below.
 | `lootdrop` | 51,943 | Full lootdrop entries |
 | `grid` / `grid_entries` | 31,556 / 859,842 | NPC pathing data |
 | `starting_items` | 148 | Reduced by 2 rows per ADR-006 (Gloomingdeep Lantern, Backpack removed) |
-| `rule_values` | 1,001 (PEQ) / 714 (TAKP) | 17 rules changed per ADR-002; see that ADR for full diff |
+| `rule_values` | 1,001 (PEQ) / 714 (TAKP-claimed comparison DB) | 17 rules changed per ADR-002; see that ADR for full diff |
 
 ## Privacy / Data Safety
 

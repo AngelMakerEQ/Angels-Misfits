@@ -189,7 +189,7 @@ Important compatibility goals include:
 - Spire
 - RoF2 client compatibility
 - Very Vanilla MQ Emulator compatibility
-- DuxasUI compatibility
+- RoF2-compatible UI support (TaipoUI is the active selection)
 
 Compatibility should be preserved unless it directly prevents achieving a major project goal.
 
@@ -208,12 +208,14 @@ Sources should be evaluated approximately in this order:
 
 1. Original EverQuest client assets and available historical data
 2. EQEmu source code
-3. PEQ database
-4. TAKP database
+3. P99 wiki (treated as the primary era-accuracy reference project-wide)
+4. PEQ database
 5. Archived Allakhazam information
 6. Archived Lucy information
 7. Established emulator documentation
 8. Community discussion
+
+**The "TAKP-claimed" comparison database is not part of this authority ranking.** It's a local database the user obtained and was told is sourced from TAKP (The Al'Kabor Project); this project has no independent way to verify that claim or access to a confirmed-genuine TAKP source. Treat it strictly as a candidate-generation starting point — useful for surfacing where PEQ's stock data likely drifted from classic — never as a source whose values can be cited on their own authority. Any value pulled from it needs independent verification against a source in the ranked list above before being trusted. See `docs/research/TAKP.md` for the full reliability breakdown by data category.
 
 Historical information should be categorized as:
 

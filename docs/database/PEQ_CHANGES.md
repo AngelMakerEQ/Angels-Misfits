@@ -4,6 +4,16 @@ Quick-reference table of all changes made to the Angels Misfits
 database relative to its original PEQ import. For full reasoning,
 evidence, timing, and implementation detail, see the referenced ADR.
 
+**"TAKP" throughout this document** means the project's local comparison
+database — obtained by the user and claimed to be sourced from TAKP (The
+Al'Kabor Project), with provenance this project cannot independently
+verify. It is not an authoritative source; treat "adopt TAKP value" below
+as "adopt the comparison database's value" — some of these were
+independently verified against real classic client data (spells, ADR-004),
+others only matched the comparison file's own claims about its tuning
+(NPC/pet stats, ADR-003/005). See `docs/research/TAKP.md` for the
+category-by-category breakdown.
+
 ---
 
 ## Content Scope Gating (ADR-001)
@@ -115,8 +125,63 @@ All other starting_items rows (recruitment letters, weapons, food/drink, bandage
 
 ---
 
+## Post-ADR-007 Corrections
+
+| Table | Change | Reference |
+|---|---|---|
+| `spells_new` | Legacy-audit corrections across all Velious-playable classes; six cosmetic Necromancer illusion size overrides | ADR-009, ADR-012 Part 1 |
+| `rule_values` | Classic minimum mana floor; pet zoning/logout behavior; era-containment cleanup | `2026-08-01_classic_minimum_mana_regen.sql`, `2026-08-01_era_containment_cleanup.sql`, CHANGELOG 2026-08-04 |
+| `character_inventory` | RoF2 container child-slot location-format repair for Angel's personal and bank bags | ADR-011, `2026-08-01_angel_personal_bag_slot_repair.sql` |
+| `npc_types` | Race-60 skeleton pet material template and late-game Necromancer pet race correction (485 → 85) | ADR-012 Parts 2–3, `2026-08-02_necromancer_pet_race_correction.sql` |
+| `content_flags` | `don_nest_unlocked` disabled as Velious-era defense in depth | `2026-08-01_era_containment_cleanup.sql` |
+| `items` | Applied and verified 2026-08-06 — four-item Classic stack-size correction (Peridot, Bat Wing, Bone Chips, Spiderling Silk) | `2026-08-06_classic_item_stack_size_phase_1.sql` |
+
+The item-stack migration is intentionally narrow: the listed item histories are
+verified, while a blanket stack-size conversion would incorrectly alter Classic
+ammunition and other items that legitimately stack to 100.
+
+---
+
+## Item Drop Era Gating (ADR-016)
+
+Applied and verified 2026-08-06 (`scripts/2026-08-06_itemization_content_flags_gating.sql`).
+
+| Item(s) | Flag | Live source(s) | Reason |
+|---|---|---|---|
+| Rubicite armor set (12 pieces, ids 4161-4172) | `Classic_OldWorldDrops` | a_lifestealer_mosquito ×6 NPCs | Removed/disabled Oct 13, 1999 |
+| Cryosilk armor set (12 pieces, ids 1211-1222) | `Classic_OldWorldDrops` | a_spinechiller_spider ×5, plus per-piece extra sources (raid NPCs, phoboplasm, haunted chest) | "Fear Era" legacy set |
+| Boots of Brawn (12181) | `Classic_OldWorldDrops` | Sir Lucan D`Lere | Dropped until Kunark released |
+| Journeyman's Boots (2300) | `Classic_OldWorldDrops` | #The_Fabled_Drelzna, Najena | Changed to quest-based source, Oct 13, 1999 |
+| Sarnak Liberator (11924) | `Kunark_LegacyItemDrops` | a_Sarnak_flunkie ×3 NPCs | Removed shortly after Kunark |
+| Goblin Eye Poker (10597) | `Kunark_LegacyItemDrops` | #Scout_Charisa (only reachable source) | Removed — was an All/All weapon |
+
+Every other item in FV Project's Classic_OldWorldDrops and
+Kunark_LegacyItemDrops lists was checked and found already correct — see
+ADR-016 for the full accounting, including two items excluded for
+insufficient evidence (Cloak of Shadows, Gem Encrusted Ring) and two open
+follow-ups (Kunark_HoleEra raid-mob spawn gating; Rallia Hapera's Hole Key
+merchant flag).
+
+---
+
+## Named-NPC Loot Reconciliation (ADR-017)
+
+Applied and verified 2026-08-06 (`scripts/2026-08-06_named_npc_loot_reconciliation_phase_1.sql`).
+
+| Scope | Change | Reason |
+|---|---|---|
+| 21 lootdrop_entries INSERTs across 15 Classic/Kunark/Velious named NPCs | Restore documented-but-missing wiki loot | Confirmed absent via direct DB query against P99 wiki `known_loot` |
+| 2 new loottable/lootdrop pairs (Lhranc, High Scale Kirn) | Both had `loottable_id = 0` — zero loot despite a documented 100% drop each | Lhranc is the Shadow Knight Epic 1.0 mob; this was quest-blocking |
+| `lootdrop_entries.content_flags` on Eye of RokGus (item 12881, Chief RokGus) | Gated via `Kunark_LegacyItemDrops` (same flag as ADR-016) | Wiki: "No longer drops" |
+
+~25 additional lower-confidence or design-ambiguous findings (large-scale set replacements, possible cross-NPC item mis-assignments, wiki-uncertain items) are documented in ADR-017 as deferred to a future Phase 2, not included in this migration.
+
+---
+
 ## Deferred / Not Yet Changed
 
-- `items` — no expansion-scoping applied yet (ADR-001, ongoing).
+- `items` — no global expansion-scoping applied yet (ADR-001, ongoing); the
+  targeted stack-size migration above is separate from that work and has
+  now been applied (see table above).
 - `spells_new` — no level/class filtering for above-cap content (inert but present).
 - Quest scripts, custom encounters, itemization beyond starting kit — not yet reviewed.

@@ -6,7 +6,7 @@ NPC combat behavior and appearance have both undergone significant, database-lev
 
 ## Combat Stats
 
-NPCs in Classic/Kunark/Velious zones (~12,574 affected) hit harder, have more HP and AC, regenerate HP far faster, and resist magic/fire/cold/disease/poison significantly better than stock PEQ defaults. Aggro radius is moderately wider than PEQ (not as wide as TAKP's full values, to preserve Very Vanilla MQ multibox viability). Net effect: encounters are meaningfully tougher and more resistant to CC/DoTs than a stock PEQ server.
+NPCs in Classic/Kunark/Velious zones (~12,574 affected) hit harder, have more HP and AC, regenerate HP far faster, and resist magic/fire/cold/disease/poison significantly better than stock PEQ defaults. Aggro radius is moderately wider than PEQ (not as wide as the TAKP-claimed comparison database's full values, to preserve Very Vanilla MQ multibox viability). Net effect: encounters are meaningfully tougher and more resistant to CC/DoTs than a stock PEQ server.
 
 Full detail and per-stat ratios: **ADR-003**.
 

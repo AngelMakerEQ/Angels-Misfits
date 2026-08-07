@@ -29,7 +29,8 @@ Completed:
 
 Outstanding:
 
-- Loading screen restoration (not yet researched)
+- Loading screen restoration (replacement method identified but not yet tested
+  against this client; see `docs/client/LOADING_SCREENS.md`)
 - Velious-era zone visual research (not yet started)
 - Spell icon mismatch diagnosis (known issue, distinct from the particle-texture issue resolved by ADR-015)
 - Formal in-client verification pass (deferred)
@@ -46,13 +47,14 @@ Player model philosophy (unchanged):
 
 Completed via the database-correction ADR series (ADR-001–ADR-007, ADR-009–ADR-013):
 
-- Compared Angels Misfits database against PEQ and TAKP
+- Compared Angels Misfits database against PEQ and the TAKP-claimed comparison database (see `docs/research/TAKP.md` on why the latter is treated as unverified)
 - Documented imported systems and server rules
 - Corrected NPC combat stats, spell mechanics, pet stats, starting items, and NPC model data (ADR-001–ADR-007)
 - Full spell/discipline legacy audit across all 14 Velious-playable classes (ADR-009)
 - Faction tier boundaries corrected across all 8 tiers (ADR-010)
 - RoF2 inventory container location format corrected (ADR-011)
-- Necromancer illusion-height and pet-model race corrections (ADR-012 — Part 2, the pet-model race correction, drafted but not yet applied live)
+- Necromancer illusion-height, race-60 skeleton-material, and pet-model race
+  corrections (ADR-012, all implemented and verified)
 - Skill cap ceiling defect corrected across 8 classes (ADR-013)
 - Database change tracking established via the ADR series, with migrations increasingly captured as versioned, committed SQL scripts under `scripts/`
 
@@ -74,8 +76,8 @@ ADR-014).
 - Category-by-category mechanics sweep (combat, casting, regen, aggro,
   corpses, tradeskills, and more) — several categories closed; current
   priority is HP/mana regen and casting/combat.
-- Class epic 1.0 quest research and database/script verification — 7
-  of 14 classes complete.
+- Class epic 1.0 quest research and database/script verification — all 14
+  classes complete; see the standing review for scope and follow-ups.
 
 ---
 

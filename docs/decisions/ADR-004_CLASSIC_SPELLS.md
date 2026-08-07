@@ -4,14 +4,24 @@
 
 **Date:** 2026-07-23
 
+**Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
+local comparison database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) — this project has no independent way to
+verify that claim. **Unlike ADR-003/005, this ADR's core conclusion does
+not depend on that provenance being true** — the spell data was checked
+directly against the real classic client's own `spells_us.txt` file and
+matched byte-for-byte, which is genuine primary-source verification
+regardless of where the comparison database itself came from. See
+`docs/research/TAKP.md` for the full breakdown.
+
 ---
 
 ## Context
 
-The TAKP file author's note claimed their release included "Classic
-Spells" alongside the mob stat and rule changes covered in ADR-002 and
-ADR-003. This claim was not evaluated at the time those ADRs were
-written and was carried forward as an open item.
+The comparison database's file author's note claimed their release
+included "Classic Spells" alongside the mob stat and rule changes covered
+in ADR-002 and ADR-003. This claim was not evaluated at the time those
+ADRs were written and was carried forward as an open item.
 
 A separate archive supplied by the TAKP author (containing client
 files alongside the same database) included `spells_us.txt` — the
@@ -34,7 +44,7 @@ sources.
 A complete field-by-field comparison was run across all 237 columns
 and all ~40,719 spells:
 
-- **TAKP's `spells_new` matched the classic reference file exactly**
+- **The TAKP-claimed comparison database's `spells_new` matched the classic reference file exactly**
   on every mechanical field, for every spell. A handful of text
   fields (`name`, `cast_on_you`, `cast_on_other`, `spell_fades`)
   initially appeared to differ; this was confirmed to be a false
@@ -61,7 +71,8 @@ no action.
 
 ## Decision
 
-Adopt TAKP's `spells_new` in full. Since TAKP is now verified
+Adopt the TAKP-claimed comparison database's `spells_new` in full.
+Since this specific table (not the dataset as a whole) is now verified
 equivalent to the classic reference data, this is treated as a single
 decision rather than a per-field reconciliation.
 
@@ -91,7 +102,7 @@ one incorrectly can silently break a spell's function rather than
 just its magnitude, and spell mechanics sit squarely in this project's
 "class identity" preservation priority. Every changed value in this
 migration is either a verified match to classic client data or a
-direct value from TAKP's already-verified-classic table — no values
+direct value from the comparison database's already-verified-classic spell table — no values
 in this migration were invented or inferred.
 
 ## Consequences

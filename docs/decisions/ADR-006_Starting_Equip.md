@@ -4,6 +4,13 @@
 
 **Date:** 2026-07-25
 
+**Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
+local comparison database the user obtained and was told is sourced from
+TAKP (The Al'Kabor Project) — this project has no independent way to
+verify that claim. See `docs/research/TAKP.md` for the full caveat; this
+ADR's findings were cross-checked against the P99 guide as well, which
+strengthens the underlying conclusions independent of this note.
+
 ---
 
 ## Context
@@ -28,10 +35,12 @@ of the base starting kit — the "recruitment letters" are that
 mechanic, not a later addition. No changes needed to this system.
 
 Given this error, a more rigorous method was applied to the rest of
-the table: cross-checking each remaining item against TAKP's own
-`starting_items` table. TAKP has already been verified independently
-(ADR-004) to match real classic client spell data exactly, making it
-a reliable comparison point — more reliable than general web search,
+the table: cross-checking each remaining item against the TAKP-claimed
+comparison database's own `starting_items` table. That database's
+*spell* table has already been independently verified (ADR-004) to
+match real classic client data exactly — its `starting_items` table
+carries no such independent verification, so treat this cross-check as
+a useful secondary signal, more informative than a general web search,
 which often describes current live EverQuest rather than the Velious
 era specifically.
 
@@ -46,7 +55,7 @@ era specifically.
 | Pre-scribed starting spells (2 per casting class) | Classic — keep | P99 guide confirms 2; recount of table confirms every pure caster already receives exactly 2 (initial single-spell read was a miscount) |
 | Tome of Order and Discord | Not present in either database's starting kit; exists in item tables but ungranted | Confirmed via P99 guide: item exists classically but exists solely to enable PVP flagging. Explicitly irrelevant to this PVE server. No action — absence is correct, not a gap. |
 | Gloomingdeep Lantern | Not classic — removed | Absent from TAKP; tied to Gloomingdeep Mines, a post-Velious tutorial zone (confirmed optional/toggleable at character creation, not forced) |
-| Backpack (universal) | Not classic — removed | Absent from TAKP's starting_items; absent from P99 guide's explicit item list; a general web source supporting it described current live EQ's mechanic, not the Velious-era one |
+| Backpack (universal) | Not classic — removed | Absent from the TAKP-claimed comparison database's starting_items; absent from P99 guide's explicit item list; a general web source supporting it described current live EQ's mechanic, not the Velious-era one |
 
 ## Decision
 
@@ -73,10 +82,12 @@ entry is a "modern addition" because it doesn't immediately look
 classic, or conversely confirming it's classic because a source says
 "this is what you get at character creation" without checking which
 era that source describes, are both unreliable shortcuts. Cross-
-checking against TAKP's own data (once TAKP itself is verified
-trustworthy, as established in ADR-004) is a stronger default check
-than either assumption or general web search for this class of
-question.
+checking against the TAKP-claimed comparison database's own data is a
+useful additional signal — but note that ADR-004 only independently
+verified that database's *spell table* against real classic client
+data, not the dataset as a whole (see `docs/research/TAKP.md`); treat
+a `starting_items` match as corroborating evidence alongside the P99
+guide, not as proof on its own.
 
 ## Spire Compatibility
 
