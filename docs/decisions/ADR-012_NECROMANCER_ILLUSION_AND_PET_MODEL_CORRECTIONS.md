@@ -1,6 +1,6 @@
 # ADR-012: Necromancer Illusion Height Correction & Pet Model Race Correction (Race 485 → 85)
 
-**Status:** Accepted — Partially Implemented
+**Status:** Accepted — Implemented and Confirmed
 **Date:** 2026-08-02
 
 ---

@@ -33,11 +33,13 @@ This is a credible defect: the configured Iksar/Troll bonus (`Character:BaseHPRe
 
 ### 3. 🔴 Combat — remaining actionable item
 
-- Item stacking rules by item type beyond the explicitly verified phase-1
-  Classic corrections (Bone Chips, Bat Wings, Spiderling Silk, and Peridots;
-  see `scripts/2026-08-06_classic_item_stack_size_phase_1.sql`). Further
-  changes must remain item-by-item: Classic ammunition legitimately uses
-  100-item stacks, so a blanket stack-size conversion is incorrect.
+- Item stacking rules by item type beyond the narrowly scoped phase-1 Classic
+  migration (Bone Chips, Bat Wings, Spiderling Silk, and Peridots; see
+  `scripts/2026-08-06_classic_item_stack_size_phase_1.sql`). The migration is
+  committed but not yet applied live: direct verification on 2026-08-06 found
+  all four rows still at stacksize 100. Further changes must remain
+  item-by-item: Classic ammunition legitimately uses 100-item stacks, so a
+  blanket stack-size conversion is incorrect.
 
 ### 4. 🔲 Not yet researched — small, low-effort items
 

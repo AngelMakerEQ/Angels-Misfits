@@ -16,7 +16,7 @@ Sourced from AddictedDads' "RoF2_Full.zip," used strictly as a pristine base ins
 | Zone files (classic-version override) | FV Project | Highkeep, Highpass, Highpasshold, Lavastorm, Nektulos |
 | Spell icons | FV Project | Full set |
 | Spell gems | FV Project | Full set |
-| Spell effects (particles) | FV Project | Full set — `spellsnew.eff`/`.edd` and related; `spellanim` field in `spells_new` updated accordingly |
+| Spell effects (particles) | FV Project | `spellsnew.eff`/`.edd` plus 41 previously omitted `SpellEffects/` texture files restored under ADR-015; `spells_new` was verified aligned and not changed for this fix |
 | Skeleton models | FV Project | Classic-style skeleton models |
 
 ## Explicitly NOT Modified

@@ -6,13 +6,15 @@
 
 Luclin models are currently **disabled globally**, set via individual per-race client settings (not the blanket `AllLuclinPcModelsOff` override, which was tested and rejected for being all-or-nothing). This is a player-facing preference and can be changed per-race at any time.
 
-**Open item:** Troll and/or Ogre may be switched to Luclin models specifically, for aesthetic reasons — classic models for these two races are considered unusually unappealing by project lead. Not yet decided.
+The former Troll/Ogre Luclin-model option was dropped from tracking as a
+low-stakes, fluid preference (ADR-008 addendum). All player Luclin models
+remain off; revisit only if the project lead raises a specific preference.
 
 ## NPCs
 
 Non-playable NPC races (monsters, etc.) render classic by default and are unaffected by the player Luclin setting — this is controlled independently, server-side, via race ID/model assignment.
 
-NPCs using one of the 12 true playable race IDs (Human, Barbarian, Erudite, Wood Elf, High Elf, Dark Elf, Half Elf, Dwarf, Troll, Ogre, Halfling, Gnome) **cannot** have their model era set independently from players of that race — confirmed engine-level (`eqgame.exe`) limitation, not a config or database gap. Practical effect right now: since Luclin is off globally, these NPCs render classic. If Troll/Ogre Luclin is enabled later, NPCs of those races (e.g., Troll/Ogre guards) will also render Luclin as a direct consequence.
+NPCs using one of the 12 true playable race IDs (Human, Barbarian, Erudite, Wood Elf, High Elf, Dark Elf, Half Elf, Dwarf, Troll, Ogre, Halfling, Gnome) **cannot** have their model era set independently from players of that race — confirmed engine-level (`eqgame.exe`) limitation, not a config or database gap. Practical effect right now: since Luclin is off globally, these NPCs render classic. If a playable-race Luclin model is enabled in the future, NPCs of that race (for example, Troll/Ogre guards) will also render Luclin as a direct consequence.
 
 ## Skeleton Models
 

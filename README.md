@@ -65,7 +65,6 @@ CHANGELOG.md
 
 docs/
 ├── architecture/
-├── assets/
 ├── client/
 ├── compatibility/
 ├── database/

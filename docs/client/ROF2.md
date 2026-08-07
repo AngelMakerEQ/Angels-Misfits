@@ -23,7 +23,9 @@ TAKP, Project 1999, and Project Quarm are separate emulator projects, each runni
 ## Known Issues (Current)
 
 - Spell icon mismatch (magic-resist buff showing a cold/snowflake icon) — root cause not yet isolated.
-- Loading screens display RoF2-era art rather than Classic/Kunark/Velious art — restoration method not yet researched.
+- Loading screens display RoF2-era art rather than Classic/Kunark/Velious art.
+  A replacement-file method has been identified but remains untested on this
+  client; see `docs/client/LOADING_SCREENS.md`.
 
 ## History
 

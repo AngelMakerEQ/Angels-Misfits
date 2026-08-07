@@ -8,11 +8,13 @@ This document is a structural manifest of which database tables have been modifi
 
 | Table | Status | Modified By |
 |---|---|---|
-| `rule_values` | Modified | ADR-002 |
-| `npc_types` | Modified | ADR-003, ADR-005, ADR-007 |
-| `spells_new` | Modified | ADR-004 |
+| `rule_values` | Modified | ADR-001, ADR-002; subsequent mechanics, pet-zone, and era-containment rule corrections |
+| `npc_types` | Modified | ADR-003, ADR-005, ADR-007, ADR-012 |
+| `spells_new` | Modified | ADR-004, ADR-009, ADR-012 |
 | `starting_items` | Modified | ADR-006 |
-| `items` | Unmodified | Scoping deferred — ADR-001 |
+| `items` | Unmodified (pending migration) | 2026-08-06 Classic stack-size phase 1 is committed but not applied live; broader scoping remains deferred per ADR-001 |
+| `character_inventory` | Modified | ADR-011 location-format repair |
+| `content_flags` | Modified | 2026-08-01 era-containment cleanup |
 | `zone` | Unmodified | Content gating applied via `rule_values`, not this table — ADR-001 |
 | `spawn2` | Unmodified | — |
 | `loottable` / `lootdrop` | Unmodified | — |
