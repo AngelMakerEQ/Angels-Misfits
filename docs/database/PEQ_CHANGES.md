@@ -131,6 +131,7 @@ All other starting_items rows (recruitment letters, weapons, food/drink, bandage
 |---|---|---|
 | `spells_new` | Legacy-audit corrections across all Velious-playable classes; six cosmetic Necromancer illusion size overrides | ADR-009, ADR-012 Part 1 |
 | `rule_values` | Classic minimum mana floor; pet zoning/logout behavior; era-containment cleanup | `2026-08-01_classic_minimum_mana_regen.sql`, `2026-08-01_era_containment_cleanup.sql`, CHANGELOG 2026-08-04 |
+| `rule_values` | `Character:UseClassicRegen` added and verified 2026-08-09 (gates the source-level classic HP/mana regen rebuild) | ADR-021, `2026-08-08_classic_regen_formulas.sql` |
 | `character_inventory` | RoF2 container child-slot location-format repair for Angel's personal and bank bags | ADR-011, `2026-08-01_angel_personal_bag_slot_repair.sql` |
 | `npc_types` | Race-60 skeleton pet material template and late-game Necromancer pet race correction (485 → 85) | ADR-012 Parts 2–3, `2026-08-02_necromancer_pet_race_correction.sql` |
 | `content_flags` | `don_nest_unlocked` disabled as Velious-era defense in depth | `2026-08-01_era_containment_cleanup.sql` |

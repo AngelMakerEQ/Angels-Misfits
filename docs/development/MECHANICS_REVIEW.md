@@ -19,19 +19,7 @@ The purpose is unchanged from the original sweep: catch "unknown unknowns" — m
 
 This is the actual to-do list. Everything else in this document is closed in one of the three closed categories above and does not need revisiting absent new evidence.
 
-### 1. 🔴 HP regeneration — racial bonus likely not applied in the live code path
-
-**Highest priority: foundational, and a real engineering defect, not a data gap.** Source review (2026-08-01) traced `CalcHPRegen()` in the current upstream EQEmu implementation: it takes its baseline from `base_data.hp_regen` and does **not** read `Character:BaseHPRegenBonusRaces` (the rule that is supposed to grant Iksar/Troll their faster regen). A separate `LevelRegen()` routine does read that bitmask, but it is not the function the tick path actually calls. At level 40, live `base_data` supplies an HP baseline of 6 regardless of race.
-
-This is a credible defect: the configured Iksar/Troll bonus (`Character:BaseHPRegenBonusRaces = 4352`, confirmed correctly set) may currently have no effect. `base_data` itself must **not** be changed to compensate — ADR-004 already validated it against the classic client file, and changing it would affect every race, not just the two intended.
-
-**Required next step (runtime test, not yet performed):** compare a level-40 Iksar/Troll character against a level-40 non-Iksar/Troll character of the same class, both at full buffs/AA/item-neutral state, over multiple 6-second ticks, standing and sitting. Expected under the current (likely buggy) code: no racial difference (~+6 HP/tick for both at level 40). If confirmed, the fix is a small server-source patch adding the existing `BaseHPRegenBonusRaces` modifier into `CalcHPRegen()`, followed by rebuild and re-test — not a database change.
-
-### 2. 🔴 Mana regeneration — fix applied, runtime verification still outstanding
-
-`Character:OldMinMana` was set `true` in ruleset 1 (`scripts/2026-08-01_classic_minimum_mana_regen.sql`, applied 2026-08-02 per commit history). This restores the classic floor of 2 mana/tick sitting and 1/tick standing at zero Meditate skill, without altering the normal Meditate formula. **Not yet independently confirmed live in-game** — the recommended test (a character with zero Meditate, before/after comparison, expecting +1 standing / +2 sitting) has not been recorded as performed. Close this out with an in-game tick count once convenient; the SQL change itself is not in question, only whether the server picked it up correctly (ruleset reload requires a full World/Zone restart).
-
-### 3. 🔴 Combat — remaining actionable item
+### 1. 🔴 Combat — remaining actionable item
 
 - Item stacking rules by item type beyond the narrowly scoped phase-1 Classic
   migration (Bone Chips, Bat Wings, Spiderling Silk, and Peridots; see
@@ -41,17 +29,31 @@ This is a credible defect: the configured Iksar/Troll bonus (`Character:BaseHPRe
   item-by-item: Classic ammunition legitimately uses 100-item stacks, so a
   blanket stack-size conversion is incorrect.
 
-### 4. 🔲 Not yet researched — small, low-effort items
+### 2. 🔲 Not yet researched — small, low-effort items
 
 Carried forward from the original sweep, none individually large: pet command responsiveness (cast-time lag on pet commands, if any).
 
-### 5. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
+### 3. 🔲 Confirmation-only, low priority (Tier 2 — do not proactively tune)
 
 Preserve current EQEmu behavior on all of these unless a runtime test finds an actual discrepancy against a real classic target. Do not infer a correction from P99 forum disagreement or a modern-sounding rule name alone: weapon damage caps/max-damage formula/weighted D20/proc rate/backstab formula (conceptually documented, not checked against this project's source); Bind Wound's 50%/70%-at-completion threshold behavior; AA/veteran reward and guild inaccessibility under the Velious gate (near-certain already correct via the expansion gate, worth one quick confirmation rather than an assumption).
 
 ---
 
 ## Closed — Confirmed Correct (🟢)
+
+- **HP/mana regeneration (2026-08-09, closes the 2026-08-01/08-08 items above).**
+  `Character:UseClassicRegen` (ruleset 1) built into both `zone.exe` and
+  `world.exe`, deployed, and verified live via `#mystats` on Angel (level 40
+  Iksar Necromancer). `CalcHPRegen()` now calls the pre-existing
+  `Client::LevelRegen()` classic per-level-bracket table (previously only
+  reachable via `Bot::LevelRegen()`) instead of the live-era `base_data`
+  curve; `CalcManaRegen()` uses the classic flat-1-standing /
+  `floor(skill/12)`-sitting formula instead of the `2 + skill/15` curve.
+  Full investigation, table, and deployment notes (including a
+  `world.exe`-rebuild pitfall worth reading before touching any other
+  custom rule) in **ADR-021**. The native in-game Character/Stats window
+  does not reflect this — that figure is computed client-side and is not a
+  valid way to verify any server-side regen rule; use `#mystats`/`#showstats`.
 
 - **Era-containment cleanup (2026-08-05).** Live MCP queries confirmed zero
   active-level Beastlord and Berserker grants, `don_nest_unlocked` disabled,
@@ -186,7 +188,8 @@ These categories are fully covered in existing documents and are not duplicated 
 - **2026-08-01:** HP/Mana regeneration runtime review. Identified the `CalcHPRegen()` racial-bonus gap (item 1 above, still open) and the `Character:OldMinMana` mana-regen fix (item 2, applied). Spell component consumption reviewed and confirmed correct (no SQL change needed). Era-containment cleanup SQL drafted for the confirmed Beastlord/Berserker/DoN-flag conflicts.
 - **2026-08-02:** Skill cap ceiling defect found and fixed across 8 classes (ADR-013), closing what had been an open "skill cap enforcement edge case." Necromancer illusion-height and pet-model-race defects found and corrected (ADR-012); Part 2 of that ADR (485→85 pet race correction) remains pending live application per ADR-012's own status.
 - **2026-08-02:** This document consolidated from the WIP checklist plus three dated assessments, with every item re-audited for true open/closed status rather than carried forward by assumption (see ADR-014). The most consequential correction made during that re-audit: ZEM was miscategorized as still-actionable in the prior WIP draft despite being explicitly deprioritized in `PROJECT_STATUS.md` — now correctly closed as a deliberate deprioritization.
+- **2026-08-08:** HP/mana regen investigated in full via a live-character comparison (Angel), correcting the 2026-08-01 root-cause guess for item 1 (it's `InnateSkills[InnateRegen]`, not the dead `BaseHPRegenBonusRaces` rule, that doubles Iksar/Troll regen — the defect is the live-era `base_data` baseline being doubled, not a missing racial multiplier) and confirming item 2's standing-mana-regen-0 anomaly is real. **ADR-021** written; a `Character:UseClassicRegen`-gated source patch drafted for both `CalcHPRegen()` and `CalcManaRegen()` (`zone/client_mods.cpp`) plus its supporting rule migration (`scripts/2026-08-08_classic_regen_formulas.sql`). Not yet built or deployed — items 1 and 2 remain 🔴 open (root cause now understood and fix drafted, but nothing is verified live yet), not closed to 🟢.
 
 ## Suggested Order of Attack
 
-HP regen and mana regen runtime verification first (both foundational, both have a concrete test defined, item 1 specifically may require an actual server-source patch once confirmed) — then the genuinely unresearched casting/combat items (spell interruption, recast/recovery enforcement, LoS, crit chance, bash/kick) — treating everything in the Accepted Current Behavior section as settled unless materially new evidence appears.
+Build and deploy ADR-021's regen source patch, then re-verify both HP and mana regen in-game per its verification section — this closes out items 1 and 2, the last foundational pieces of the original HP-regen/mana-regen/casting/combat priority order. After that, move to the genuinely unresearched casting/combat items (spell interruption, recast/recovery enforcement, LoS, crit chance, bash/kick) — treating everything in the Accepted Current Behavior section as settled unless materially new evidence appears.

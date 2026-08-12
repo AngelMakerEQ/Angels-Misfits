@@ -97,6 +97,37 @@ Logged here as known gaps, not yet tied to a specific external source:
 - **Guild mechanics** — guild halls did not exist in Velious; believed disabled via expansion selection settings (same mechanism as AA), but not yet confirmed.
 - **Tradeskill recipes** — not yet covered by any resource above; classic recipe lists (components, trivial values, container requirements) likely have the same PEQ-drift risk as spells/items did.
 
+## Access Method — P99 Wiki and FV Project
+
+A standard `WebFetch`/browser-based fetch to `wiki.project1999.com` fails
+in Claude Code's environment with a TLS certificate-chain error — it is
+**not** a P99-side block. Plain `curl` (via a shell tool) bypasses this
+completely and works reliably against both `wiki.project1999.com` and
+`fvproject.com`, since both are MediaWiki installs exposing the standard
+raw-export and batch-query endpoints:
+
+```
+curl -s "https://wiki.project1999.com/index.php?title=<Page_Name>&action=raw"
+curl -s "https://wiki.project1999.com/api.php?action=query&titles=A|B|C&prop=revisions&rvprop=content&format=json&redirects=1"
+```
+
+The second form (`api.php`, `action=query`) batches up to ~50 page titles
+per request — use it instead of one fetch per page for anything beyond a
+handful of lookups.
+
+**This does not work uniformly across environments.** Confirmed 2026-08-07:
+a remote-Codex session connected through the desktop app hit a network-level
+connection block on `wiki.project1999.com:443` — distinct from Claude Code's
+TLS cert-chain issue, and not fixed by switching from the in-app browser to
+`curl.exe`, since the block sits at the sandbox's network egress boundary,
+before any TLS handshake. If Codex needs this data and hits the same wall,
+try the local Codex CLI (`codex`, installed via npm) rather than the
+remote/desktop-app session — it runs in the normal local shell with the
+machine's actual network access, the same situation Claude Code's Bash tool
+is in, and likely isn't subject to the same sandboxed egress restriction.
+If that doesn't work either, ask Claude Code to fetch the specific pages
+needed rather than retrying the same blocked path.
+
 ## Usage Notes
 
 - When comparing a wiki entry to current server data, flag findings as one of: **Confirmed EQEmu implementation**, **Confirmed historical EverQuest behavior**, **Community consensus**, or **Reasoned inference** — per the project's research documentation standard.

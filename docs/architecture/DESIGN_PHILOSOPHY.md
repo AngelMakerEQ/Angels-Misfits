@@ -206,16 +206,17 @@ Historical EverQuest information should be researched to understand the original
 
 Sources should be evaluated approximately in this order:
 
-1. Original EverQuest client assets and available historical data
-2. EQEmu source code
-3. P99 wiki (treated as the primary era-accuracy reference project-wide)
-4. PEQ database
-5. Archived Allakhazam information
-6. Archived Lucy information
-7. Established emulator documentation
-8. Community discussion
+1. A specific classic-era community reference wiki (named explicitly in `docs/research/HISTORICAL_SOURCES.md`, along with why — referred to generically here since Angels Misfits documents itself as a Classic-through-Velious server in its own right, not as a comparison to any single outside reference project)
+2. FV Project (fvproject.com)
+3. EQEmu source code
+4. Original EverQuest client assets and available historical data
+5. PEQ database
+6. Archived Allakhazam information
+7. Archived Lucy information
+8. Established emulator documentation
+9. Community discussion
 
-**The "TAKP-claimed" comparison database is not part of this authority ranking.** It's a local database the user obtained and was told is sourced from TAKP (The Al'Kabor Project); this project has no independent way to verify that claim or access to a confirmed-genuine TAKP source. Treat it strictly as a candidate-generation starting point — useful for surfacing where PEQ's stock data likely drifted from classic — never as a source whose values can be cited on their own authority. Any value pulled from it needs independent verification against a source in the ranked list above before being trusted. See `docs/research/TAKP.md` for the full reliability breakdown by data category.
+**A separate legacy comparison database is not part of this authority ranking, and is not named directly outside its dedicated research doc.** It's a local database the user obtained under an unverified provenance claim; this project has no independent way to confirm it. Treat it strictly as a candidate-generation starting point — useful for surfacing where PEQ's stock data likely drifted from classic — never as a source whose values can be cited on their own authority. Any value pulled from it needs independent verification against a source in the ranked list above before being trusted. See `docs/research/TAKP.md` for the full reliability breakdown by data category.
 
 Historical information should be categorized as:
 

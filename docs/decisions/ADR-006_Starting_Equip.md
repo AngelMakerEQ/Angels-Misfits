@@ -100,3 +100,51 @@ already edits directly.
 Misfits database (MCP connection). Verified post-run: querying for
 both removed row IDs (`2`, `137`) returned zero results, confirming
 successful deletion. No other rows in the table were affected.
+
+## Addendum (2026-08-08): Reconciliation Against Genuine P99 Test Characters
+
+Three P99 test characters (Human/Innoruuk Necromancer, Human/Bertoxxulous
+Wizard, Ogre Shaman) were created directly on P99 and their actual starting
+inventories recorded firsthand, then compared against the live
+`starting_items` table. This is stronger evidence than the guide-based
+cross-checks used above, since it reflects exactly what P99 currently hands
+a real character rather than a secondhand description.
+
+**Tome of Order and Discord — prior "no action" conclusion reversed.** This
+ADR originally concluded its absence was correct (a PVP-flagging item,
+irrelevant to a PVE server, per a P99 guide read). All three test characters
+received it. The original guide-based reasoning does not hold up against
+direct observation; it is now wired as a universal starting item.
+
+**"A Worn Candle" — resolved as a naming/wiring gap, not a missing item.**
+Initially appeared absent from the item table under any name. The P99 wiki
+disambiguates it as the same item as "Wax Candle" (id 12219 in this
+database) — icon 1127 matches the wiki's `lucy_img_ID` exactly, and
+weight/size match. Per the wiki, it's Human/Barbarian/Erudite starting gear,
+not deity- or class-specific.
+
+**Four genuine wiring gaps confirmed** (item exists, zero `starting_items`
+rows, verified via a `LEFT JOIN` ruling out a missed duplicate-name item):
+`Spell: Minor Shielding*` not granted to Necromancer (only Wizard/Magician/
+Enchanter), `Spell: Shock of Frost*` (Wizard) and `Spell: Inner Fire*`
+(Shaman) entirely unwired, and `Candle of the Plaguebringers` (Bertoxxulous
+holy symbol) entirely unwired.
+
+**One quantity mismatch:** Skin of Milk and Bread Cakes* are granted at 20
+charges live vs. P99's 5.
+
+Two items present in our data but not mentioned on any of the three P99
+test characters — `Spell: Siphon Strength` (wired to Necromancer) and
+`Spell: Burst of Flame` (wired to Shaman) — are left as-is; their absence
+from a single test character's inventory isn't proof they're wrong, and
+no corroborating P99 source was checked for them specifically.
+
+**Implemented 2026-08-08.** Applied via
+`scripts/2026-08-08_starting_items_p99_reconciliation.sql`. Verified via
+direct post-run query against live state: `id=4`/`id=5` (Skin of Milk/Bread
+Cakes*) now carry `item_charges=5`; `id=14` (Minor Shielding) widened to
+`class_list='11|12|13|14'`; four new rows confirmed with correct scoping —
+Tome of Order and Discord (universal), Shock of Frost* (Wizard only),
+Candle of the Plaguebringers (deity 201/Bertoxxulous), Inner Fire* (Shaman
+only), and Wax Candle/"A Worn Candle" (`race_list='1|2|3'`, Human/Barbarian/
+Erudite).

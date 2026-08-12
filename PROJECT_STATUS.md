@@ -4,14 +4,15 @@
 
 **Authority:** This document is the authoritative source for the current status of the Angels Misfits project.
 
-**Last Updated:** 2026-08-06
+**Last Updated:** 2026-08-09
 
 ---
 
 # Current Objective
 
 Resume the systematic mechanics sweep, prioritizing the open and
-undecided items around combat, casting, HP regen, and mana regen.
+undecided items around combat and casting — HP/mana regen closed 2026-08-09
+(ADR-021).
 
 ---
 
@@ -37,10 +38,10 @@ feel: combat, spellcasting, and HP/mana regeneration.
 
 1. **Resume the mechanics sweep** (`docs/development/MECHANICS_REVIEW.md`,
    consolidated and re-audited via ADR-014), prioritizing the still-open
-   items: the HP regen racial-bonus defect (likely requires a small
-   server-source patch), mana regen runtime verification, and the
-   unresearched casting/combat
-   categories — see that document for the full breakdown.
+   combat item (item stacking rules by type) and the unresearched
+   casting/combat categories — see that document for the full breakdown.
+   HP/mana regen closed 2026-08-09 (ADR-021: built, deployed to both
+   `zone.exe` and `world.exe`, verified live via `#mystats`).
 2. Continue the remaining standing research gaps as background work
    between the above: item stat-budget conventions, faction kill/quest
    increment verification, tradeskill recipe data, and the out-of-era NPC
@@ -84,10 +85,13 @@ feel: combat, spellcasting, and HP/mana regeneration.
   see `docs/development/MECHANICS_REVIEW.md` (consolidated and
   re-audited via ADR-014, replacing the former WIP checklist and
   three dated assessments).
-- The all-class skill cap ceiling defect corrected (ADR-013); the
-  classic minimum mana-regen floor applied (`Character:OldMinMana`);
-  spell component consumption confirmed correct with no data change
-  needed.
+- The all-class skill cap ceiling defect corrected (ADR-013); spell
+  component consumption confirmed correct with no data change needed.
+- Classic HP/mana regeneration formulas built, deployed, and verified
+  live (ADR-021, 2026-08-09): `CalcHPRegen()`/`CalcManaRegen()` now use
+  the classic per-level-bracket table and Meditate-skill formula instead
+  of the live-era curves, gated by `Character:UseClassicRegen`
+  (superseding the earlier `Character:OldMinMana` floor).
 - Era-containment cleanup applied and verified live: Beastlord and Berserker
   active-level grants are zero, `don_nest_unlocked` is disabled, and the
   Velious expansion gate remains intact.
@@ -118,8 +122,8 @@ feel: combat, spellcasting, and HP/mana regeneration.
 
 ## In Progress
 
-- Mechanics sweep resumption, prioritized toward combat/casting/HP
-  regen/mana regen per current focus.
+- Mechanics sweep resumption, prioritized toward combat/casting per
+  current focus (HP/mana regen closed 2026-08-09, ADR-021).
 - Client visual restoration (ADR-008) remaining sub-items: loading
   screens still RoF2-era, Velious-era zone visual research, general
   in-client verification pass.
@@ -170,8 +174,8 @@ below" as unverified rather than assume it still holds.
 # Next Milestones
 
 - Resume and continue the mechanics sweep, working through the
-  combat/casting/HP-regen/mana-regen items flagged as priority in
-  `MECHANICS_REVIEW.md`.
+  combat/casting items flagged as priority in `MECHANICS_REVIEW.md`
+  (HP/mana regen closed 2026-08-09, ADR-021).
 - Continue faction, merchant, and tradeskill verification incrementally
   as background work.
 
@@ -185,12 +189,13 @@ below" as unverified rather than assume it still holds.
   correction, and this mechanics/epic-quest documentation
   consolidation) postdate this document's prior update and were not
   previously reflected here.
-- P99 wiki adopted as the primary era-accuracy reference throughout,
-  prioritized above the TAKP-claimed comparison database for any question
-  involving *when* content was introduced, since that database itself
-  progressed through Luclin and PoP and cannot make that distinction. That
-  database's provenance is also unverified — see `docs/research/TAKP.md` —
-  so it's not treated as authoritative for any question, not just dating.
+- The classic-era reference wiki (see `docs/research/HISTORICAL_SOURCES.md`)
+  adopted as the primary era-accuracy reference throughout, prioritized
+  above the legacy comparison database (see `docs/research/TAKP.md`) for
+  any question involving *when* content was introduced, since that
+  database itself progressed through Luclin and PoP and cannot make that
+  distinction. That database's provenance is also unverified, so it's not
+  treated as authoritative for any question, not just dating.
 - The server-side zone data concern raised alongside ADR-008 (whether
   zone points/safe coordinates/flags still matched the restored classic
   geometry) is closed: confirmed already correct, no review needed.

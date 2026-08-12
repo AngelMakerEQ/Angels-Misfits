@@ -24,6 +24,25 @@ Corrected at the database level for 1,630 NPCs (skeleton-family), and updated at
 
 `DoProperTinting` (eqclient.ini) is enabled — corrects a known RoF2-era bug where armor tint incorrectly also tints the character's skin. Relevant to classic armor visual accuracy.
 
+## Velious Armor Textures
+
+`LoadArmor17` through `LoadArmor23` (`eqclient.ini`) enabled 2026-08-09 —
+these gate seven Velious-era armor texture banks (material IDs 17-23:
+cloth/icy, ringmail/dragonskin, scale/stability, leather/ulthork,
+chain/ry'gorr, plate/guardian, and monk-specific) that only render on
+pre-Luclin models, which this server already runs globally. Confirmed via
+live query that hundreds to low-thousands of items per material ID
+(materials 17-22) and 1,684 items on material 23 already reference these
+banks, including named Velium-tier armor (e.g. Royal Velium Field Plate),
+so this was previously inert content, not a cosmetic-only toggle. The
+tint/skin-bleed risk these textures are known to carry elsewhere is
+already covered by the `DoProperTinting` fix above. Known remaining gaps,
+not addressed by this toggle: no custom Velious robe textures exist in
+this texture set (casters get nothing extra from this), and female
+Erudite helmets reportedly don't render correctly under it.
+
+Source: [EQEmulator forums, "Velious Armor Textures" thread](https://www.eqemulator.org/forums/showthread.php?t=29595).
+
 ## History
 
 Full reasoning and testing: **ADR-007**, **ADR-008**.

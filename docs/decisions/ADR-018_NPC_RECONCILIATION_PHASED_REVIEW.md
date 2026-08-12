@@ -1,7 +1,28 @@
 # ADR-018: NPC Reconciliation Phased Review
 
-**Status:** Accepted
+**Status:** Superseded (2026-08-10) — see note below. Retained as the
+historical decision record for Phase 1's already-applied database changes;
+the forward-looking process it describes (manual seven-zone phase batches,
+zone selection logic, Phase 2 Queue) is no longer the active methodology.
+
 **Date:** 2026-08-06
+
+---
+
+**Superseded 2026-08-10.** This ADR's manual, wiki-page-at-a-time zone-sweep
+process has been replaced by a structured, queryable tool: a parsed P99 wiki
+reference table (`p99_reference_npcs`) plus live-database comparison views
+(`npc_reconciliation_match`/`npc_reconciliation_diff`) that surface
+discrepancies directly via SQL instead of requiring a fresh manual wiki read
+per zone. The current, sole working process lives in
+`docs/development/wip/NPC_RECONCILIATION_REMAINING_ZONE_ROADMAP.md` — that
+document is authoritative for how this work is done going forward; the
+Zone Selection Logic, Phase 1 zone list, and Phase 2 Queue sections below
+are preserved only as a record of what Phase 1 actually covered and why,
+not as active instructions. Phase 1's own findings and applied migration
+(`scripts/Applied/2026-08-06_npc_reconciliation_phase_1_APPLIED.sql`)
+remain valid and unaffected by this supersession — only the *process* for
+future work has changed, not anything already decided or applied.
 
 ---
 

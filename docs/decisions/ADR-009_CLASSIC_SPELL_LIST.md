@@ -224,3 +224,82 @@ Verified post-run via direct query against the live database:
   Warrior in the original migration but not for Monk or Rogue, despite
   being flagged non-legacy for all three pure-melee classes. Corrected
   post-verification.
+
+## Addendum (2026-08-07): three findings corrected, one gap closed
+
+Surfaced during an unrelated item-stat era-accuracy audit that traced
+Endurance costs on the small number of level-<=60 disciplines that carry
+one. Two of this ADR's original conclusions were wrong, and one of its
+decisions was never actually applied:
+
+- **Bellow (Warrior, id 4681) — was wrong.** Originally retained,
+  citing "direct in-game verification." Re-examination of the same
+  source found it tagged Kunark-era with no corroborating trace
+  anywhere else, and direct comparison against P99's own "Disciplines"
+  page (https://wiki.project1999.com/Disciplines) found its
+  comprehensive Warrior section explicitly covers Bellow's level range
+  (30/40/52/53/54 all listed) without including Bellow. Now disabled
+  (`classes1 = 255`).
+- **Throw Stone (spell/discipline entry, id 5225) — was wrong,
+  conflated with a different mechanic.** Originally confirmed "a
+  genuine classic skill." The genuine classic content is the
+  **Throwing skill** (confirmed via P99's "Skill Throwing" page) — a
+  trained combat skill governing thrown weapons, granted to
+  Warrior/Monk/Rogue/Bard/Ranger/Wizard/Enchanter/Magician/Necromancer,
+  with no cast time, cooldown, or cost of its own. This is a completely
+  different game object from `spells_new` id 5225, a spell-based
+  ability with its own 10-second recast and (as of the Dec 2003 patch)
+  its own endurance cost. The Throwing skill's legitimacy does not
+  extend to the unrelated spell entry, which has no independent
+  confirmation anywhere. Now disabled for all three classes
+  (`classes1/7/9 = 255`); the actual Throwing skill is untouched — it
+  was never in question.
+- **Elbow Strike (Warrior/Monk/Rogue, id 25060) — correct conclusion,
+  never implemented.** This ADR already identified Elbow Strike as
+  non-legacy in its original Findings Summary ("three
+  individually-verified Warrior entries (Provoke, Berate, Elbow
+  Strike)"). Live-database check found Provoke and Berate correctly
+  disabled but Elbow Strike still fully active at level 5 for all three
+  classes — a rollout gap in the original migration, not a new
+  disagreement. Now disabled (`classes1/7/9 = 255`).
+- **Unholy Aura Discipline (Shadow Knight) — a duplicate-spell bug, same
+  class of issue as this ADR's own Harm Touch cleanup.** Initial research
+  (P99 wiki's "Disciplines" page) confirmed the discipline itself is
+  genuine Shadow Knight content, but wrongly assumed id 4520 -- the only
+  id this database grants to Shadow Knight under that name -- was the
+  correct object to correct in place. A genuine P99 client installation
+  (found later, `C:\P99`, running Titanium against P99's Green server)
+  provided true ground truth: its `spells_us.txt` shows id 4520 granted
+  to **no class at all** (all 16 class columns 255), while the actual
+  player-facing discipline exists under two different ids that P99
+  itself keeps side by side -- **8616** (25% Harm Touch damage bonus) and
+  **8618** (50%), both already present and already fully correct in this
+  database (recast_time 4,320,000ms, resisttype unresistable, only 3
+  effects, EndurCost 900 -- matching P99 exactly on every field checked).
+  Id 4520 was an erroneous extra copy also granted to Shadow Knight at
+  level 55 alongside the two genuine ids. Fixed by disabling 4520's grant
+  (`classes5 = 255`), not by editing its mechanics -- unlike the
+  wiki-sourced initial draft, which had edited 4520's recast time, damage
+  value, and endurance cost in place, none of which needed to happen once
+  the real ids were found already correct.
+
+  A further project-lead call on top of that: 8616 (25%) is the
+  Kunark-era value of this discipline and 8618 (50%) is the Velious-era
+  one -- P99 itself keeps both simultaneously grantable (not a P99 data
+  error, just how P99 apparently handles this particular era transition),
+  but this project targets Velious specifically, so only one should be
+  active. 8616 is now disabled (`classes5 = 255`) for this reason; 8618
+  remains the sole active version. This is an era-scoping choice, not a
+  P99-accuracy correction.
+
+  Endurance cost: left at 900 on 8618 per explicit project-lead
+  direction -- P99's own live data carries this cost on classic content,
+  and stripping it was never actually applied to Endurance regen either
+  (that rule was reverted before use). The only place Endurance is
+  intentionally stripped is a flat stat bonus on 3 unrelated items; see
+  `scripts/2026-08-07_endurance_stat_era_removal.sql`.
+
+Applied via `scripts/2026-08-07_endurance_mechanic_era_suppression.sql`.
+This does not change the Implemented status above — it corrects specific
+findings within an already-implemented ADR, the same pattern as the
+Focused Will Discipline gap closed during original verification.

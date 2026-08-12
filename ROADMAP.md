@@ -47,7 +47,7 @@ Player model philosophy (unchanged):
 
 Completed via the database-correction ADR series (ADR-001–ADR-007, ADR-009–ADR-013):
 
-- Compared Angels Misfits database against PEQ and the TAKP-claimed comparison database (see `docs/research/TAKP.md` on why the latter is treated as unverified)
+- Compared Angels Misfits database against PEQ and a legacy comparison database (see `docs/research/TAKP.md` on why the latter is treated as unverified)
 - Documented imported systems and server rules
 - Corrected NPC combat stats, spell mechanics, pet stats, starting items, and NPC model data (ADR-001–ADR-007)
 - Full spell/discipline legacy audit across all 14 Velious-playable classes (ADR-009)

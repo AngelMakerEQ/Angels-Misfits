@@ -58,6 +58,50 @@ Before any change that modifies or removes existing data:
 
 ---
 
+# C++ Engine Modification Convention (Established)
+
+Per `DESIGN_PHILOSOPHY.md`, engine modification is the last resort after
+database, rules, and quest-scripting solutions are exhausted — but once
+undertaken (first real case: ADR-021's classic regen formulas,
+2026-08-09), the following build/deploy/verify pattern applies:
+
+1. **Any new custom rule (a new `RULE_*` entry in `common/ruletypes.h`)
+   requires rebuilding and redeploying *both* the `zone` and `world`
+   CMake targets, not just `zone`.** `world/world_boot.cpp` calls
+   `RuleManager::Instance()->UpdateOrphanedRules(&database)` on every
+   World boot, which deletes — across *all* rulesets — any `rule_values`
+   row whose name isn't in the rule catalog compiled into the
+   **currently running `world.exe`**. If only `zone.exe` is rebuilt, the
+   rule row is silently wiped on every subsequent full restart even
+   though it was correctly re-inserted and `zone.exe` itself is correct.
+   This cost a multi-hour debugging loop on ADR-021 before being traced
+   to `rulesys.cpp`'s `UpdateOrphanedRules()`.
+2. **Hash-verify** (e.g. `certutil -hashfile ... MD5`) each deployed
+   binary against its build output before restarting the server —
+   confirms the deploy step itself didn't silently no-op or copy a stale
+   file.
+3. **Verify rule persistence after a full cold restart, not just
+   `#rules reload`.** Only a full World boot exercises
+   `UpdateOrphanedRules`; `#rules reload` (a zone-local GM command) does
+   not, so it can't catch this failure mode.
+4. **The native in-game Character/Stats window's HP/Mana Regen (and
+   likely other derived-stat) figures are computed client-side by the EQ
+   client itself** — they do not reflect server-side rule changes at
+   all, regardless of how correct the server implementation is. Use the
+   `#mystats`/`#showstats` GM command (server-authoritative,
+   `Mob::SendStatsWindow`/`Mob::ShowStats` call the same calc functions
+   the engine change modifies) or direct observed HP/mana-over-time to
+   verify any regen-related change; do not trust that window as a test
+   oracle.
+5. **Starting/stopping the live server on this installation:** always use
+   the provided `.bat` files (`server_start.bat` / `server_stop.bat` /
+   `server_restart.bat`, then `spire_start.bat` / `spire_stop.bat`) —
+   never invoke `spire.exe` directly. Direct invocation is unreliable on
+   this Windows Installer (non-Docker) deployment even when run from the
+   correct working directory with a correct explicit path.
+
+---
+
 # Scope Note
 
 This document does not yet cover:
@@ -66,10 +110,6 @@ This document does not yet cover:
   started (Phase 5 work per ROADMAP.md). Standards here would be
   premature and should be written once real quest-script patterns exist
   to document, not speculated in advance.
-- **C++ engine modification conventions** — out of scope unless/until the
-  project undertakes engine-level changes, which DESIGN_PHILOSOPHY.md
-  treats as a last resort after database, rules, and quest-scripting
-  solutions are exhausted.
 - **Naming conventions, file organization, or style guides** for future
   custom systems — to be added as those systems are actually built.
 

@@ -1,8 +1,19 @@
 # ADR-004: Spell Mechanics (Classic Restoration)
 
-**Status:** Implemented
+**Status:** Superseded by ADR-019 (2026-08-08)
 
 **Date:** 2026-07-23
+
+**Supersession note (2026-08-08):** This ADR's "byte-for-byte match against
+the real classic client's own `spells_us.txt`" claim does not hold up. Its
+source dataset covered ~40,719 spells — impossible for a genuine
+Titanium-locked P99 export (that id range requires several post-Velious
+expansions). A verified genuine P99 client export (`C:\P99\spells_us.txt`,
+8,088 spells) was located and compared against the live database this ADR
+produced; it diverges on effectively every spell. The "byte-for-byte"
+verification here was evidently a narrow spot-check, not exhaustive. See
+ADR-019 for the corrected resync and full account. Do not treat this ADR's
+conclusions as reliable going forward.
 
 **Provenance note (2026-08-06):** "TAKP" throughout this ADR refers to a
 local comparison database the user obtained and was told is sourced from
