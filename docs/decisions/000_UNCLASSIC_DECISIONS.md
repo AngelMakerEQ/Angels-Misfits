@@ -26,7 +26,6 @@ Migration: `scripts/2026-08-06_kunark_item_power_retention.sql` (Circlet of Shad
 
 | Setting | Classic value | This server | Reason |
 |---|---|---|---|
-| `Character:ExpMultiplier` / `AAExpMultiplier` | 1.0 (implicit) | 0.65 | Faster than classic; deliberate solo-pacing deviation |
 | `Character:UseOldClassExpPenalties` | true | false | Removes classic class-based exp penalties; solo play |
 | `Character:UseOldRaceExpPenalties` | true | false | Removes classic race-based exp penalties; solo play |
 | `Character:BindAnywhere` | false | true | Explicitly labeled in ADR-002 as a deliberate non-classic deviation |
@@ -44,7 +43,6 @@ Migration: `scripts/2026-08-06_kunark_item_power_retention.sql` (Circlet of Shad
 | Decision | Classic behavior | This server | Reason | Date |
 |---|---|---|---|---|
 | `Character:EnableBardMelody` | Disabled in later-era-accurate configs | Left enabled | "A conscious deviation, not an oversight" — player convenience | 2026-07-28 |
-| `Character:PetZoneWithOwner` | Pets follow through zone lines while active | `false` — pets don't survive an active zone line, but do survive logout | Explicit trade-off: logout-survival preferred over zone-line-survival | 2026-08-04 |
 | Epic weapon equip-level requirement | P99: gated at level 46 (anti-twink) | Left ungated | Server is currently single-player; the twinking scenario the gate guards against doesn't apply. Revisit if a second character reaches endgame | 2026-08-05 |
 
 ---
