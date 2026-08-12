@@ -1,6 +1,6 @@
 # ADR-019: Full Spell Mechanics Resync Against Verified P99 Client Data
 
-**Status:** Proposed — migration script generated, pending manual application and verification
+**Status:** Accepted — Implemented and Verified (2026-08-08; see Implementation Status and Addenda below)
 
 **Date:** 2026-08-08
 

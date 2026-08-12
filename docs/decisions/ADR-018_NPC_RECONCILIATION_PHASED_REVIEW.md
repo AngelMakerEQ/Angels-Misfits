@@ -24,6 +24,15 @@ not as active instructions. Phase 1's own findings and applied migration
 remain valid and unaffected by this supersession — only the *process* for
 future work has changed, not anything already decided or applied.
 
+**Relationship to ADR-003 (added 2026-08-12):** this reconciliation work
+(both this ADR's original Phase 1 and its successor process) individually
+re-verifies and overrides ADR-003's bulk arithmetic-midpoint `aggroradius`
+values against the primary source (P99's wiki) on a per-NPC basis. Neither
+ADR previously cross-referenced the other despite ADR-003's values now
+being routinely superseded NPC-by-NPC — see
+`docs/decisions/000_UNCLASSIC_DECISIONS.md`'s "NPC combat tuning" entry for
+the current count of NPCs affected.
+
 ---
 
 ## Context
