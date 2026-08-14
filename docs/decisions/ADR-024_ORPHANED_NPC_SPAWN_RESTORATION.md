@@ -144,3 +144,53 @@ first and confirmed complete.
 inferred coordinates the open question is not only whether an NPC spawns but
 whether it spawns somewhere sensible — a point inside world geometry would
 only be visible by walking to it.
+
+### Post-application review 2026-08-14 — arrangement and collision audit
+
+Prompted by the ADR-022 correction (a zone revamp can reuse the same mobs at
+different placements, which a name-based filter cannot detect), all 14 NPCs
+added under ADR-023 and ADR-024 were re-checked.
+
+**Duplicate placement: none.** Every one of the 14 holds exactly one spawn
+point.
+
+**Alternate arrangements: none exist.** All seven ADR-024 zones — `akanon`,
+`everfrost`, `greatdivide`, `growthplane`, `hole`, `iceclad`, `rathemtn` —
+carry only `spawn2.version = 0` and a single `zone` row, as does
+`westwastes`. The ADR-022 failure mode is structurally impossible in them.
+
+**Collision audit:** nearest-existing-spawn distance was measured for each new
+point. Twelve of thirteen sit 40–334u from their nearest neighbour, which is
+normal spacing. One did not.
+
+### Clockwork_XXIIB (55038) — placement reverted
+
+Its derived point (-796, 1330) fell **5 units** from `Kimble_Nogflop`'s
+existing solo spawn at (-795, 1335) — effectively stacked. P99's Ak'Anon
+roster resolves why:
+
+| NPC | P99 location |
+|---|---|
+| Clockwork XXIIB | **`?`** |
+| Kimble Nogflop | `(1335, -795)` — note P99 writes (y, x) |
+
+The Brewall POI labelled "Clockwork XXIIB" is sitting on *Kimble's* spot. Two
+readings are possible — Brewall mislabelled it, or the two share a spawn point
+as a placeholder pair — and nothing available distinguishes them: Kimble is a
+solo `spawnentry` at chance 100, and P99 documents no relationship.
+
+Adding Clockwork XXIIB to Kimble's group would have asserted an undocumented
+placeholder mechanic and changed Kimble's spawn rate on a guess. That is
+weaker evidence than the Sivar case, where P99 states "Sivar is a Myga PH"
+outright.
+
+**Reverted** — `spawnentry`, `spawn2` id 3266017 and `spawngroup` id 3288215
+deleted; Clockwork_XXIIB returns to unspawned. This matches the treatment of
+Del Sapara under ADR-023: insufficient evidence for placement means the NPC
+stays unplaced rather than being placed speculatively.
+
+Verified: Clockwork_XXIIB now holds 0 spawn points, Kimble_Nogflop untouched
+at 1, `akanon` back to 255 points.
+
+**ADR-024 therefore restores 7 NPCs, not 8** (six ADR-023 dragons plus these
+seven, minus Clockwork_XXIIB, plus Sivar's rotation wiring).
