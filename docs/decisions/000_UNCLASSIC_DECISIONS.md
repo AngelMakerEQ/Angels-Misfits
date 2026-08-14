@@ -47,6 +47,19 @@ Migration: `scripts/2026-08-06_kunark_item_power_retention.sql` (Circlet of Shad
 | `Character:EnableBardMelody` | Disabled in later-era-accurate configs | Left enabled | "A conscious deviation, not an oversight" — player convenience | 2026-07-28 |
 | Epic weapon equip-level requirement | P99: gated at level 46 (anti-twink) | Left ungated | Server is currently single-player; the twinking scenario the gate guards against doesn't apply. Revisit if a second character reaches endgame | 2026-08-05 |
 
+## Content placed on inferred rather than documented coordinates
+
+Distinct from the rows above: these are not gameplay preferences but
+**sourcing** deviations — content positioned from evidence weaker than this
+project's normal historical-source bar, recorded so a later era-accuracy pass
+knows the placement was inferred and can revisit it if better data appears.
+
+| Content | What the era sources say | This server | Reason | Date |
+|---|---|---|---|---|
+| Western Wastes named dragons — Bufa, Makala, Mav/Rak/Zil Sapara, Yal (ADR-023) | **No source records their spawn location.** P99's roster gives `Location = ?`; the FV Project 2001 ShowEQ dataset contains no Velious zones; the archived 2001 gameznet pages read "Submit this Info!" | Spawned at coordinates derived from Brewall's **live-EQ** map POIs, via a transform validated to 7u median across 9 zones | They existed as correct `npc_types` templates with matching levels and full loot tables but had never had a spawn point, so six documented encounters were unreachable. Approximate placement judged better than absence; all six roam within a 2500u box, so exact origin matters less | 2026-08-14 |
+| Seven orphaned NPCs across Ak'Anon, Everfrost, Great Divide, Plane of Growth, The Hole, Iceclad and Rathe Mountains (ADR-024) | P99 documents the NPCs but records no spawn location | Same method — Brewall live-EQ POI coordinates, each validated in-bounds and against its nearest existing spawn | Same reasoning as above. Several landed beside thematically matching neighbours (elder spearguard 173u from a Snowfang spearguard; Coldain war wolf 308u from a Coldain tracking wolf), which corroborates the derivation | 2026-08-14 |
+| Sivar spawn-share dilution (ADR-024) | P99 documents Sivar as a Myga placeholder pop, not a fixed spawn | Added to Myga's existing rotation (spawngroup 16324) at equal weight, reducing the other five members from 20% to ~16.7% each | Making Sivar reachable required joining that rotation. Diluting five NPCs' spawn share was judged a smaller misrepresentation than inventing a separate fixed spawn point P99 does not document | 2026-08-14 |
+
 ---
 
 ## Review note

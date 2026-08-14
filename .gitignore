@@ -9,4 +9,4 @@ docs/development/wip/NPC_RECONCILIATION_ZONE_QUEUE.md
 docs/development/wip/NPC_RECONCILIATION*
 docs/development/wip/npc_reconciliation*
 .tmp_*
-temp_reconcile_batch*.sql
+temp_*.sql
