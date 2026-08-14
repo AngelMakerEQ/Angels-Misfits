@@ -170,6 +170,57 @@ which is why they were caught):
 **Not verified in game.** The zone has not been entered since applying;
 confirmation that it populates correctly is still outstanding.
 
+### Correction applied 2026-08-14 — duplicate placements
+
+**The original migration had a defect, found the same day and corrected.**
+
+The decision above selected spawn points by whether their occupants' *names*
+appear in P99's roster. Name membership does not identify which *arrangement*
+a spawn point belongs to — and a zone revamp can reuse the same mobs at
+different placements within the same zone. Consequently 29 spawn points
+carrying P99-named mobs at revamp-era positions were kept on version 0
+alongside the P99 placements of those same mobs.
+
+The result was 29 duplicated NPCs, including:
+
+| NPC | placement A | placement B |
+|---|---|---|
+| Lord_Yelinak | (1977, 2645) | (1977, 2645) — *identical, two spawns stacked* |
+| Commander_Leuz | (-852, 199) | (-286, 286) |
+| Ziglark_Whisperwing | (-547, 830) | (-696, 180) |
+| Sentry_Kale | (-436, 829) | (-457, 194) |
+
+**Fix:** move to version 1 exactly those kept points whose every occupant is
+already placed by the P99 arrangement — 29 points. Points carrying NPCs the
+P99 arrangement does *not* place stay on version 0: **27 NPCs** (barkeeps,
+chefs, counts, patrollers, Liason_Dolvak, Yeinn_Kor`Va and others) exist only
+in the old arrangement, so a full version swap would have lost them. That is
+why the correct fix is neither the original per-name filter nor a clean
+version swap.
+
+Post-correction state, verified independently by read-only query:
+
+- version 0: 285 → **256** spawn points; version 1: 413 → **442**; total 698
+  unchanged.
+- Distinct NPC names on version 0: **202, unchanged** — no P99 content lost.
+- NPCs placed by both arrangements: **0**.
+- Named uniques confirmed single-pointed at their P99 placement
+  (Lord_Yelinak, Ziglark_Whisperwing, Commander_Leuz, Sentry_Kale).
+
+A first version of the verification query flagged 9 remaining "duplicates";
+those were generic mobs legitimately holding many points within one
+arrangement (`a_shambling_cube` ×21, `a_gargoyle_guard` ×14). The check was
+corrected to test for NPCs placed by *both* arrangements, which is the actual
+defect condition.
+
+**Method lesson for future zone alignments:** filter spawn points by which
+arrangement they belong to, not by whether their occupants' names appear in a
+roster. A revamp that reuses mobs at new positions will otherwise produce
+duplicates that a name-based check cannot see.
+
+Backup taken before the correction:
+`<server>\backups\angelsmisfits_full_20260814_pre_ADR022fix.sql`.
+
 **Follow-on observed, not addressed here:** some now-live roster NPCs sit
 slightly outside the levels P99 documents (`a_crystal_spider` live at 23-26
 vs the roster's 27-31; `a_shambling_cube` at 43-54 vs 44-49). Those are stat
