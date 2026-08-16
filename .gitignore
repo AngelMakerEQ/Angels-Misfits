@@ -3,6 +3,11 @@ AGENTS.md
 .claude/settings.local.json
 docs/development/assessments/TEMP_*.md
 scripts/*
+!scripts/README.md
+!scripts/parse_faction_data.py
+!scripts/fetch_faction_pages.py
+!scripts/fetch_starting_factions.py
+!scripts/faction_reconciliation_infrastructure.sql
 docs/development/wip/NPC_RECONCILIATION_CHANGE_LEDGER.md
 docs/development/wip/NPC_RECONCILIATION_INITIAL_REVIEW.md
 docs/development/wip/NPC_RECONCILIATION_ZONE_QUEUE.md
